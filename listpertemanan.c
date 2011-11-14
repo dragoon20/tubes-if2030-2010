@@ -46,6 +46,10 @@ void AddFriend (List L, infotype X, infotype added)
 	P = First(L);
 	addressf Q,R;
 	Q = Alokasi(added);
+	while(Info(P) != X)
+	{
+		P = Next(P);
+	}
 	if (FList(P) == Nil)
 	{
 		FList(P) = Q;
@@ -68,6 +72,10 @@ void DeleteFriend (List L, infotype X, infotype deleted)
 	address P;
 	P = First(L);
 	addressf Q,R;
+	while(Info(P) != X)
+	{
+		P = Next(P);
+	}
 	if (FList(P) == Nil)
 	{
 		
