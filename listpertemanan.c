@@ -25,6 +25,14 @@ int NFriend (List L, infotype X)
 
 void AddFriend (List L, infotype X, infotype added)
 {
+	jordan nanya, ini primitif isempty gtan make kaga? 
+	trus ini infotype kenapa2? 1 kan buat infonya temen 1 lagi buat apa?
+	if ()
+	{
+	}
+	else /*kalau list tidak kosong*/
+	{
+	}
 }
 
 void DeleteFriend (List L, infotype X, infotype deleted)

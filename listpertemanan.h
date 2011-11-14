@@ -42,6 +42,7 @@ typedef struct
 	address First;
 }List;
 
+#define Nil NULL 
 #define Info(X) (*X).Info
 #define FList(X) (*X).FList
 #define Next(X) (*X).Next
