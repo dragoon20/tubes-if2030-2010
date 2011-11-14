@@ -42,19 +42,48 @@ int NFriend (List L, infotype X)
 
 void AddFriend (List L, infotype X, infotype added)
 {
-	jordan nanya, ini primitif isempty gtan make kaga? 
-	trus ini infotype kenapa2? 1 kan buat infonya temen 1 lagi buat apa?
-	misal sih a mau add b, maka X itu a dan added itu sih b.
-	if ()
+	address P;
+	P = First(L);
+	addressf Q,R;
+	Q = Alokasi(added);
+	if (FList(P) == Nil)
 	{
+		FList(P) = Q;
+		Next(Q) = Nil;
 	}
 	else /*kalau list tidak kosong*/
 	{
+		R = FList(P);
+		while (Next(R)!=Nil);
+		{
+			R = Next(R);
+		}
+		Next(R) = Q;
+		Next(Q) = Nil;
 	}
 }
 
 void DeleteFriend (List L, infotype X, infotype deleted)
 {
+	address P;
+	P = First(L);
+	addressf Q,R;
+	if (FList(P) == Nil)
+	{
+		
+	}
+	else /*kalau list tidak kosong*/
+	{
+		R = FList(P);
+		while (Info(Next(R))!= deleted);
+		{
+			Q = R;
+			R = Next(R);
+		}
+		Next(R) = Nil;
+		Next(Q) = Nil;
+		Dealokasi (&Q);
+	}
 }
 
 void AddUser (List L, infotype X)
