@@ -18,8 +18,25 @@ int NUser (List L)
 int NFriend (List L, infotype X)
 {
 	address P=First(L);
-	while (P!=Nil)
+	addressf Q;
+	int total=0;
+	while ((P!=Nil)&&(!(bandingkata(X.nama,Info(P).nama))))
 	{
+		P=Next(P);
+	}
+	if (P==Nil)
+	{
+		return -1;
+	}
+	else
+	{
+		Q=FList(P);
+		while (Q!=Nil)
+		{
+			total++;
+			Q=Next(Q);
+		}
+		return total;
 	}
 }
 
@@ -27,6 +44,7 @@ void AddFriend (List L, infotype X, infotype added)
 {
 	jordan nanya, ini primitif isempty gtan make kaga? 
 	trus ini infotype kenapa2? 1 kan buat infonya temen 1 lagi buat apa?
+	misal sih a mau add b, maka X itu a dan added itu sih b.
 	if ()
 	{
 	}
