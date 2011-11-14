@@ -1,12 +1,26 @@
 
 #include "listpertemanan.h"
 
+extern const address Nil;
+
 int NUser (List L)
 {
+	address P=First(L);
+	int total=0;
+	while (P!=Nil)
+	{
+		total++;
+		P=Next(P);
+	}
+	return total;
 }
 
 int NFriend (List L, infotype X)
 {
+	address P=First(L);
+	while (P!=Nil)
+	{
+	}
 }
 
 void AddFriend (List L, infotype X, infotype added)
