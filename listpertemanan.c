@@ -126,7 +126,7 @@ void Save (List L, char namafile[50])
 {
 }
 
-void Load (List L, char namafile[50])
+void Load (List *L, char namafile[50])
 {
 }
 
