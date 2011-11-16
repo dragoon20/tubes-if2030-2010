@@ -64,7 +64,7 @@ int main()
 				{
 					bacakata(user,' ');
 					scanf("%c",&temp);
-					cek=(temp=='#')
+					cek=(temp=='#');
 					scanf("%c",&temp);
 					if (cek)
 					{
