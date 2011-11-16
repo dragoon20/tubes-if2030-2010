@@ -40,6 +40,22 @@ int NFriend (List L, infotype X)
 	}
 }
 
+void Alokasi (address *P, infotype X)
+{
+}
+
+void AlokasiF (addressf *P, address X)
+{
+}
+
+void Dealokasi (address *P, infotype *X)
+{
+}
+
+void DealokasiF (addressf *P, address *X)
+{
+}
+
 void AddFriend (List L, infotype X, infotype added)
 {
 	address P;

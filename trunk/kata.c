@@ -1,5 +1,6 @@
 #include "kata.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 int panjangkata (char *kata)
 {
@@ -61,6 +62,20 @@ void bacakata (char *kata, char hingga)
 	kata[i]='\0';
 }
 
+void bacakatafile (FILE *varfile, char *kata, char hingga)
+{
+	char c;
+	int i=0;
+	scanf(varfile,"%c",&c);
+	while (c!=hingga)
+	{
+		kata[i]=c;
+		++i;
+		scanf(varfile,"%c",&c);
+	}
+	kata[i]='\0';
+}
+
 void tuliskata (char *kata)
 {
 	int panjang=panjangkata(kata);
@@ -68,5 +83,15 @@ void tuliskata (char *kata)
 	for (i=0;i<panjang;++i)
 	{
 		printf("%c",kata[i]);
+	}
+}
+
+void tuliskatafile (FILE *varfile, char*kata)
+{
+	int panjang=panjangkata(kata);
+	int i;
+	for (i=0;i<panjang;++i)
+	{
+		printf(varfile,"%c",kata[i]);
 	}
 }
