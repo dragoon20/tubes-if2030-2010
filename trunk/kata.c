@@ -31,7 +31,7 @@ int bandingkata (char *kata1, char *kata2)
 		}
 		if ((kata1[i]==kata2[i]) && (kata1[i]=='\0'))
 		{
-			return true;
+			return 0;
 		}
 		++i;
 	}
