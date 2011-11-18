@@ -54,6 +54,21 @@ int NUser (List L);
 /*Mengirimkan jumlah user*/
 int NFriend (List L, infotype X);
 /*Mengirimkan jumlah teman dari user*/
+void Alokasi (address *P, infotype X);
+/* I.S. Sembarang */
+/* F.S. Alamat P dialokasi, jika berhasil maka Info(P)=X dan
+Next(P)=Nil */
+void AlokasiF (addressf *P, address X);
+/* I.S. Sembarang */
+/* F.S. Alamat P dialokasi, jika berhasil maka Info(P)=X dan
+Next(P)=Nil */
+void Dealokasi (address *P, infotype *X);
+/* I.S. P adalah hasil alokasi, P <> Nil */
+/* F.S. Alamat P didealokasi, dikembalikan ke sistem */
+void DealokasiF (addressf *P, address *X);
+/* I.S. P adalah hasil alokasi, P <> Nil */
+/* F.S. Alamat P didealokasi, dikembalikan ke sistem */
+/*Mengirimkan jumlah teman dari user*/
 void AddFriend (List L, infotype X, infotype added);
 /*I.S. infotype X ada didalam list L
 F.S. Added ditambahakan sebagai teman X dalam list L*/
