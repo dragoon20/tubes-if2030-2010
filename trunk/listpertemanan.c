@@ -196,9 +196,45 @@ void SortDesc ()
 }
 
 int IsTeman (List L, infotype X, infotype temanX)
-{
+{/* Kamus Lokal */
+  address P;
+  addressf Q;
+  /* Algoritma */
+  P = First(L);
+  while (Info(P) != X) {
+         P = Next(P);
+		 }
+  /* P adalah address user */
+  Q = FList(P);
+  while ((Info(Friend(Q)) != temanX) && (Q != Nil)){
+         Q = Next(Q);
+		 }
+  /* Q = Nil (tidak ada di list teman level 1) atau ditemukan info teman yang dicari */
+  if (Q != Nil) {
+      return 1; /* address ditemukan, teman level 1 */
+     }
+  else { /* Teman bukan level 1, dicari lagi di level selanjutnya */
+        }
 }
 
 bool IsSame (List L, infotype X, infotype temanX, int parameter)
-{
+/* Melihat apakah temanX memiliki kesamaan dengan user X. */
+/* Parameter: 1 untuk kota asal, 2 untuk SMU, 3 untuk Universitas */
+{ /* Kamus Lokal */
+  address P;
+  addressf Q;
+  /* Algoritma */
+  if ((IsTeman(L,X,temanX) == 1) || (IsTeman(L,X,temanX) == 2) || (IsTeman(L,X,temanX) == 3)){
+       /* Teman level 1/2/3 */
+	   if (parameter == 1) {
+	          return (bandingkata((X.kotaasal),(temanX.kotaasal)));
+	         }
+	   else if (parameter == 2) {
+	               return (bandingkata((X.smu),(temanX.smu)));
+	         }
+			else /* parameter == 3 */ {
+			        return (bandingkata((X.universitas),(temanX.universitas)));
+					}
+	   }
+  else {return false;} /* Bukan teman tingkat 1/2/3, tidak sama */
 }
