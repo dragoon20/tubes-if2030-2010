@@ -4,6 +4,8 @@
 int main()
 {
 	char kata1[50],kata2[50];
+	char kata[100]
+	bacakatafile (&tes.txt, &kata,'#');
 	bacakata(kata1,' ');
 	tuliskata(kata1);
 	printf("\n");
