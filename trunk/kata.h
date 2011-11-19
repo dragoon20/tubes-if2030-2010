@@ -2,6 +2,8 @@
 #define __kata__
 
 #include "boolean.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 int panjangkata (char *kata);
 /*Is: kata terdefinisi

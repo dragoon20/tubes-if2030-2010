@@ -7,10 +7,10 @@ const address Nil=NULL;
 
 int main()
 {
-	char perintahadmin[10][50];
-	char perintahuser[10][50];
+	char perintahadmin[9][50];
+	char perintahuser[7][50];
 	char input[50];
-	char user[50];
+	char input2[50];
 	char temp;
 	int perintah,i;
 	bool cek;
@@ -62,7 +62,7 @@ int main()
 			//user
 			case 1:
 				{
-					bacakata(user,' ');
+					bacakata(input2,' ');
 					scanf("%c",&temp);
 					cek=(temp=='#');
 					scanf("%c",&temp);
@@ -70,7 +70,7 @@ int main()
 					{
 						do
 						{
-							tuliskata(user);
+							tuliskata(input2);
 							printf(">> ");
 							bacakata(input,' ');
 							i=-1;
@@ -119,11 +119,6 @@ int main()
 									{
 										break;
 									}
-								//close
-								case 6:
-									{
-										break;
-									}
 								//tidak termasuk dalam perintah
 								default:
 									{
@@ -134,6 +129,7 @@ int main()
 									}
 							}
 						} while (perintah!=6);
+						//close
 						perintah=1;
 						break;
 					}
@@ -172,12 +168,6 @@ int main()
 				{
 					break;
 				}
-			//exit
-			case 8:
-				{
-					printf("Program selesai.\n");
-					break;
-				}
 			//tidak termasuk dalam perintah
 			default:
 				{
@@ -188,6 +178,6 @@ int main()
 				}
 		}
 	} while (perintah!=8)
-	
+	printf("Program selesai.\n");
 	return 0;
 }
