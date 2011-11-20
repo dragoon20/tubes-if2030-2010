@@ -76,12 +76,14 @@ void AddFriend (List L, infotype X, infotype added)
 	P = First(L);
 	Q = First(L);
 	addressf R,S,T;
-	while(Info(P) != X)
+	
+	while(!(bandingkata(X.email,Info(P).email)))
 	//mencari user yang ingin meng-add
 	{
 		P = Next(P);
 	}
-	while(Info(Q) != added)
+	
+	while(!(bandingkata(added.email,Info(Q).email)))
 	//mencari user dengan info yang ingin di add
 	{
 		Q = Next(Q);
@@ -131,7 +133,8 @@ void DeleteFriend (List L, infotype X, infotype deleted)
 	address P,Q;
 	P = First(L);
 	addressf R,S;
-	while(Info(P) != X)
+	
+	while(!(bandingkata(X.email,Info(P).email)))
 	//mencari addres user yang ingin men-delete
 	{
 		P = Next(P);
@@ -144,7 +147,7 @@ void DeleteFriend (List L, infotype X, infotype deleted)
 	}
 	else /*kalau list tidak kosong*/
 	{
-		while(Info(Friend(R)) != deleted)
+		while(!(bandingkata(deleted.email,Info(Friend(R)).email)))
 		//mencari teman yang memiliki info yang ingin di delete
 		{
 			S = R;
