@@ -4,6 +4,7 @@
 extern const address Nil;
 
 int NUser (List L)
+/*Mengirimkan jumlah user*/
 {
 	address P=First(L);
 	int total=0;
@@ -16,11 +17,12 @@ int NUser (List L)
 }
 
 int NFriend (List L, infotype X)
+/*Mengirimkan jumlah teman dari user*/
 {
 	address P=First(L);
 	addressf Q;
 	int total=0;
-	while ((P!=Nil)&&(!(bandingkata(X.nama,Info(P).nama))))
+	while ((P!=Nil)&&(bandingkata(X.nama,Info(P).nama)))
 	{
 		P=Next(P);
 	}
@@ -41,6 +43,9 @@ int NFriend (List L, infotype X)
 }
 
 void Alokasi (address *P, infotype X)
+/* I.S. Sembarang */
+/* F.S. Alamat P dialokasi, jika berhasil maka Info(P)=X dan
+Next(P)=Nil */
 {
 	(*P)=(ElmtList *) malloc (1*sizeof (ElmtList));
 	if ((*P) != Nil)
@@ -51,6 +56,9 @@ void Alokasi (address *P, infotype X)
 }
 
 void AlokasiF (addressf *P, address X)
+/* I.S. Sembarang */
+/* F.S. Alamat P dialokasi, jika berhasil maka Friend(P)=X dan
+Next(P)=Nil */
 {
 	(*P)=(FriendList *) malloc (1*sizeof (FriendList));
 	if ((*P) != Nil)
@@ -61,29 +69,35 @@ void AlokasiF (addressf *P, address X)
 }
 
 void Dealokasi (address *P, infotype *X)
+/* I.S. P adalah hasil alokasi, P <> Nil */
+/* F.S. Alamat P didealokasi, dikembalikan ke sistem */
 {
 	free(*P);
 }
 
 void DealokasiF (addressf *P, address *X)
+/* I.S. P adalah hasil alokasi, P <> Nil */
+/* F.S. Alamat P didealokasi, dikembalikan ke sistem */
 {
 	free(*P);
 }
 
 void AddFriend (List L, infotype X, infotype added)
+/*I.S. infotype X ada didalam list L
+F.S. Added ditambahakan sebagai teman X dalam list L*/
 {
 	address P,Q;
 	P = First(L);
 	Q = First(L);
 	addressf R,S,T;
 	
-	while(!(bandingkata(X.email,Info(P).email)))
+	while((bandingkata(X.email,Info(P).email)))
 	//mencari user yang ingin meng-add
 	{
 		P = Next(P);
 	}
 	
-	while(!(bandingkata(added.email,Info(Q).email)))
+	while((bandingkata(added.email,Info(Q).email)))
 	//mencari user dengan info yang ingin di add
 	{
 		Q = Next(Q);
@@ -129,12 +143,14 @@ void AddFriend (List L, infotype X, infotype added)
 }
 
 void DeleteFriend (List L, infotype X, infotype deleted)
+/*I.S. Infotype X terdapat didalam List L
+F.S. Deleted dihapuskan dari teman X dalam list L*/
 {
 	address P,Q;
 	P = First(L);
 	addressf R,S;
 	
-	while(!(bandingkata(X.email,Info(P).email)))
+	while((bandingkata(X.email,Info(P).email)))
 	//mencari addres user yang ingin men-delete
 	{
 		P = Next(P);
@@ -147,7 +163,7 @@ void DeleteFriend (List L, infotype X, infotype deleted)
 	}
 	else /*kalau list tidak kosong*/
 	{
-		while(!(bandingkata(deleted.email,Info(Friend(R)).email)))
+		while((bandingkata(deleted.email,Info(Friend(R)).email)))
 		//mencari teman yang memiliki info yang ingin di delete
 		{
 			S = R;
@@ -171,10 +187,14 @@ void DeleteFriend (List L, infotype X, infotype deleted)
 }
 
 void AddUser (List L, infotype X)
+/*I.S. List L terdefinisi dengan X bukan anggota L
+F.S X menjadi anggota List L*/
 {
 }
 
 void RemoveUser (List L, infotype X)
+/*I.S. List dengan info X ada
+F.S. X dihapus dari list*/
 {
 }
 
@@ -183,22 +203,31 @@ void ModifyUser (List L, infotype X)
 }
 
 void Save (List L, char namafile[50])
+/*I.S List terdefinisi
+F.S. Data pada List L disimpan dalam namafile*/
 {
 }
 
 void Load (List *L, char namafile[50])
+/*I.S. List terdefinisi
+F.S. Data List pada namafile di baca sebagai input List L*/
 {
 }
 
 void SortAsc ()
+/*I.S.List terdefinisi
+F.S. List terurut membesar (A-Z)*/
 {
 }
 
 void SortDesc ()
+/*I.S List terdefinisi
+F.S List terurut mengecil (Z-A)*/
 {
 }
 
 int IsTeman (List L, infotype X, infotype temanX)
+/*Predikat untuk mengecek apakah temanX adalah teman dari X. Jika temanX adalah teman tingkat 1 maka menghasilkan 1, jika teman dari teman (teman tingkat 2) menghasilkan 2*/
 {/* Kamus Lokal */
   address P;
   addressf Q;
@@ -221,6 +250,8 @@ int IsTeman (List L, infotype X, infotype temanX)
 }
 
 bool IsSame (List L, infotype X, infotype temanX, int parameter)
+/*Predikat untuk mengecek apakah data yang diminta sesuai dengan data yang pada teman, parameter untuk menunjukkan data apa yang dibandingkan
+jika 1, berarti yang dibandingkan data tanggal lahir, 2 berarti kota asal, 3 berarti universitas, 4 berarti asal sma*/
 /* Melihat apakah temanX memiliki kesamaan dengan user X. */
 /* Parameter: 1 untuk kota asal, 2 untuk SMU, 3 untuk Universitas */
 { /* Kamus Lokal */
@@ -230,13 +261,13 @@ bool IsSame (List L, infotype X, infotype temanX, int parameter)
   if ((IsTeman(L,X,temanX) == 1) || (IsTeman(L,X,temanX) == 2) || (IsTeman(L,X,temanX) == 3)){
        /* Teman level 1/2/3 */
 	   if (parameter == 1) {
-	          return (bandingkata((X.kotaasal),(temanX.kotaasal)));
+	          return (!bandingkata((X.kotaasal),(temanX.kotaasal)));
 	         }
 	   else if (parameter == 2) {
-	               return (bandingkata((X.smu),(temanX.smu)));
+	               return (!bandingkata((X.smu),(temanX.smu)));
 	         }
 			else /* parameter == 3 */ {
-			        return (bandingkata((X.universitas),(temanX.universitas)));
+			        return (!bandingkata((X.universitas),(temanX.universitas)));
 					}
 	   }
   else {return false;} /* Bukan teman tingkat 1/2/3, tidak sama */
