@@ -7,23 +7,36 @@
 
 int panjangkata (char *kata);
 /*Is: kata terdefinisi
-Fs:	Jumlah sebuah kata*/
+mengembalikan jumlah sebuah kata*/
 
 int bandingkata (char *kata1, char *kata2); 
 /*I.S. 2 kata yang ingin dibandingkan
-F.S. jika kata1 > dari kata2 maka menghasilkan 1 (a>b)
+    jika kata1 > dari kata2 maka menghasilkan 1 (a>b)
 	jika kata1<kata2 menghasilkan -1(b<a)
 	jika kedua kata sama menghasilkan 0*/
+	
 void copykata (char *kata1, char *kata2);
 /*I.S. kata2 terdefinisi, kata1 sembarang
 F.S. Kata2 disalin ke kata1*/
-void bacakata (char *kata, char hingga);
+
+void bacakata (char *kata, char hingga, char alternatif);
 /*I.S. kata terdefinisi
-F.S. kata dibaca sampai bertemu hingga*/
+F.S. kata dibaca sampai bertemu hingga atau alternatif*/
+
+void bacakatafile (FILE *varfile, char *kata, char hingga, char alternatif);
+/*I.S. varfile terdefinisi, kata terdefinisi
+F.S. kata dibaca sampai bertemu hingga atau alternatif*/
+
 void tuliskata (char *kata);
 /*I.S. kata terdefinisi
 F.S. menulis kata tersebut*/
-void bacakatafile (FILE *varfile, char *kata, char hingga);
-/*I.S. varfile terdefinisi, kata ter*/
+
+void tuliskatafile (FILE *varfile, char*kata);
+/*I.S. kata terdefinisi, varfile terdefinisi
+F.S. menulis kata tersebut pada varfile*/
+
+void trim (char *kata, char ditrim);
+/*Is: kata terdefinisi
+Fs:	kata ditrim sehingga karakter ditrim semua dihilangkan dari kata tersebut*/
 
 #endif
