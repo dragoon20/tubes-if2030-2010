@@ -404,7 +404,7 @@ bool IsSame (List L, infotype X, infotype temanX, int parameter)
   address P;
   addressf Q;
   /* Algoritma */
-  if ((IsTeman(L,X,temanX) == 1) || (IsTeman(L,X,temanX) == 2) || (IsTeman(L,X,temanX) == 3)){
+  if (IsTeman(L,X,temanX) != 0) {
        /* Teman level 1/2/3 */
 	   if (parameter == 1) {
 	          return (bandingkata((X.kotaasal),(temanX.kotaasal)) == 0);
@@ -416,5 +416,5 @@ bool IsSame (List L, infotype X, infotype temanX, int parameter)
 			        return (bandingkata((X.universitas),(temanX.universitas)) == 0);
 					}
 	   }
-  else {return false;} /* Bukan teman tingkat 1/2/3, tidak sama */
+  else {return false;} /* Bukan teman, tidak sama */
 }
