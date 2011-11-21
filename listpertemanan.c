@@ -190,16 +190,136 @@ void AddUser (List L, infotype X)
 /*I.S. List L terdefinisi dengan X bukan anggota L
 F.S X menjadi anggota List L*/
 {
+
+	address P,Q,R,S;
+	P = First(L);
+	Q = Alokasi(X); /*Alokasi untuk mendapatkan address di list user*/
+	if (P == Nil)
+	{
+		First(L) = Q;
+		Next(Q) = Nil;
+	}
+	else /*kalau list tidak kosong*/
+	{
+		R = First(L);
+		S = Nil;
+		while ((bandingkata(Info(Q).nama,Info(Friend(R)).nama)==1) && (Next(R) != Nil))
+		//selama nama orang yang di add lebih besar urutan alfabet dari list user
+		{
+			S = R;
+			R = Next(R);
+		}
+		if (Next(R) == Nil)
+		//urutan list sudah di paling akhir
+		{
+			Next(R) = Q;
+			Next(Q) = Nil;
+		}
+		else//urutan user yang bukan di paling akhir
+		{
+			if (S != Nil)
+			//urutan user ada di tengah
+			{
+				Next(Q) = R;
+				Next(S) = Q;
+			}
+			else
+			//urutan user ada di awal
+			{
+				Next(Q) = First(L);
+				First(L) = Q;
+			}	
+		}
+	}
+}
+
 }
 
 void RemoveUser (List L, infotype X)
 /*I.S. List dengan info X ada
 F.S. X dihapus dari list*/
 {
+	address P,Q,R;
+	P = First(L);	
+	Q = Nil;
+	if (P == Nil)//bila kosong prosedure tidak melakukan apapun
+	{
+		
+	}
+	else /*kalau list tidak kosong*/
+	{
+		while((bandingkata(X.email,Info(P).email)))
+		//mencari user yang memiliki info yang ingin di delete
+		{
+			Q = P;
+			P = Next(P);
+		}
+		if (Q != Nil)
+		//jika user yang ingin di delete bukan berada di awal
+		{	
+			Next(Q) = Next(P);
+			Next(P) = Nil;
+		}
+		else
+		{
+		//jika user yang ingin di delete ada di awal
+			First(L) = Next(P);
+			Next(P) = Nil;
+		}
+		T= First(L);
+		while(T != Nil)
+		{
+			if(IsTeman(L,Info(T),Info(P))==1)
+			{ DeleteFriend(L,Info(T),Info(P)) // mendelete user yang memiliki P dari friendlist orang orang yang sudah menjadi friendnya
+			}
+			T = Next(T);
+		}
+		Dealokasi(&P);
+	}
 }
+
 
 void ModifyUser (List L, infotype X)
 {
+	address P,Q,R,S,T;
+	addressf U,V;
+	P = First(L);
+	Q = Nil;
+	while((bandingkata(X.email,Info(P).email)))
+	//mencari addres user untuk dilepaskan dari list untuk diubah infotypenya
+	{	
+		Q = P;
+		P = Next(P);
+	}
+	Next(Q) = Next(P);
+	Next(P) = Nil;
+	//user dilepas sementara dari list
+	AddUser(L,X);
+	R = First(L);
+	S = Nil;
+	while((bandingkata(X.email,Info(R).email)))
+	//mencari address baru user yang telah diubah infotype nya
+	{	
+		S = R;
+		R = Next(R);
+	}
+	T = First(L);
+	//mengubah alamat user yang lama menjadi yang baru
+	while(T != Nil)
+	{
+		if(IsTeman(L,Info(T),Info(P))==1)
+		{U = Flist(T);
+		 V = Nil;
+		 while(bandingkata(Info(P).email,Info(Friend(U)).email))
+		 {
+			V = U;
+			U = Next(U);
+		 }
+		 Friend(U) = R; // address friend telah diubah menjadi yang baru
+		}
+		T = Next(T);
+	}
+	Dealokasi(&P);
 }
 
 void Save (List L, char namafile[50])
