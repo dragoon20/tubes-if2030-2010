@@ -233,12 +233,12 @@ int IsTeman (List L, infotype X, infotype temanX)
   boolean Found;
   /* Algoritma */
   P = First(L);
-  while (bandingkata(Info(P).email,X.email) != 0) {
+  while (bandingkata((Info(P).email),(X.email)) != 0) {
          P = Next(P);
 		 }
   /* P adalah address user */
   Q = FList(P);
-  while ((bandingkata(Info(Friend(Q)).email,temanX.email) != 0) && (Q != Nil)){
+  while ((bandingkata((Info(Friend(Q)).email),(temanX.email)) != 0) && (Q != Nil)){
          Q = Next(Q);
 		 }
   /* Q = Nil (tidak ada di list teman level 1) atau ditemukan info teman yang dicari */
@@ -249,7 +249,7 @@ int IsTeman (List L, infotype X, infotype temanX)
          Q = FList(P);
 		 while ((Q != Nil) && !Found) {
 		         R = FList(Friend(Q));
-		         while ((bandingkata(Info(Friend(R)).email,temanX.email) != 0) && (R != Nil)){
+		         while ((bandingkata((Info(Friend(R)).email),(temanX.email)) != 0) && (R != Nil)){
                          R = Next(R);
 		                 }
 		         if (R != Nil){ /* Ditemukan teman level 2 */
@@ -262,7 +262,7 @@ int IsTeman (List L, infotype X, infotype temanX)
 		                Q = FList(Friend(P));
 						while ((Q != Nil) && !Found) {
 		                        R = FList(Friend(Q));
-		                        while ((bandingkata(Info(Friend(R)).email,temanX.email) != 0) && (R != Nil)){
+		                        while ((bandingkata((Info(Friend(R)).email),(temanX.email)) != 0) && (R != Nil)){
                                         R = Next(R);
 		                                }
 		                        if (R != Nil){ /* Ditemukan teman level 3 */
