@@ -55,17 +55,24 @@ F.S. Kata2 disalin ke kata1*/
 	kata1[panjang+1]=kata2[panjang+1];
 }
 
-void bacakata (char *kata, char hingga, char alternatif)
+bool bacakata (char *kata, char hingga, char alternatif)
 /*I.S. kata terdefinisi
-F.S. kata dibaca sampai bertemu hingga atau alternatif*/
+F.S. kata dibaca sampai bertemu hingga atau alternatif
+Jika kata lebih panjang dari 250 maka kata tidak dibaca*/
 {
 	char c;
+	bool salah;
 	int i=0;
 	scanf("%c",&c);
 	while ((c!=hingga)&&(c!=alternatif))
 	{
 		kata[i]=c;
 		++i;
+		if (i==250)
+		{
+			i=0;
+			salah=true;
+		}
 		scanf("%c",&c);
 	}
 	kata[i]='\0';
@@ -76,6 +83,10 @@ F.S. kata dibaca sampai bertemu hingga atau alternatif*/
 	else
 	{
 		kata[i+1]=alternatif;
+	}
+	if (salah)
+	{
+		return false;
 	}
 }
 
@@ -145,4 +156,17 @@ Fs:	kata ditrim sehingga karakter ditrim semua dihilangkan dari kata tersebut*/
 	hasil[panjanghasil]='\0';
 	hasil[panjanghasil+1]=kata[panjang+1];
 	copykata(kata,hasil);
+}
+
+void lowcase (char *kata)
+{
+	int panjang=panjangkata(kata);
+	int i;
+	for (i=0;i<panjang;++i)
+	{
+		if ((kata[i]>=65)&&(kata[i]<=90))
+		{
+			kata[i]+=32;
+		}
+	}
 }

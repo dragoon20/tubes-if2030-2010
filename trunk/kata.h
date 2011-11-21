@@ -19,7 +19,7 @@ void copykata (char *kata1, char *kata2);
 /*I.S. kata2 terdefinisi, kata1 sembarang
 F.S. Kata2 disalin ke kata1*/
 
-void bacakata (char *kata, char hingga, char alternatif);
+bool bacakata (char *kata, char hingga, char alternatif);
 /*I.S. kata terdefinisi
 F.S. kata dibaca sampai bertemu hingga atau alternatif*/
 
@@ -38,5 +38,9 @@ F.S. menulis kata tersebut pada varfile*/
 void trim (char *kata, char ditrim);
 /*Is: kata terdefinisi
 Fs:	kata ditrim sehingga karakter ditrim semua dihilangkan dari kata tersebut*/
+
+void lowcase (char *kata);
+/*Is: kata terdefinisi
+Fs:	kata menjadi lower case*/
 
 #endif
