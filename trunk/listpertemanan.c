@@ -227,18 +227,18 @@ F.S List terurut mengecil (Z-A)*/
 }
 
 int IsTeman (List L, infotype X, infotype temanX)
-/*Predikat untuk mengecek apakah temanX adalah teman dari X. Jika temanX adalah teman tingkat 1 maka menghasilkan 1, jika teman dari teman (teman tingkat 2) menghasilkan 2*/
 {/* Kamus Lokal */
   address P;
-  addressf Q;
+  addressf Q,R;
+  boolean Found;
   /* Algoritma */
   P = First(L);
-  while (Info(P) != X) {
+  while (bandingkata(Info(P).email,X.email) != 0) {
          P = Next(P);
 		 }
   /* P adalah address user */
   Q = FList(P);
-  while ((Info(Friend(Q)) != temanX) && (Q != Nil)){
+  while ((bandingkata(Info(Friend(Q)).email,temanX.email) != 0) && (Q != Nil)){
          Q = Next(Q);
 		 }
   /* Q = Nil (tidak ada di list teman level 1) atau ditemukan info teman yang dicari */
@@ -246,12 +246,38 @@ int IsTeman (List L, infotype X, infotype temanX)
       return 1; /* address ditemukan, teman level 1 */
      }
   else { /* Teman bukan level 1, dicari lagi di level selanjutnya */
+         Q = FList(P);
+		 while ((Q != Nil) && !Found) {
+		         R = FList(Friend(Q));
+		         while ((bandingkata(Info(Friend(R)).email,temanX.email) != 0) && (R != Nil)){
+                         R = Next(R);
+		                 }
+		         if (R != Nil){ /* Ditemukan teman level 2 */
+		                 Found = true;
+		                 return 2;}
+		         else  {Q = Next(Q); /* Dicari lagi di list teman dari teman berikutnya */}
+				  }
+		 /* Keluar dari while: ditemukan di list teman dari teman atau tidak ditemukan di antara temannya teman (Q = Nil) */
+		 if (Q == Nil) { /* Pencarian di list teman pertama sudah berakhir, tidak ditemukan sampai akhir list teman pertama */
+		                Q = FList(Friend(P));
+						while ((Q != Nil) && !Found) {
+		                        R = FList(Friend(Q));
+		                        while ((bandingkata(Info(Friend(R)).email,temanX.email) != 0) && (R != Nil)){
+                                        R = Next(R);
+		                                }
+		                        if (R != Nil){ /* Ditemukan teman level 3 */
+		                                      Found = true;
+		                                      return 3;}
+		                        else  {Q = Next(Q); /* Dicari lagi di list teman dari teman dari teman berikutnya */}
+				            }
+						if (Q == Nil) { /* Tidak ditemukan di list teman dari teman dari teman */
+						               return 0;
+									  }
+		               }
         }
 }
 
 bool IsSame (List L, infotype X, infotype temanX, int parameter)
-/*Predikat untuk mengecek apakah data yang diminta sesuai dengan data yang pada teman, parameter untuk menunjukkan data apa yang dibandingkan
-jika 1, berarti yang dibandingkan data tanggal lahir, 2 berarti kota asal, 3 berarti universitas, 4 berarti asal sma*/
 /* Melihat apakah temanX memiliki kesamaan dengan user X. */
 /* Parameter: 1 untuk kota asal, 2 untuk SMU, 3 untuk Universitas */
 { /* Kamus Lokal */
@@ -261,13 +287,13 @@ jika 1, berarti yang dibandingkan data tanggal lahir, 2 berarti kota asal, 3 ber
   if ((IsTeman(L,X,temanX) == 1) || (IsTeman(L,X,temanX) == 2) || (IsTeman(L,X,temanX) == 3)){
        /* Teman level 1/2/3 */
 	   if (parameter == 1) {
-	          return (!bandingkata((X.kotaasal),(temanX.kotaasal)));
+	          return (bandingkata((X.kotaasal),(temanX.kotaasal)) == 0);
 	         }
 	   else if (parameter == 2) {
-	               return (!bandingkata((X.smu),(temanX.smu)));
+	               return (bandingkata((X.smu),(temanX.smu)) == 0);
 	         }
 			else /* parameter == 3 */ {
-			        return (!bandingkata((X.universitas),(temanX.universitas)));
+			        return (bandingkata((X.universitas),(temanX.universitas)) == 0);
 					}
 	   }
   else {return false;} /* Bukan teman tingkat 1/2/3, tidak sama */
