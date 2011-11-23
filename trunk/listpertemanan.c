@@ -322,17 +322,119 @@ void ModifyUser (List L, infotype X)
 	Dealokasi(&P);
 }
 
-void Save (List L, char namafile[50])
+void Save (List L, FILE* namafile)
 /*I.S List terdefinisi
 F.S. Data pada List L disimpan dalam namafile*/
+{address P;
+P=First(L);
+tuliskatafile (namafile,"@user\n");
+while(Next(L)!=Nil)
 {
+	tuliskatafile (namafile, Info(P).email);
+	tuliskatafile (namafile,' ');
+	tuliskatafile(namafile,'\"');
+	tuliskatafile (namafile, Info(P).nama);
+	tuliskatafile(namafile,'\"');
+	tuliskatafile (namafile, Info(P).tgllahir.hari);
+	tuliskatafile(namafile,'-');
+	tuliskatafile (namafile, Info(P).tgllahir.bulan);
+	tuliskatafile(namafile,'-');
+	tuliskatafile (namafile, Info(P).tgllahir.tahun);
+	tuliskatafile(namafile,' \"');
+	tuliskatafile (namafile, Info(P).kotaasal);
+	tuliskatafile(namafile,'\"');
+	tuliskatafile(namafile,' \"');
+	tuliskatafile (namafile, Info(P).universitas);
+	tuliskatafile(namafile,'\" ');
+	tuliskatafile(namafile,'\"');
+	tuliskatafile (namafile, Info(P).smu);
+	tuliskatafile(namafile,'\"');
+	tuliskatafile(namafile,"#\n");
+	P=Next(P);
+
 }
 
-void Load (List *L, char namafile[50])
+P=First (L);
+addressf x;
+x=FList(P);
+
+tuliskatafile(namafile,'\n');
+tuliskatafile (namafile,"@friend\n");
+while(Next(P)!=Nil)
+{while(Next(x)!=Nil)
+	{
+	tuliskatafile(namafile,Info(P).email);
+	tuliskatafile(namafile," ->");
+	tuliskatafile (namafile,Info(Friend(x)).email);
+	tuliskatafile(namafile,'\n');
+	x=Next(x);
+	}
+ P=Next(P);
+}
+tuliskatafile (namafile,"@end\n");
+}
+
+void Load (List *L, FILE* namafile)
 /*I.S. List terdefinisi
 F.S. Data List pada namafile di baca sebagai input List L*/
-{
+{	char x[10];
+	infotype data;
+	bacakatafile(namafile,x,' ','\n');
+		 int EOP=1;
+		 while(EOP!=0)
+			{
+				bacakatafile(namafile,x,' ','\n');
+				bacakatafile(namafile,x,' ','\n');
+				bacakatafile (namafile,data.email,'\"','\"');
+				trim (data.email, ' ');
+				trim (data.email, '\n');
+				bacakatafile (namafile,x,'\"','\"');
+				bacakatafile(namafile,data.nama,'\"','\"');
+				bacakatafile(namafile,x,' ','\n');
+				fscanf(namafile,"%d-%d-%d",&data.tanggal.hari,&data.tanggal.bulan,&data.tanggal.tahun);
+				bacakatafile(namafile,x,' ','\n');
+				bacakatafile (namafile,x,'\"','\"');
+				bacakatafile (namafile, data.kotaasal,'\"','\"');
+		
+				bacakatafile (namafile,x,'\"','\"'); 
+				bacakatafile (namafile, data.universitas,'\"','\"');
+				// bacakatafile(namafile,x," ","\n");
+				bacakatafile (namafile,x,'\"','\"');
+				bacakatafile (namafile, data.smu,'\"','\"');
+				bacakatafile(namafile,x,'\n','\n');
+				trim(x,' ');
+				AddUser(L,data);
+				EOP=bandingkata(x,'#');
+			}
+			bacakatafile(namafile,x,'\n','\n');
+			trim(x,' ');
+			int Friends;
+			Friends=bandingkata(x,"@friend");
+			if (Friends==0)
+				{EOF=bandingkata(x,"@end");
+				if(EOF!=0)
+				{infotype temp;
+				infotype users;
+				infotype teman;
+				bacakatafile (namafile,users.email,' ',' ');
+				trim (users.email, '\n');
+				bacakatafile (namafile,x,'>','>');
+				while(!EOF)
+				{	
+					bacakatafile(namafile,teman.email,' ','\n');
+					trim (teman.email, ' ');
+					trim (teman.email, '\n');
+					AddFriend(L,users,teman);
+					bacakatafile(namafile,temp.email,'-','\n');//membaca baris berikutnya
+					trim (temp.email, ' ');
+					trim (temp.email, '\n');
+					EOF=bandingkata(temp.email,"@end");
+					users.email=temp.email;
+				}
+				}
+				}
 }
+
 
 void SortAsc ()
 /*I.S.List terdefinisi
