@@ -305,15 +305,16 @@ void ModifyUser (List L, infotype X)
 	//mengubah alamat user yang lama menjadi yang baru
 	while(T != Nil)
 	{
-		if(IsTeman(L,Info(T),Info(P))==1)
-		{U = Flist(T);
-		 V = Nil;
-		 while(bandingkata(Info(P).email,Info(Friend(U)).email))
-		 {
+		U = Flist(T);
+		V = Nil;
+		while((bandingkata(Info(P).email,Info(Friend(U)).email)) && (Next(U) != Nil))
+		{
 			V = U;
 			U = Next(U);
-		 }
-		 Friend(U) = R; // address friend telah diubah menjadi yang baru
+		}
+		if (Next(U) != Nil)
+		{
+			Friend(U) = R; // address friend telah diubah menjadi yang baru
 		}
 		T = Next(T);
 	}
