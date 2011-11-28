@@ -193,7 +193,7 @@ F.S X menjadi anggota List L*/
 
 	address P,Q,R,S;
 	P = First(L);
-	Q = Alokasi(X); /*Alokasi untuk mendapatkan address di list user*/
+	Alokasi(&Q,X); /*Alokasi untuk mendapatkan address di list user*/
 	if (P == Nil)
 	{
 		First(L) = Q;
@@ -203,7 +203,7 @@ F.S X menjadi anggota List L*/
 	{
 		R = First(L);
 		S = Nil;
-		while ((bandingkata(Info(Q).nama,Info(Friend(R)).nama)==1) && (Next(R) != Nil))
+		while ((bandingkata(Info(Q).nama,Info(R).nama)==1) && (Next(R) != Nil))
 		//selama nama orang yang di add lebih besar urutan alfabet dari list user
 		{
 			S = R;
@@ -233,13 +233,11 @@ F.S X menjadi anggota List L*/
 	}
 }
 
-}
-
 void RemoveUser (List L, infotype X)
 /*I.S. List dengan info X ada
 F.S. X dihapus dari list*/
 {
-	address P,Q,R;
+	address P,Q,R,T;
 	P = First(L);	
 	Q = Nil;
 	if (P == Nil)//bila kosong prosedure tidak melakukan apapun
@@ -270,11 +268,11 @@ F.S. X dihapus dari list*/
 		while(T != Nil)
 		{
 			if(IsTeman(L,Info(T),Info(P))==1)
-			{ DeleteFriend(L,Info(T),Info(P)) // mendelete user yang memiliki P dari friendlist orang orang yang sudah menjadi friendnya
+			{ DeleteFriend(L,Info(T),Info(P)); // mendelete user yang memiliki P dari friendlist orang orang yang sudah menjadi friendnya
 			}
 			T = Next(T);
 		}
-		Dealokasi(&P);
+		Dealokasi(&P,&Info(P));
 	}
 }
 
@@ -319,7 +317,7 @@ void ModifyUser (List L, infotype X)
 		}
 		T = Next(T);
 	}
-	Dealokasi(&P);
+	Dealokasi(&P,&Info(P));
 }
 
 void Save (List L, FILE* namafile)
