@@ -1,9 +1,12 @@
 #include "listpertemanan.h"
+#include "priorqueue.h"
 #include "kata.h"
 #include "boolean.h"
 #include <stdio.h>
 
 const address Nil=NULL;
+const addressf Nilf=NULL;
+const addressPQ NilPQ=NULL;
 
 int main()
 {
@@ -12,9 +15,11 @@ int main()
 	char input[250];
 	char input2[250];
 	char input3[250];
+	char kata[250];
 	char temp;
 	int perintah,i;
 	bool cek,end;
+	List L;
 	
 	copykata(perintahadmin[0],"load");
 	copykata(perintahadmin[1],"user");
@@ -79,7 +84,7 @@ int main()
 						//tanpa nama file sudah #
 						printf("Load sebuah file yang berisi data user dan hubungan pertemanannya.\n\n");
 						printf("load {namafile}\n\n");
-						printf("\tnamafile\tSebuah file yang berisi data user dan hubungan pertemanannya.\n");
+						printf("- namafile\tSebuah file yang berisi data user dan hubungan pertemanannya.\n");
 					}
 					else
 					{
@@ -90,18 +95,18 @@ int main()
 						{
 							printf("Load sebuah file yang berisi data user dan hubungan pertemanannya.\n\n");
 							printf("load {namafile}\n\n");
-							printf("\tnamafile\tSebuah file yang berisi data user dan hubungan pertemanannya.\n");
+							printf("- namafile\tSebuah file yang berisi data user dan hubungan pertemanannya.\n");
 							end=true;
 						}
 						else
 						{
 							//di sini bagian loadnya
-							bacakata (kata, '#',' ');
+							copykata(kata,input2);
 							FILE *x;
 							x=fopen(kata,"r");
-							Load (&L, &x);
+							Load (&L, x);
 							fclose(x);
-							printf("Loading file %s sukses.",kata);
+							printf("Loading file %s sukses.\n",kata);
 						}
 					}
 					break;
@@ -114,7 +119,7 @@ int main()
 						//tanpa email user sudah #
 						printf("Login sebagai user.\n\n");
 						printf("user {user-id}\n\n");
-						printf("\tuser-id\tEmail yang digunakan sebagai user-id yang ingin digunakan.\n");
+						printf("- user-id\tEmail yang digunakan sebagai user-id yang ingin digunakan.\n");
 					}
 					else
 					{
@@ -125,13 +130,13 @@ int main()
 						{
 							printf("Login sebagai user.\n\n");
 							printf("user {user-id}\n\n");
-							printf("\tuser-id\tEmail yang digunakan sebagai user-id yang ingin digunakan.\n");
+							printf("- user-id\tEmail yang digunakan sebagai user-id yang ingin digunakan.\n");
 						}
 						else
 						{
 							// validasi email
 							
-							if ()
+							if (1)
 							{
 								// email benar
 								do
@@ -320,6 +325,7 @@ int main()
 							}
 						}
 					}
+					break;
 				}
 			//adduser
 			case 2:
@@ -329,12 +335,12 @@ int main()
 						// sudah sampai #
 						printf("Menambah user.\n\n");
 						printf("adduser {email | nama | tgl-lahir | kota-asal | universitas | SMU}\n\n");
-						printf("\temail\tEmail dari user yang akan digunakan sebagai user-id.\n");
-						printf("\tnama\tNama dari user.\n");
-						printf("\ttgl-lahir\tTanggal lahir dari user (hari-bulan-tahun).\n");
-						printf("\tkota-asal\tKota asal dari user.\n");
-						printf("\tuniversitas\tUniversitas tempat user kuliah.\n");
-						printf("\tSMU\tAsal SMU user.\n");
+						printf("- email\t\tEmail dari user yang akan digunakan sebagai user-id.\n");
+						printf("- nama\t\tNama dari user.\n");
+						printf("- tgl-lahir\tTanggal lahir dari user (hari-bulan-tahun).\n");
+						printf("- kota-asal\tKota asal dari user.\n");
+						printf("- universitas\tUniversitas tempat user kuliah.\n");
+						printf("- SMU\t\tAsal SMU user.\n");
 					}
 					else
 					{
@@ -346,12 +352,12 @@ int main()
 							// sudah sampai # juga
 							printf("Menambah user.\n\n");
 							printf("adduser {email | nama | tgl-lahir | kota-asal | universitas | SMU}\n\n");
-							printf("\temail\tEmail dari user yang akan digunakan sebagai user-id.\n");
-							printf("\tnama\tNama dari user.\n");
-							printf("\ttgl-lahir\tTanggal lahir dari user (hari-bulan-tahun).\n");
-							printf("\tkota-asal\tKota asal dari user.\n");
-							printf("\tuniversitas\tUniversitas tempat user kuliah.\n");
-							printf("\tSMU\tAsal SMU user.\n");
+							printf("- email\t\tEmail dari user yang akan digunakan sebagai user-id.\n");
+							printf("- nama\t\tNama dari user.\n");
+							printf("- tgl-lahir\tTanggal lahir dari user (hari-bulan-tahun).\n");
+							printf("- kota-asal\tKota asal dari user.\n");
+							printf("- universitas\tUniversitas tempat user kuliah.\n");
+							printf("- SMU\t\tAsal SMU user.\n");
 							end=true;
 						}
 						else
@@ -369,7 +375,7 @@ int main()
 						// sudah sampai #
 						printf("Mengubah data user.\n\n");
 						printf("modifyuser {user-id}\n\n");
-						printf("\tuser-id\tEmail yang digunakan sebagai user-id yang ingin digunakan.\n");
+						printf("- user-id\tEmail yang digunakan sebagai user-id yang ingin digunakan.\n");
 					}
 					else
 					{
@@ -385,7 +391,7 @@ int main()
 						// sudah sampai #
 						printf("Menghapus user.\n\n");
 						printf("deluser {user-id}\n\n");
-						printf("\tuser-id\tEmail yang digunakan sebagai user-id yang ingin digunakan.\n");
+						printf("- user-id\tEmail yang digunakan sebagai user-id yang ingin digunakan.\n");
 					}
 					else
 					{
@@ -413,13 +419,28 @@ int main()
 						// sudah sampai #
 						FILE *x;
 						x=fopen(kata,"r");
-						Load (&L, &x);
+						Load (&L, x);
 						fclose(x);
-						printf("Reload data sesuai %s sukses.",kata);
+						printf("Reload data sesuai %s sukses.\n",kata);
 					}
 					else
 					{
-						
+						bacakata(input2,'#','#');
+						trim(input2,' ');
+						trim(input2,'\n');
+						if (!bandingkata(input2,""))
+						{
+							FILE *x;
+							x=fopen(kata,"r");
+							Load (&L, x);
+							fclose(x);
+							printf("Reload data sesuai %s sukses.\n",kata);
+							end=true;
+						}
+						else
+						{
+							printf("Format penulisan reload tidak membutuhkan parameter tambahan.\n");
+						}
 					}
 					break;
 				}
@@ -431,17 +452,32 @@ int main()
 						// sudah sampai #
 						FILE *x;
 						x=fopen(kata,"w");
-						Save (L, &x);
+						Save (L, x);
 						fclose(x);
 						printf("Save data sesuai %s sukses.",kata);
 					}
 					else
 					{
-						bacakata (kata, '#',' ');
-						x=fopen(kata,"w");
-						Save (L, &x);
-						fclose(x);
-						printf("Save data sesuai %s sukses.",kata);
+						bacakata(input2,'#','#');
+						trim(input2,' ');
+						trim(input2,'\n');
+						if (!bandingkata(input2,""))
+						{
+							FILE *x;
+							x=fopen(kata,"w");
+							Save (L, x);
+							fclose(x);
+							printf("Save data sesuai %s sukses.",kata);
+						}
+						else
+						{
+							copykata(kata,input2);
+							FILE *x;
+							x=fopen(kata,"w");
+							Save (L, x);
+							fclose(x);
+							printf("Save data sesuai %s sukses.",kata);
+						}
 					}
 					break;
 				}
@@ -453,14 +489,14 @@ int main()
 						bacakata(input2,'#','#');
 						end=true;
 					}
-					printf("Perintah-perintah yang dapat digunakan:\n");
+					printf("\nPerintah-perintah yang dapat digunakan:\n");
 					printf("- load\t\tMembaca data user dan pertemanan dari file.\n");
 					printf("- user\t\tLogin sebagai user.\n");
-					printf("- adduser\t\tMenambah user.\n");
-					printf("- modifyuser\t\tMengubah data user.\n");
-					printf("- deluser\t\tMenghapus user.\n");
-					printf("- list\t\t\n");
-					printf("- reload\t\tMembaca ulang data.\n");
+					printf("- adduser\tMenambah user.\n");
+					printf("- modifyuser\tMengubah data user.\n");
+					printf("- deluser\tMenghapus user.\n");
+					printf("- list\t\tMenampilkan list dari data user tertentu.\n");
+					printf("- reload\tMembaca ulang data.\n");
 					printf("- save\t\tMenyimpan data yang ada ke dalam file.\n");
 					printf("- exit\t\tKeluar dari program.\n\n");
 					printf("Setiap perintah diakhiri dengan '#'.\n");
@@ -482,7 +518,7 @@ int main()
 				}
 		}
 		printf("\n");
-	} while (perintah!=8)
+	} while (perintah!=8);
 	if (!end)
 	{
 		bacakata(input,'#','#');
