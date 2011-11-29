@@ -229,22 +229,106 @@ int main()
 										//friend
 										case 3:
 											{
+												infotype m,n;
+												address p;
+												addressf b;
 												if (end)
 												{
 													// sudah sampai #
+													p = First(L);
+													while (!bandingkata(input2,Info(p).email))
+													{
+														p = Next(p);
+													}
+													b = FList(p);
+													printf("ID");
+													printf("                ");
+													printf("Name");
+													printf("                ");
+													printf("Birthday");
+													printf("                ");
+													printf("Hometown");
+													printf("                ");
+													printf("University");
+													printf("                ");
+													printf("Highschool");
+													printf("\n");
+													while (b != Nil)
+													{
+														tuliskata(Info(b).email);
+														printf("                ");
+														tuliskata(Info(b).nama);
+														printf("                ");
+														printf("%d-%d-%d",Info(b).tgllahir.hari,Info(b).tgllahir.bulan,Info(b).tgllahir.tahun);
+														printf("                ");
+														tuliskata(Info(b).kotaasal);
+														printf("                ");
+														tuliskata(Info(b).universitas);
+														printf("                ");
+														tuliskata(Info(b).smu);
+														printf("\n");
+														b = next(b);
+													}
 												}
 												else
 												{
-													bacakata(input3,'#','#');
-													trim(input3,' ');
-													trim(input3,'\n');
 													if (!bandingkata(input3,""))
 													{
 														// sudah sampai # juga
+														p = First(L);
+														while (!bandingkata(input2,Info(p).email))
+														{
+															p = Next(p);
+														}
+														b = FList(p);
+														printf("ID");
+														printf("                ");
+														printf("Name");
+														printf("                ");
+														printf("Birthday");
+														printf("                ");
+														printf("Hometown");
+														printf("                ");
+														printf("University");
+														printf("                ");
+														printf("Highschool");
+														printf("\n");
+														while (b != Nil)
+														{
+															tuliskata(Info(b).email);
+															printf("                ");
+															tuliskata(Info(b).nama);
+															printf("                ");
+															printf("%d-%d-%d",Info(b).tgllahir.hari,Info(b).tgllahir.bulan,Info(b).tgllahir.tahun);
+															printf("                ");
+															tuliskata(Info(b).kotaasal);
+															printf("                ");
+															tuliskata(Info(b).universitas);
+															printf("                ");
+															tuliskata(Info(b).smu);
+															printf("\n");
+															b = next(b);
+														}
 														end=true;
 													}
 													else
 													{
+														p = First(L);
+														while (!bandingkata(input2,Info(p).email))
+														{
+															p = Next(p);
+														}
+														copykata (&m.email, &Info(p).email);
+														bacakata(input3,'#','#');
+														trim(input3,' ');
+														trim(input3,'\n');
+														copykata (&n.email, &input3);
+														AddFriend (&L, m, n);
+														tuliskata(input2);
+														printf(">> ");
+														printf("friend ");
+														tuliskata(input3);
+														printf("Penambahan hubungan friend sukses");
 													}
 												}
 												break;
@@ -252,9 +336,15 @@ int main()
 										//unfriend
 										case 4:
 											{
+												infotype m,n;
+												address p;
+												addressf b;
+												bool c;
 												if (end)
 												{
 													// sudah sampai #
+													printf("Mendelete 1st friend yang memiliki id tertentu.\n\n");
+													printf("unfriend [<user-id>] \n\n");
 												}
 												else
 												{
@@ -264,10 +354,48 @@ int main()
 													if (!bandingkata(input3,""))
 													{
 														// sudah sampai # juga
+														printf("Mendelete 1st friend yang memiliki id tertentu.\n\n");
+														printf("unfriend [<user-id>] \n\n");
 														end=true;
 													}
 													else
 													{
+														p = First(L);
+														c = false;
+														while (!bandingkata(input2,Info(p).email))
+														{
+															p = Next(p);
+														}
+														copykata (&m.email, &Info(p).email);
+														bacakata(input3,'#','#');
+														trim(input3,' ');
+														trim(input3,'\n');
+														copykata (&n.email, &input3);
+														b = FList(p);
+														while ((!c)&&(b!=Nil))
+														{
+															if (bandingkata(input3,Friend(b).email))
+															{
+																c = true;
+															}
+															b = Next(b);
+														}
+														if (c)
+														{
+															DeleteFriend(&L, m, n);
+															tuliskata(input2);
+															printf(">> ");
+															printf("unfriend ");
+															tuliskata(input3);
+															printf("Penghapusan hubungan friend dengan ");
+															tuliskata(input3);
+															printf(" sukses");
+														}
+														else
+														{
+															printf("User bukan 1st friend anda");
+														}
+														
 													}
 												}
 												break;
