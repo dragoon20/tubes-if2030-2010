@@ -1,6 +1,7 @@
 #ifndef __LIST__
 #define __LIST__
 
+#include <stdlib.h>
 #include "boolean.h"
 #include "kata.h"
 
@@ -81,30 +82,30 @@ void DealokasiF (addressf *P, address *X);
 /* I.S. P adalah hasil alokasi, P <> Nil */
 /* F.S. Alamat P didealokasi, dikembalikan ke sistem */
 
-void AddFriend (List L, infotype X, infotype added);
+void AddFriend (List *L, infotype X, infotype added);
 /*I.S. infotype X ada didalam list L
 F.S. Added ditambahakan sebagai teman X dalam list L*/
 
-void DeleteFriend (List L, infotype X, infotype deleted);
+void DeleteFriend (List *L, infotype X, infotype deleted);
 /*I.S. Infotype X terdapat didalam List L
 F.S. Deleted dihapuskan dari teman X dalam list L*/
 
-void AddUser (List L, infotype X);
+void AddUser (List *L, infotype X);
 /*I.S. List L terdefinisi dengan X bukan anggota L
 F.S X menjadi anggota List L*/
 
-void RemoveUser (List L, infotype X);
+void RemoveUser (List *L, infotype X);
 /*I.S. List dengan info X ada
 F.S. X dihapus dari list*/
 
-void ModifyUser (List L, infotype X);
+void ModifyUser (List *L, infotype X);
 /*I.S. List  */
 
-void Save (List L, char namafile[50]);
+void Save (List *L, FILE* namafile[50]);
 /*I.S List terdefinisi
 F.S. Data pada List L disimpan dalam namafile*/
 
-void Load (List *L, char namafile[50]);
+void Load (List *L, FILE* namafile[50]);
 /*I.S. List terdefinisi
 F.S. Data List pada namafile di baca sebagai input List L*/
 
@@ -119,7 +120,7 @@ F.S List terurut mengecil (Z-A)*/
 int IsTeman (List L, infotype X, infotype temanX);
 /*Predikat untuk mengecek apakah temanX adalah teman dari X. Jika temanX adalah teman tingkat 1 maka menghasilkan 1, jika teman dari teman (teman tingkat 2) menghasilkan 2*/
 
-bool IsSame (List L, infotype X, infotype temanX, int parameter);
+bool IsSame (infotype X, infotype temanX, int parameter);
 /*Predikat untuk mengecek apakah data yang diminta sesuai dengan data yang pada teman, parameter untuk menunjukkan data apa yang dibandingkan
 jika 1, berarti yang dibandingkan data tanggal lahir, 2 berarti kota asal, 3 berarti universitas, 4 berarti asal sma*/
 
