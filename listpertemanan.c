@@ -2,6 +2,7 @@
 #include "listpertemanan.h"
 
 extern const address Nil;
+extern const addressf Nilf;
 
 int NUser (List L)
 /*Mengirimkan jumlah user*/
@@ -33,7 +34,7 @@ int NFriend (List L, infotype X)
 	else
 	{
 		Q=FList(P);
-		while (Q!=Nil)
+		while (Q!=Nilf)
 		{
 			total++;
 			Q=Next(Q);
@@ -61,10 +62,10 @@ void AlokasiF (addressf *P, address X)
 Next(P)=Nil */
 {
 	(*P)=(FriendList *) malloc (1*sizeof (FriendList));
-	if ((*P) != Nil)
+	if ((*P) != Nilf)
 	{
 		Friend(*P) = X;
-		Next(*P) = Nil;
+		Next(*P) = Nilf;
 	}
 }
 
@@ -102,31 +103,31 @@ F.S. Added ditambahakan sebagai teman X dalam list L*/
 	{
 		Q = Next(Q);
 	}
-	R = AlokasiF(Q); /*AlokasiF untuk mendapatkan address di list teman dari address user*/
-	if (FList(P) == Nil)
+	AlokasiF(&R,Q); /*AlokasiF untuk mendapatkan address di list teman dari address user*/
+	if (FList(P) == Nilf)
 	{
 		FList(P) = R;
-		Next(R) = Nil;
+		Next(R) = Nilf;
 	}
 	else /*kalau list tidak kosong*/
 	{
 		S = FList(P);
-		T = Nil;
-		while ((bandingkata(Info(Q).nama,Info(Friend(S)).nama)==1) && (Next(S) != Nil))
+		T = Nilf;
+		while ((bandingkata(Info(Q).nama,Info(Friend(S)).nama)==1) && (Next(S) != Nilf))
 		//selama nama orang yang di add lebih besar urutan alfabet dari friend list
 		{
 			T = S;
 			S = Next(S);
 		}
-		if (Next(S) == Nil)
+		if (Next(S) == Nilf)
 		//urutan orang yang di add sudah di paling akhir
 		{
 			Next(S) = R;
-			Next(R) = Nil;
+			Next(R) = Nilf;
 		}
 		else//urutan orang yang di add bukan di paling akhir
 		{
-			if (T != Nil)
+			if (T != Nilf)
 			//urutan orang yang di add ada di tengah
 			{
 				Next(R) = S;
@@ -156,8 +157,8 @@ F.S. Deleted dihapuskan dari teman X dalam list L*/
 		P = Next(P);
 	}
 	R = FList(P);
-	S = Nil;
-	if (FList(P) == Nil)//bila kosong prosedure tidak melakukan apapun
+	S = Nilf;
+	if (FList(P) == Nilf)//bila kosong prosedure tidak melakukan apapun
 	{
 		
 	}
@@ -169,19 +170,19 @@ F.S. Deleted dihapuskan dari teman X dalam list L*/
 			S = R;
 			R = Next(R);
 		}
-		if (S != Nil)
+		if (S != Nilf)
 		//jika teman yang ingin di delete bukan berada di awal
 		{
 			Next(S) = Next(R);
-			Next(R) = Nil;
-			DealokasiF(&R);
+			Next(R) = Nilf;
+			DealokasiF(&R,&Q);
 		}
 		else
 		{
 		//jika teman yang ingin di delete ada di awal
 			FList(P) = Next(R);
-			Next(R) = Nil;
-			DealokasiF(&R);
+			Next(R) = Nilf;
+			DealokasiF(&R,&Q);
 		}
 	}
 }
@@ -271,7 +272,7 @@ F.S. X dihapus dari list*/
 		{
 			if(IsTeman(*L,Info(T),Info(P))==1)
 			{
-				DeleteFriend(*L,Info(T),Info(P)); // mendelete user yang memiliki P dari friendlist orang orang yang sudah menjadi friendnya
+				DeleteFriend(L,Info(T),Info(P)); // mendelete user yang memiliki P dari friendlist orang orang yang sudah menjadi friendnya
 			}
 			T = Next(T);
 		}
@@ -295,7 +296,7 @@ void ModifyUser (List *L, infotype X)
 	Next(Q) = Next(P);
 	Next(P) = Nil;
 	//user dilepas sementara dari list
-	AddUser(*L,X);
+	AddUser(L,X);
 	R = First(*L);
 	S = Nil;
 	while((bandingkata(X.email,Info(R).email)))
@@ -308,14 +309,14 @@ void ModifyUser (List *L, infotype X)
 	//mengubah alamat user yang lama menjadi yang baru
 	while(T != Nil)
 	{
-		U = Flist(T);
-		V = Nil;
-		while((bandingkata(Info(P).email,Info(Friend(U)).email)) && (Next(U) != Nil))
+		U = FList(T);
+		V = Nilf;
+		while((bandingkata(Info(P).email,Info(Friend(U)).email)) && (Next(U) != Nilf))
 		{
 			V = U;
 			U = Next(U);
 		}
-		if (Next(U) != Nil)
+		if (Next(U) != Nilf)
 		{
 			Friend(U) = R; // address friend telah diubah menjadi yang baru
 		}
@@ -331,27 +332,23 @@ F.S. Data pada List L disimpan dalam namafile*/
 	address P;
 	P=First(*L);
 	tuliskatafile (namafile,"@user\n");
-	while(Next(*L)!=Nil)
+	while(Next(P)!=Nil)
 	{
 		tuliskatafile (namafile, Info(P).email);
-		tuliskatafile (namafile,' ');
-		tuliskatafile(namafile,'\"');
+		tuliskatafile (namafile," ");
+		tuliskatafile(namafile,"\"");
 		tuliskatafile (namafile, Info(P).nama);
-		tuliskatafile(namafile,'\"');
-		tuliskatafile (namafile, Info(P).tgllahir.hari);
-		tuliskatafile(namafile,'-');
-		tuliskatafile (namafile, Info(P).tgllahir.bulan);
-		tuliskatafile(namafile,'-');
-		tuliskatafile (namafile, Info(P).tgllahir.tahun);
-		tuliskatafile(namafile,' \"');
+		tuliskatafile(namafile,"\" ");
+		fprintf(namafile,"%d-%d-%d",Info(P).tgllahir.hari,Info(P).tgllahir.bulan,Info(P).tgllahir.tahun);
+		tuliskatafile(namafile," \"");
 		tuliskatafile (namafile, Info(P).kotaasal);
-		tuliskatafile(namafile,'\"');
-		tuliskatafile(namafile,' \"');
+		tuliskatafile(namafile,"\"");
+		tuliskatafile(namafile," \"");
 		tuliskatafile (namafile, Info(P).universitas);
-		tuliskatafile(namafile,'\" ');
-		tuliskatafile(namafile,'\"');
+		tuliskatafile(namafile,"\" ");
+		tuliskatafile(namafile,"\"");
 		tuliskatafile (namafile, Info(P).smu);
-		tuliskatafile(namafile,'\"');
+		tuliskatafile(namafile,"\"");
 		tuliskatafile(namafile,"#\n");
 		P=Next(P);
 
@@ -359,18 +356,18 @@ F.S. Data pada List L disimpan dalam namafile*/
 
 	P=First(*L);
 	addressf x;
-	x=FList(P);
 
-	tuliskatafile(namafile,'\n');
+	tuliskatafile(namafile,"\n");
 	tuliskatafile (namafile,"@friend\n");
 	while(Next(P)!=Nil)
 	{
-		while(Next(x)!=Nil)
+		x=FList(P);
+		while(Next(x)!=Nilf)
 		{
 			tuliskatafile(namafile,Info(P).email);
 			tuliskatafile(namafile," ->");
 			tuliskatafile (namafile,Info(Friend(x)).email);
-			tuliskatafile(namafile,'\n');
+			tuliskatafile(namafile,"\n");
 			x=Next(x);
 		}
 		P=Next(P);
@@ -387,57 +384,57 @@ F.S. Data List pada namafile di baca sebagai input List L*/
 	bacakatafile(namafile,x,' ','\n');
 	int EOP=1;
 	while(EOP!=0)
-		{
-			bacakatafile(namafile,x,' ','\n');
-			bacakatafile(namafile,x,' ','\n');
-			bacakatafile (namafile,data.email,'\"','\"');
-			trim (data.email, ' ');
-			trim (data.email, '\n');
-			bacakatafile (namafile,x,'\"','\"');
-			bacakatafile(namafile,data.nama,'\"','\"');
-			bacakatafile(namafile,x,' ','\n');
-			fscanf(namafile,"%d-%d-%d",&data.tanggal.hari,&data.tanggal.bulan,&data.tanggal.tahun);
-			bacakatafile(namafile,x,' ','\n');
-			bacakatafile (namafile,x,'\"','\"');
-			bacakatafile (namafile, data.kotaasal,'\"','\"');
-	
-			bacakatafile (namafile,x,'\"','\"'); 
-			bacakatafile (namafile, data.universitas,'\"','\"');
-			// bacakatafile(namafile,x," ","\n");
-			bacakatafile (namafile,x,'\"','\"');
-			bacakatafile (namafile, data.smu,'\"','\"');
-			bacakatafile(namafile,x,'\n','\n');
-			trim(x,' ');
-			AddUser(L,data);
-			EOP=bandingkata(x,'#');
-		}
+	{
+		bacakatafile(namafile,x,' ','\n');
+		bacakatafile(namafile,x,' ','\n');
+		bacakatafile (namafile,data.email,'\"','\"');
+		trim (data.email, ' ');
+		trim (data.email, '\n');
+		bacakatafile (namafile,x,'\"','\"');
+		bacakatafile(namafile,data.nama,'\"','\"');
+		bacakatafile(namafile,x,' ','\n');
+		fscanf(namafile,"%d-%d-%d",&data.tgllahir.hari,&data.tgllahir.bulan,&data.tgllahir.tahun);
+		bacakatafile(namafile,x,' ','\n');
+		bacakatafile (namafile,x,'\"','\"');
+		bacakatafile (namafile, data.kotaasal,'\"','\"');
+
+		bacakatafile (namafile,x,'\"','\"'); 
+		bacakatafile (namafile, data.universitas,'\"','\"');
+		// bacakatafile(namafile,x," ","\n");
+		bacakatafile (namafile,x,'\"','\"');
+		bacakatafile (namafile, data.smu,'\"','\"');
 		bacakatafile(namafile,x,'\n','\n');
 		trim(x,' ');
-		int Friends;
-		Friends=bandingkata(x,"@friend");
-		if (Friends==0)
+		AddUser(L,data);
+		EOP=bandingkata(x,"#");
+	}
+	bacakatafile(namafile,x,'\n','\n');
+	trim(x,' ');
+	int Friends;
+	int EO;
+	Friends=bandingkata(x,"@friend");
+	if (Friends==0)
+	{
+		EO=bandingkata(x,"@end");
+		if(EO!=0)
 		{
-			EOF=bandingkata(x,"@end");
-			if(EOF!=0)
-			{
-				infotype temp;
-				infotype users;
-				infotype teman;
-				bacakatafile (namafile,users.email,' ',' ');
-				trim (users.email, '\n');
-				bacakatafile (namafile,x,'>','>');
-				while(!EOF)
-				{	
-					bacakatafile(namafile,teman.email,' ','\n');
-					trim (teman.email, ' ');
-					trim (teman.email, '\n');
-					AddFriend(L,users,teman);
-					bacakatafile(namafile,temp.email,'-','\n');//membaca baris berikutnya
-					trim (temp.email, ' ');
-					trim (temp.email, '\n');
-					EOF=bandingkata(temp.email,"@end");
-					users.email=temp.email;
-				}
+			infotype temp;
+			infotype users;
+			infotype teman;
+			bacakatafile (namafile,users.email,' ',' ');
+			trim (users.email, '\n');
+			bacakatafile (namafile,x,'>','>');
+			while(!EO)
+			{	
+				bacakatafile(namafile,teman.email,' ','\n');
+				trim (teman.email, ' ');
+				trim (teman.email, '\n');
+				AddFriend(L,users,teman);
+				bacakatafile(namafile,temp.email,'-','\n');//membaca baris berikutnya
+				trim (temp.email, ' ');
+				trim (temp.email, '\n');
+				EO=bandingkata(temp.email,"@end");
+				copykata(users.email,temp.email);
 			}
 		}
 	}
@@ -461,7 +458,7 @@ int IsTeman (List L, infotype X, infotype temanX)
 	/* Kamus Lokal */
 	address P;
 	addressf Q,R;
-	boolean Found;
+	bool Found;
 	/* Algoritma */
 	P = First(L);
 	while (bandingkata((Info(P).email),(X.email)) != 0) 
@@ -470,26 +467,26 @@ int IsTeman (List L, infotype X, infotype temanX)
 	}
 	/* P adalah address user */
 	Q = FList(P);
-	while ((bandingkata((Info(Friend(Q)).email),(temanX.email)) != 0) && (Q != Nil))
+	while ((bandingkata((Info(Friend(Q)).email),(temanX.email)) != 0) && (Q != Nilf))
 	{
         Q = Next(Q);
 	}
 	/* Q = Nil (tidak ada di list teman level 1) atau ditemukan info teman yang dicari */
-	if (Q != Nil) 
+	if (Q != Nilf) 
 	{
 		return 1; /* address ditemukan, teman level 1 */
     }
 	else
 	{ /* Teman bukan level 1, dicari lagi di level selanjutnya */
         Q = FList(P);
-		while ((Q != Nil) && !Found) 
+		while ((Q != Nilf) && !Found) 
 		{
 		    R = FList(Friend(Q));
-			while ((bandingkata((Info(Friend(R)).email),(temanX.email)) != 0) && (R != Nil))
+			while ((bandingkata((Info(Friend(R)).email),(temanX.email)) != 0) && (R != Nilf))
 			{
 				R = Next(R);
 			}
-			if (R != Nil)
+			if (R != Nilf)
 			{ /* Ditemukan teman level 2 */
 				Found = true;
 				return 2;
@@ -500,17 +497,17 @@ int IsTeman (List L, infotype X, infotype temanX)
 			}
 		}
 		/* Keluar dari while: ditemukan di list teman dari teman atau tidak ditemukan di antara temannya teman (Q = Nil) */
-		if (Q == Nil) 
+		if (Q == Nilf) 
 		{ /* Pencarian di list teman pertama sudah berakhir, tidak ditemukan sampai akhir list teman pertama */
-		    Q = FList(Friend(P));
-			while ((Q != Nil) && !Found) 
+		    Q = FList(P);
+			while ((Q != Nilf) && !Found) 
 			{
 				R = FList(Friend(Q));
-				while ((bandingkata((Info(Friend(R)).email),(temanX.email)) != 0) && (R != Nil))
+				while ((bandingkata((Info(Friend(R)).email),(temanX.email)) != 0) && (R != Nilf))
 				{
 					R = Next(R);
 				}
-				if (R != Nil)
+				if (R != Nilf)
 				{ /* Ditemukan teman level 3 */
 					Found = true;
 					return 3;
@@ -520,7 +517,7 @@ int IsTeman (List L, infotype X, infotype temanX)
 					Q = Next(Q); /* Dicari lagi di list teman dari teman dari teman berikutnya */
 				}
 			}
-			if (Q == Nil) 
+			if (Q == Nilf) 
 			{ /* Tidak ditemukan di list teman dari teman dari teman */
 				return 0;
 			}
@@ -535,24 +532,16 @@ bool IsSame (infotype X, infotype temanX, int parameter)
 	address P;
 	addressf Q;
 	/* Algoritma */
-	if (IsTeman(L,X,temanX) != 0) 
+	if (parameter == 1) 
 	{
-		/* Teman level 1/2/3 */
-		if (parameter == 1) 
-		{
-			return (bandingkata((X.kotaasal),(temanX.kotaasal)) == 0);
-		}
-		else if (parameter == 2) 
-		{
-			return (bandingkata((X.smu),(temanX.smu)) == 0);
-		}
-		else /* parameter == 3 */ 
-		{
-			return (bandingkata((X.universitas),(temanX.universitas)) == 0);
-		}
-	   }
-	else 
+		return (bandingkata((X.kotaasal),(temanX.kotaasal)) == 0);
+	}
+	else if (parameter == 2) 
 	{
-		return false;
-	} /* Bukan teman, tidak sama */
+		return (bandingkata((X.smu),(temanX.smu)) == 0);
+	}
+	else /* parameter == 3 */ 
+	{
+		return (bandingkata((X.universitas),(temanX.universitas)) == 0);
+	}
 }

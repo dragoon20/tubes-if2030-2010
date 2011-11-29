@@ -51,10 +51,10 @@ typedef struct
 
 /*Selektor*/
 #define Info(X) (*X).Info
-#define FList(X) (*X).FList
+#define FList(X) (*X).FriendList
 #define Next(X) (*X).Next
 #define Friend(X) (*X).Friend
-#define First(L) L.First
+#define First(L) (L).First
 
 /* ********* Prototype ********* */
 
@@ -101,11 +101,11 @@ F.S. X dihapus dari list*/
 void ModifyUser (List *L, infotype X);
 /*I.S. List  */
 
-void Save (List *L, FILE* namafile[50]);
+void Save (List *L, FILE* namafile);
 /*I.S List terdefinisi
 F.S. Data pada List L disimpan dalam namafile*/
 
-void Load (List *L, FILE* namafile[50]);
+void Load (List *L, FILE* namafile);
 /*I.S. List terdefinisi
 F.S. Data List pada namafile di baca sebagai input List L*/
 
