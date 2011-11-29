@@ -1,60 +1,10 @@
 #ifndef __LIST__
 #define __LIST__
 
+#include "definisi.h"
 #include <stdlib.h>
 #include "boolean.h"
 #include "kata.h"
-
-/*Deklarasi tanggal*/
-typedef struct
-{
-	int hari;
-	int bulan;
-	int tahun;
-} tanggal;
-
-/* Deklarasi infotype */
-typedef struct
-{
-	char email[50];
-	char nama[50];
-	tanggal tgllahir;
-	char kotaasal[50];
-	char universitas[50];
-	char smu[50];
-} infotype;
-
- /* *** Definisi List Friend *** */ 
-typedef struct tElmtlist *address;
-
-typedef struct tFriendList *addressf;
-
-/*list friend dari user*/
-typedef struct tFriendList
-{
-	address Friend;
-	addressf Next;
-}FriendList;
-
-/*List user*/
-typedef struct tElmtlist
-{
-	infotype Info;
-	addressf FriendList;
-	address Next;
-}ElmtList;
-
-typedef struct
-{
-	address First;
-}List;
-
-/*Selektor*/
-#define Info(X) (*X).Info
-#define FList(X) (*X).FriendList
-#define Next(X) (*X).Next
-#define Friend(X) (*X).Friend
-#define First(L) (L).First
 
 /* ********* Prototype ********* */
 
@@ -108,14 +58,6 @@ F.S. Data pada List L disimpan dalam namafile*/
 void Load (List *L, FILE* namafile);
 /*I.S. List terdefinisi
 F.S. Data List pada namafile di baca sebagai input List L*/
-
-void SortAsc ();
-/*I.S.List terdefinisi
-F.S. List terurut membesar (A-Z)*/
-
-void SortDesc ();
-/*I.S List terdefinisi
-F.S List terurut mengecil (Z-A)*/
 
 int IsTeman (List L, infotype X, infotype temanX);
 /*Predikat untuk mengecek apakah temanX adalah teman dari X. Jika temanX adalah teman tingkat 1 maka menghasilkan 1, jika teman dari teman (teman tingkat 2) menghasilkan 2*/

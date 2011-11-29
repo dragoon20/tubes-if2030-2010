@@ -1,5 +1,6 @@
 
 #include "listpertemanan.h"
+#include "priorqueue.h"
 
 extern const address Nil;
 extern const addressf Nilf;
@@ -88,22 +89,26 @@ void AddFriend (List *L, infotype X, infotype added)
 F.S. Added ditambahakan sebagai teman X dalam list L*/
 {
 	address P,Q;
-	P = First(*L);
-	Q = First(*L);
 	addressf R,S,T;
 	
-	while((bandingkata(X.email,Info(P).email)))
-	//mencari user yang ingin meng-add
+	P = First(*L);
+	Q = First(*L);
+	
+	while (((bandingkata(X.email,Info(P).email)))||(bandingkata(added.email,Info(Q).email)))
+	//mencari user yang ingin meng-add dan mencari user dengan info yang ingin di add
 	{
-		P = Next(P);
+		if (bandingkata(X.email,Info(P).email))
+		{
+			P = Next(P);
+		}
+		if (bandingkata(added.email,Info(Q).email))
+		{
+			Q = Next(Q);
+		}
 	}
 	
-	while((bandingkata(added.email,Info(Q).email)))
-	//mencari user dengan info yang ingin di add
-	{
-		Q = Next(Q);
-	}
 	AlokasiF(&R,Q); /*AlokasiF untuk mendapatkan address di list teman dari address user*/
+	
 	if (FList(P) == Nilf)
 	{
 		FList(P) = R;
@@ -148,8 +153,9 @@ void DeleteFriend (List *L, infotype X, infotype deleted)
 F.S. Deleted dihapuskan dari teman X dalam list L*/
 {
 	address P,Q;
-	P = First(*L);
 	addressf R,S;
+	
+	P = First(*L);
 	
 	while((bandingkata(X.email,Info(P).email)))
 	//mencari addres user yang ingin men-delete
@@ -192,7 +198,7 @@ void AddUser (List *L, infotype X)
 F.S X menjadi anggota List L*/
 {
 
-	address P,Q,R,S;
+	address P,Q,S;
 
 	P = First(*L);
 	Alokasi(&Q,X); /*Alokasi untuk mendapatkan address di list user*/
@@ -204,18 +210,17 @@ F.S X menjadi anggota List L*/
 	}
 	else /*kalau list tidak kosong*/
 	{
-		R = First(*L);
 		S = Nil;
-		while ((bandingkata(Info(Q).nama,Info(R).nama)==1) && (Next(R) != Nil))
+		while ((bandingkata(Info(Q).nama,Info(P).nama)==1) && (Next(P) != Nil))
 		//selama nama orang yang di add lebih besar urutan alfabet dari list user
 		{
-			S = R;
-			R = Next(R);
+			S = P;
+			P = Next(P);
 		}
-		if (Next(R) == Nil)
+		if (Next(P) == Nil)
 		//urutan list sudah di paling akhir
 		{
-			Next(R) = Q;
+			Next(P) = Q;
 			Next(Q) = Nil;
 		}
 		else//urutan user yang bukan di paling akhir
@@ -223,7 +228,7 @@ F.S X menjadi anggota List L*/
 			if (S != Nil)
 			//urutan user ada di tengah
 			{
-				Next(Q) = R;
+				Next(Q) = P;
 				Next(S) = Q;
 			}
 			else
@@ -240,7 +245,9 @@ void RemoveUser (List *L, infotype X)
 /*I.S. List dengan info X ada
 F.S. X dihapus dari list*/
 {
-	address P,Q,R,T;
+	address P,Q,T;
+	addressf R,S;
+	
 	P = First(*L);	
 	Q = Nil;
 	if (P == Nil)//bila kosong prosedure tidak melakukan apapun
@@ -267,13 +274,37 @@ F.S. X dihapus dari list*/
 			First(*L) = Next(P);
 			Next(P) = Nil;
 		}
+		R=FList(P);
+		while (R!=Nilf)
+		{
+			FList(P) = Next(R);
+			Next(R) = Nilf;
+			DealokasiF(&R,&Q);
+			R=FList(P);
+		}
 		T= First(*L);
 		while (T != Nil)
 		{
-			if(IsTeman(*L,Info(T),Info(P))==1)
+			R=FList(T);
+			S=Nilf;
+			while (bandingkata(Info(Friend(R)).email,Info(P).email))
 			{
-				DeleteFriend(L,Info(T),Info(P)); // mendelete user yang memiliki P dari friendlist orang orang yang sudah menjadi friendnya
+				S=R;
+				R=Next(R);
 			}
+			if (S==Nilf)
+			{
+				FList(T)=Next(R);
+				Next(R)=Nilf;
+				DealokasiF(&R,&Q);
+			}
+			else
+			{
+				Next(S) = Next(R);
+				Next(R) = Nilf;
+				DealokasiF(&R,&Q);
+			}
+			// mendelete user yang memiliki P dari friendlist orang orang yang sudah menjadi friendnya
 			T = Next(T);
 		}
 		Dealokasi(&P,&Info(P));
@@ -283,8 +314,10 @@ F.S. X dihapus dari list*/
 
 void ModifyUser (List *L, infotype X)
 {
-	address P,Q,R,S,T;
+	address P,Q,R,T;
 	addressf U,V;
+	infotype x;
+	
 	P = First(*L);
 	Q = Nil;
 	while((bandingkata(X.email,Info(P).email)))
@@ -298,31 +331,37 @@ void ModifyUser (List *L, infotype X)
 	//user dilepas sementara dari list
 	AddUser(L,X);
 	R = First(*L);
-	S = Nil;
+	
 	while((bandingkata(X.email,Info(R).email)))
 	//mencari address baru user yang telah diubah infotype nya
 	{	
-		S = R;
 		R = Next(R);
 	}
+	
+	FList(R)=FList(P);
+	FList(P)=Nilf;
+	
 	T = First(*L);
 	//mengubah alamat user yang lama menjadi yang baru
 	while(T != Nil)
 	{
-		U = FList(T);
-		V = Nilf;
-		while((bandingkata(Info(P).email,Info(Friend(U)).email)) && (Next(U) != Nilf))
+		if (T!=R)
 		{
-			V = U;
-			U = Next(U);
+			U = FList(T);
+			V = Nilf;
+			while((bandingkata(Info(P).email,Info(Friend(U)).email)) && (Next(U) != Nilf))
+			{
+				V = U;
+				U = Next(U);
+			}
+			if (Next(U) != Nilf)
+			{
+				Friend(U) = R; // address friend telah diubah menjadi yang baru
+			}
+			T = Next(T);
 		}
-		if (Next(U) != Nilf)
-		{
-			Friend(U) = R; // address friend telah diubah menjadi yang baru
-		}
-		T = Next(T);
 	}
-	Dealokasi(&P,&Info(P));
+	Dealokasi(&P,&x);
 }
 
 void Save (List *L, FILE* namafile)
@@ -351,7 +390,6 @@ F.S. Data pada List L disimpan dalam namafile*/
 		tuliskatafile(namafile,"\"");
 		tuliskatafile(namafile,"#\n");
 		P=Next(P);
-
 	}
 
 	P=First(*L);
@@ -379,7 +417,7 @@ void Load (List *L, FILE* namafile)
 /*I.S. List terdefinisi
 F.S. Data List pada namafile di baca sebagai input List L*/
 {	
-	char x[10];
+	char x[50];
 	infotype data;
 	bacakatafile(namafile,x,' ','\n');
 	int EOP=1;
@@ -440,86 +478,92 @@ F.S. Data List pada namafile di baca sebagai input List L*/
 	}
 }
 
-
-void SortAsc ()
-/*I.S.List terdefinisi
-F.S. List terurut membesar (A-Z)*/
-{
-}
-
-void SortDesc ()
-/*I.S List terdefinisi
-F.S List terurut mengecil (Z-A)*/
-{
-}
-
 int IsTeman (List L, infotype X, infotype temanX)
 {
 	/* Kamus Lokal */
-	address P;
+	address P,S;
 	addressf Q,R;
+	PQueue PQ;
 	bool Found;
+	infotype temp;
+	int x;
+	
 	/* Algoritma */
 	P = First(L);
 	while (bandingkata((Info(P).email),(X.email)) != 0) 
 	{
 		P = Next(P);
 	}
+	
 	/* P adalah address user */
 	Q = FList(P);
-	while ((bandingkata((Info(Friend(Q)).email),(temanX.email)) != 0) && (Q != Nilf))
+	while ((Q != Nilf)&&(Found))
 	{
+		Found=bandingkata((Info(Friend(Q)).email),(temanX.email));
+		AddPQ(&PQ,Info(Friend(Q)),3);
         Q = Next(Q);
 	}
 	/* Q = Nil (tidak ada di list teman level 1) atau ditemukan info teman yang dicari */
-	if (Q != Nilf) 
+	if (!Found) 
 	{
 		return 1; /* address ditemukan, teman level 1 */
     }
 	else
 	{ /* Teman bukan level 1, dicari lagi di level selanjutnya */
-        Q = FList(P);
-		while ((Q != Nilf) && !Found) 
+        P = First(L);
+		while ((Prio(Head(PQ))==3)&&(Found))
 		{
-		    R = FList(Friend(Q));
-			while ((bandingkata((Info(Friend(R)).email),(temanX.email)) != 0) && (R != Nilf))
+			DelPQ(&PQ,&temp,&x);
+			while (bandingkata(temp.nama,Info(P).nama)==1)
 			{
-				R = Next(R);
+				P=Next(P);
 			}
-			if (R != Nilf)
-			{ /* Ditemukan teman level 2 */
-				Found = true;
-				return 2;
-			}
-			else  
+			S=P;
+			while (bandingkata(temp.email,Info(S).email))
 			{
-				Q = Next(Q); /* Dicari lagi di list teman dari teman berikutnya */
+				S=Next(S);
+			}
+			Q=FList(S);
+			while ((Q != Nilf)&&(Found))
+			{
+				Found=bandingkata((Info(Friend(Q)).email),(temanX.email));
+				AddPQ(&PQ,Info(Friend(Q)),2);
+				Q = Next(Q);
 			}
 		}
-		/* Keluar dari while: ditemukan di list teman dari teman atau tidak ditemukan di antara temannya teman (Q = Nil) */
-		if (Q == Nilf) 
-		{ /* Pencarian di list teman pertama sudah berakhir, tidak ditemukan sampai akhir list teman pertama */
-		    Q = FList(P);
-			while ((Q != Nilf) && !Found) 
+		if (!Found)
+		{
+			return 2; // ditemukan di level 2
+		}
+		else
+		{
+			P = First(L);
+			while ((!IsEmptyPQ(PQ))&&(Prio(Head(PQ))==2)&&(Found))
 			{
-				R = FList(Friend(Q));
-				while ((bandingkata((Info(Friend(R)).email),(temanX.email)) != 0) && (R != Nilf))
+				DelPQ(&PQ,&temp,&x);
+				while (bandingkata(temp.nama,Info(P).nama)==1)
 				{
-					R = Next(R);
+					P=Next(P);
 				}
-				if (R != Nilf)
-				{ /* Ditemukan teman level 3 */
-					Found = true;
-					return 3;
-				}
-				else
+				S=P;
+				while (bandingkata(temp.email,Info(S).email))
 				{
-					Q = Next(Q); /* Dicari lagi di list teman dari teman dari teman berikutnya */
+					S=Next(S);
+				}
+				Q=FList(S);
+				while ((Q != Nilf)&&(Found))
+				{
+					Found=bandingkata((Info(Friend(Q)).email),(temanX.email));
+					Q = Next(Q);
 				}
 			}
-			if (Q == Nilf) 
-			{ /* Tidak ditemukan di list teman dari teman dari teman */
-				return 0;
+			if (!Found)
+			{
+				return 3; //ditemukan di level 3
+			}
+			else
+			{
+				return 0; //tidak ditemukan
 			}
 		}
     }
@@ -529,8 +573,7 @@ bool IsSame (infotype X, infotype temanX, int parameter)
 /* Melihat apakah temanX memiliki kesamaan dengan user X. */
 /* Parameter: 1 untuk kota asal, 2 untuk SMU, 3 untuk Universitas */
 { /* Kamus Lokal */
-	address P;
-	addressf Q;
+
 	/* Algoritma */
 	if (parameter == 1) 
 	{
