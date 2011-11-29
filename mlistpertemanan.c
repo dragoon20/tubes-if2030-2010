@@ -96,6 +96,12 @@ int main()
 						else
 						{
 							//di sini bagian loadnya
+							bacakata (kata, '#',' ');
+							FILE *x;
+							x=fopen(kata,"r");
+							Load (&L, &x);
+							fclose(x);
+							printf("Loading file %s sukses.",kata);
 						}
 					}
 					break;
@@ -405,6 +411,11 @@ int main()
 					if (end)
 					{
 						// sudah sampai #
+						FILE *x;
+						x=fopen(kata,"r");
+						Load (&L, &x);
+						fclose(x);
+						printf("Reload data sesuai %s sukses.",kata);
 					}
 					else
 					{
@@ -418,10 +429,19 @@ int main()
 					if (end)
 					{
 						// sudah sampai #
+						FILE *x;
+						x=fopen(kata,"w");
+						Save (L, &x);
+						fclose(x);
+						printf("Save data sesuai %s sukses.",kata);
 					}
 					else
 					{
-					
+						bacakata (kata, '#',' ');
+						x=fopen(kata,"w");
+						Save (L, &x);
+						fclose(x);
+						printf("Save data sesuai %s sukses.",kata);
 					}
 					break;
 				}
