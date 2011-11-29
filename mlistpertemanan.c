@@ -255,19 +255,19 @@ int main()
 													printf("\n");
 													while (b != Nil)
 													{
-														tuliskata(Info(b).email);
+														tuliskata(Info(Friend(b)).email);
 														printf("                ");
-														tuliskata(Info(b).nama);
+														tuliskata(Info(Friend(b)).nama);
 														printf("                ");
-														printf("%d-%d-%d",Info(b).tgllahir.hari,Info(b).tgllahir.bulan,Info(b).tgllahir.tahun);
+														printf("%d-%d-%d",Info(Friend(b)).tgllahir.hari,Info(Friend(b)).tgllahir.bulan,Info(Friend(b)).tgllahir.tahun);
 														printf("                ");
-														tuliskata(Info(b).kotaasal);
+														tuliskata(Info(Friend(b)).kotaasal);
 														printf("                ");
-														tuliskata(Info(b).universitas);
+														tuliskata(Info(Friend(b)).universitas);
 														printf("                ");
-														tuliskata(Info(b).smu);
+														tuliskata(Info(Friend(b)).smu);
 														printf("\n");
-														b = next(b);
+														b = Next(b);
 													}
 												}
 												else
@@ -295,19 +295,19 @@ int main()
 														printf("\n");
 														while (b != Nil)
 														{
-															tuliskata(Info(b).email);
+															tuliskata(Info(Friend(b)).email);
 															printf("                ");
-															tuliskata(Info(b).nama);
+															tuliskata(Info(Friend(b)).nama);
 															printf("                ");
-															printf("%d-%d-%d",Info(b).tgllahir.hari,Info(b).tgllahir.bulan,Info(b).tgllahir.tahun);
+															printf("%d-%d-%d",Info(Friend(b)).tgllahir.hari,Info(Friend(b)).tgllahir.bulan,Info(Friend(b)).tgllahir.tahun);
 															printf("                ");
-															tuliskata(Info(b).kotaasal);
+															tuliskata(Info(Friend(b)).kotaasal);
 															printf("                ");
-															tuliskata(Info(b).universitas);
+															tuliskata(Info(Friend(b)).universitas);
 															printf("                ");
-															tuliskata(Info(b).smu);
+															tuliskata(Info(Friend(b)).smu);
 															printf("\n");
-															b = next(b);
+															b = Next(b);
 														}
 														end=true;
 													}
@@ -374,7 +374,7 @@ int main()
 														b = FList(p);
 														while ((!c)&&(b!=Nil))
 														{
-															if (bandingkata(input3,Friend(b).email))
+															if (bandingkata(input3,Info(Friend(b)).email))
 															{
 																c = true;
 															}
@@ -506,7 +506,82 @@ int main()
 						printf("- user-id\tEmail yang digunakan sebagai user-id yang ingin digunakan.\n");
 					}
 					else
-					{
+					{	
+						address p;
+						infotype a,b;
+						bacakata(a.email,'#','#');
+						trim(a.email,' ');
+						trim(a.email,'\n');
+						lowcase(a.email);
+						if (!bandingkata(a.email,""))
+						{
+							// sudah sampai #
+							printf("Mengubah data user.\n\n");
+							printf("modifyuser {user-id}\n\n");
+							printf("- user-id\tEmail yang digunakan sebagai user-id yang ingin digunakan.\n");
+						}
+						else
+						{	
+							copykata(b.email,a.email);
+							p = First(L);
+							while (bandingkata(b.email,Info(p).email))
+								{
+										p = Next(p); //mencari address yang ingin dimodify
+								}
+							if (p != Nil)
+							{
+									printf("Nama Lengkap (blank jika tetap) :");
+									bacakata(a.nama,"#","#");
+									if (bandingkata(a.nama,""))
+									{
+										copykata(b.nama,a.nama);
+									}
+									printf("\nTanggal Lahir (dd-mm-yyyy dan blank jika tetap) :");
+									printf("\nKota Asal (blank jika tetap) :");
+									bacakata(a.kotaasal,"#","#");
+									if (bandingkata(a.kotaasal,""))
+									{
+										copykata(b.kotaasal,a.kotaasal);
+									}
+									printf("\nUniversitas (blank jika tetap) :");
+									bacakata(a.universitas,"#","#");
+									if (bandingkata(a.universitas,""))
+									{
+										copykata(b.universitas,a.universitas);
+									}
+									printf("\nSMU (blank jika tetap) :");
+									bacakata(a.smu,"#","#");
+									if (bandingkata(a.smu,""))
+									{
+										copykata(b.smu,a.smu);
+									}
+									ModifyUser(&L,b);
+									p = First(L);
+									while (bandingkata(b.email,Info(p).email))
+										{
+												p = Next(p); //mencari address baru yang telah dimodify
+										}
+									printf("\nPerubahan data pribadi ");
+									tuliskata(Info(p).email);
+									printf(" sukses");
+									printf("Nama Lengkap (blank jika tetap) : ");
+									tuliskata(Info(p).nama);;
+									printf("\nTanggal Lahir (dd-mm-yyyy dan blank jika tetap) : ");
+									printf("\nKota Asal (blank jika tetap) : ");
+									tuliskata(Info(p).kotaasal);
+									printf("\nUniversitas (blank jika tetap) : ");
+									tuliskata(Info(p).universitas);
+									printf("\nSMU (blank jika tetap) : ");
+									tuliskata(Info(p).smu);
+							}
+							else
+							{
+								printf("Tidak ada ID user dengan email ");
+								tuliskata(b.email);
+								printf(".");
+							}
+						}
+						
 					
 					}
 					break;
@@ -523,7 +598,41 @@ int main()
 					}
 					else
 					{
-					
+						address p;
+						infotype a,b;
+						bacakata(a.email,'#','#');
+						trim(a.email,' ');
+						trim(a.email,'\n');
+						lowcase(a.email);
+						if (!bandingkata(a.email,""))
+						{
+							// sudah sampai #
+							printf("Menghapus user.\n\n");
+							printf("deluser {user-id}\n\n");
+							printf("- user-id\tEmail yang digunakan sebagai user-id yang ingin digunakan.\n");
+						}
+						else
+						{
+							p = First(L);
+							while (bandingkata(a.email,Info(p).email))
+								{
+										p = Next(p); //mencari address yang ingin dimodify
+								}
+							if (p != Nil)
+							{
+								RemoveUser(&L,a);
+								printf("\nUser dengan alamat email ");
+								tuliskata(a.email);
+								printf(" telah berhasil dihapus.");
+							}
+							else
+							{
+								printf("Tidak ada ID user dengan email ");
+								tuliskata(a.email);
+								printf(".");
+							}
+							
+						}
 					}
 					break;
 				}
