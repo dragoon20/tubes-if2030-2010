@@ -364,12 +364,12 @@ void ModifyUser (List *L, infotype X)
 	Dealokasi(&P,&x);
 }
 
-void Save (List *L, FILE* namafile)
+void Save (List L, FILE* namafile)
 /*I.S List terdefinisi
 F.S. Data pada List L disimpan dalam namafile*/
 {
 	address P;
-	P=First(*L);
+	P=First(L);
 	tuliskatafile (namafile,"@user\n");
 	while(Next(P)!=Nil)
 	{
@@ -392,7 +392,7 @@ F.S. Data pada List L disimpan dalam namafile*/
 		P=Next(P);
 	}
 
-	P=First(*L);
+	P=First(L);
 	addressf x;
 
 	tuliskatafile(namafile,"\n");

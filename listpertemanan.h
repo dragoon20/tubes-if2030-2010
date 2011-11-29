@@ -51,7 +51,7 @@ F.S. X dihapus dari list*/
 void ModifyUser (List *L, infotype X);
 /*I.S. List  */
 
-void Save (List *L, FILE* namafile);
+void Save (List L, FILE* namafile);
 /*I.S List terdefinisi
 F.S. Data pada List L disimpan dalam namafile*/
 
