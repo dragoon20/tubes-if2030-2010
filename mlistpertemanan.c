@@ -69,7 +69,8 @@ const addressPQ NilPQ=NULL;
 int main()
 {
 	char perintahadmin[12][50];
-	char perintahuser[8][50];
+	char perintahuser[9][50];
+	char list[6][50];
 	char input[250];
 	char input2[250];
 	char input3[250];
@@ -79,6 +80,9 @@ int main()
 	int perintah,i;
 	bool cek,end;
 	List L;
+	PQueue PQ;
+	
+	First(L)=Nil;
 	
 	copykata(perintahadmin[0],"load");
 	copykata(perintahadmin[1],"user");
@@ -101,6 +105,14 @@ int main()
 	copykata(perintahuser[5],"updatedata");
 	copykata(perintahuser[6],"close");
 	copykata(perintahuser[7],"help");
+	copykata(perintahuser[8],"clear");
+	
+	copykata(list[0],"email");
+	copykata(list[1],"name");
+	copykata(list[2],"birthday");
+	copykata(list[3],"hometown");
+	copykata(list[4],"university");
+	copykata(list[5],"highschool");
 	
 	#ifdef _Windows
 		system("cls");
@@ -173,14 +185,22 @@ int main()
 						{
 							//di sini bagian loadnya
 							copykata(kata,input2);
+							bool hasil;
 							FILE *x;
 							x=fopen(kata,"r");
 							if (x!=NULL)
 							{
-								Load (&L, x);
+								hasil=Load (&L, x);
 								fclose(x);
+								if (hasil)
+								{
+									printf("Loading file %s sukses.\n",kata);
+								}
+								else
+								{
+									printf("Loading file %s tidak sukses.\n",kata);
+								}
 							}
-							printf("Loading file %s sukses.\n",kata);
 						}
 					}
 					break;
@@ -227,29 +247,32 @@ int main()
 							if (cek)
 							{
 								// email benar
+								printf("\n");
 								do
 								{
 									// inisiasi
 									end=false;
 									tuliskata(input2);
-									printf(">> ");
+									printf(" >> ");
 									
 									// baca input dan ditrim
 									bacakata(input,' ','#');
+									lowcase(input);
 									trim(input,' ');
 									trim(input,'\n');
-									if (input[panjangkata(input)+1]='#')
+									if (input[panjangkata(input)+1]=='#')
 									{
 										end=true;
 									}
 									
 									// pengecekan input
+									perintah=-1;
 									i=-1;
 									cek=true;
-									while ((i<=7)&&(cek))
+									while ((i<=8)&&(cek))
 									{
 										++i;
-										if (bandingkata(input,perintahuser[i]))
+										if (!bandingkata(input,perintahuser[i]))
 										{
 											cek=false;
 										}
@@ -266,7 +289,7 @@ int main()
 											{
 												system("date /t > date.txt");
 												tanggal now;
-												File *x;
+												FILE *x;
 												x=fopen("date.txt","r");
 												if (x!=NULL)
 												{
@@ -653,42 +676,32 @@ int main()
 										//friend
 										case 3:
 											{
-												infotype m,n;
-												address p;
 												addressf b;
 												if (end)
 												{
 													// sudah sampai #
-													p = First(L);
-													while (bandingkata(input2,Info(p).email))
-													{
-														p = Next(p);
-													}
-													b = FList(p);
-													printf("ID");
-													printf("                ");
-													printf("Name");
-													printf("                ");
-													printf("Birthday");
-													printf("                ");
-													printf("Hometown");
-													printf("                ");
-													printf("University");
-													printf("                ");
-													printf("Highschool");
-													printf("\n");
+													b = FList(user);
+													printf("ID\t\t\tName\t\tBirthday\tHometown\tUniversity\tHighschool\n");
 													while (b != Nilf)
 													{
 														tuliskata(Info(Friend(b)).email);
-														printf("                ");
+														if (panjangkata(Info(Friend(b)).email)<16)
+														{
+															printf("\t");
+														}														
+														printf("\t");
 														tuliskata(Info(Friend(b)).nama);
-														printf("                ");
+														printf("\t");
 														printf("%d-%d-%d",Info(Friend(b)).tgllahir.hari,Info(Friend(b)).tgllahir.bulan,Info(Friend(b)).tgllahir.tahun);
-														printf("                ");
+														printf("\t");
 														tuliskata(Info(Friend(b)).kotaasal);
-														printf("                ");
+														if (panjangkata(Info(Friend(b)).kotaasal)<8)
+														{
+															printf("\t");
+														}
+														printf("\t");
 														tuliskata(Info(Friend(b)).universitas);
-														printf("                ");
+														printf("\t\t");
 														tuliskata(Info(Friend(b)).smu);
 														printf("\n");
 														b = Next(b);
@@ -696,39 +709,35 @@ int main()
 												}
 												else
 												{
+													bacakata(input3,'#','#');
+													trim(input3,' ');
+													trim(input3,'\n');
+													
 													if (!bandingkata(input3,""))
 													{
 														// sudah sampai # juga
-														p = First(L);
-														while (bandingkata(input2,Info(p).email))
-														{
-															p = Next(p);
-														}
-														b = FList(p);
-														printf("ID");
-														printf("                ");
-														printf("Name");
-														printf("                ");
-														printf("Birthday");
-														printf("                ");
-														printf("Hometown");
-														printf("                ");
-														printf("University");
-														printf("                ");
-														printf("Highschool");
-														printf("\n");
+														b = FList(user);
+														printf("ID\t\t\tName\t\tBirthday\tHometown\tUniversity\tHighschool\n");
 														while (b != Nilf)
 														{
 															tuliskata(Info(Friend(b)).email);
-															printf("                ");
+															if (panjangkata(Info(Friend(b)).email)<16)
+															{
+																printf("\t");
+															}														
+															printf("\t");
 															tuliskata(Info(Friend(b)).nama);
-															printf("                ");
+															printf("\t");
 															printf("%d-%d-%d",Info(Friend(b)).tgllahir.hari,Info(Friend(b)).tgllahir.bulan,Info(Friend(b)).tgllahir.tahun);
-															printf("                ");
+															printf("\t");
 															tuliskata(Info(Friend(b)).kotaasal);
-															printf("                ");
+															if (panjangkata(Info(Friend(b)).kotaasal)<8)
+															{
+																printf("\t");
+															}
+															printf("\t");
 															tuliskata(Info(Friend(b)).universitas);
-															printf("                ");
+															printf("\t\t");
 															tuliskata(Info(Friend(b)).smu);
 															printf("\n");
 															b = Next(b);
@@ -737,19 +746,16 @@ int main()
 													}
 													else
 													{
-														p = First(L);
-														while (bandingkata(input2,Info(p).email))
-														{
-															p = Next(p);
-														}
-														copykata (m.email, Info(p).email);
+														infotype n;
 														copykata (n.email, input3);
-														AddFriend (&L, m, n);
-														tuliskata(input2);
-														printf(">> ");
-														printf("friend ");
-														tuliskata(input3);
-														printf("Penambahan hubungan friend sukses");
+														if (AddFriend (&L, Info(user), n))
+														{
+															printf("Penambahan hubungan friend sukses.\n");
+														}
+														else
+														{
+															printf("Penambahan hubungan friend gagal.\n");
+														}
 													}
 												}
 												break;
@@ -757,10 +763,8 @@ int main()
 										//unfriend
 										case 4:
 											{
-												infotype m,n;
-												address p;
+												infotype n;
 												addressf b;
-												bool c;
 												if (end)
 												{
 													// sudah sampai #
@@ -781,29 +785,13 @@ int main()
 													}
 													else
 													{
-														p = First(L);
-														c = false;
-														while (bandingkata(input2,Info(p).email))
-														{
-															p = Next(p);
-														}
-														copykata (m.email, Info(p).email);
 														copykata (n.email, input3);
-														b = FList(p);
-														while ((!c)&&(b!=Nilf))
+														
+														if (DeleteFriend(&L, user, n))
 														{
-															if (!bandingkata(input3,Info(Friend(b)).email))
-															{
-																c = true;
-															}
-															b = Next(b);
-														}
-														if (c)
-														{
-															DeleteFriend(&L, m, n);
 															printf("Penghapusan hubungan friend dengan ");
 															tuliskata(input3);
-															printf(" sukses");
+															printf(" sukses.\n");
 														}
 														else
 														{
@@ -827,6 +815,17 @@ int main()
 												
 												break;
 											}
+										//close
+										case 6:
+											{
+												if (!end)
+												{
+													bacakata(input3,'#','#');
+													end=true;
+												}
+												break;
+											}
+										//help
 										case 7:
 											{
 												if (!end)
@@ -834,30 +833,51 @@ int main()
 													bacakata(input3,'#','#');
 													end=true;
 												}
-												printf("Perintah-perintah yang dapat digunakan:\n");
-												printf("-birthday\t\tMengecek ulang tahun teman yang dekat dengan hari ini.\n");
-												printf("-same\t\tMenampilkan list teman-teman yang memiliki kesamaan asal sekolah atau universitas.\n");
-												printf("-notfriendyet\t\tMenampilkan list teman dari teman kita yang masih belum menjadi teman kita.\n");
-												printf("-friend\t\tMenampilkan list teman kita atau berteman dengan suatu user-id.\n");
-												printf("-unfriend\t\tMenghilangkan hubungan pertemanan dengan suatu user-id.\n");
-												printf("-updatedata\t\tMengubah data diri.\n");
-												printf("-close\t\tKeluar dari menu user.\n\n");
+												printf("\nPerintah-perintah yang dapat digunakan:\n");
+												printf("- birthday\tMengecek ulang tahun teman yang dekat dengan hari ini.\n");
+												printf("- same\t\tMenampilkan list teman-teman yang memiliki kesamaan asal sekolah atau universitas.\n");
+												printf("- notfriendyet\tMenampilkan list teman dari teman kita yang masih belum menjadi teman kita.\n");
+												printf("- friend\t\tMenampilkan list teman kita atau berteman dengan suatu user-id.\n");
+												printf("- unfriend\tMenghilangkan hubungan pertemanan dengan suatu user-id.\n");
+												printf("- updatedata\tMengubah data diri.\n");
+												printf("- close\t\tKeluar dari menu user.\n\n");
 												printf("Setiap perintah diakhiri dengan '#'.\n");
+												break;
+											}
+										//clear
+										case 8:
+											{
+												if (!end)
+												{
+													bacakata(input2,'#','#');
+													end=true;
+												}
+												#ifdef _Windows
+													system("cls");
+												#endif
+												
+												#ifdef _Unix
+													system("clear");
+												#endif
 												break;
 											}
 										//tidak termasuk dalam perintah
 										default:
 											{
-												printf("Perintah ");
+												printf("Perintah \"");
 												tuliskata(input);
-												printf("tidak ada.\n\n");
+												printf("\" tidak ada.\n\n");
 												printf("Ketik \"help#\" untuk bantuan.\n");
-												
 												break;
 											}
 									}
+									printf("\n");
 								} while (perintah!=6);
 								//close
+								if (!end)
+								{
+									bacakata(input,'#','#');
+								}
 								perintah=1;
 								break;
 							}
@@ -1151,12 +1171,119 @@ int main()
 			//list
 			case 5:
 				{
+					CreateEmptyPQ(&PQ);
 					if (end)
 					{
 						// sudah sampai #
 					}
 					else
 					{
+						bacakata(input2,' ','#');
+						lowcase(input2);
+						
+						if (!bandingkata(input2,""))
+						{
+							if (input2[panjangkata(input2)+1]!='#')
+							{
+								bacakata(input2,'#','#');
+							}
+							end=true;
+						}
+						else
+						{
+							int perbandingan=0;
+							if (input2[panjangkata(input2)+1]!='#')
+							{
+								bacakata(input3,'#','#');
+								trim(input3,' ');
+								trim(input3,'\n');
+								lowcase(input3);
+								end=true;
+							}
+							else
+							{
+								copykata(input3,"");
+							}
+								
+							if (!bandingkata(input3,"asc"))
+							{
+								perbandingan=0;
+								copykata(input3,"");
+							}
+							else if (!bandingkata(input3,"desc"))
+							{
+								perbandingan=1;
+								copykata(input3,"");
+							}
+							if (bandingkata(input3,""))
+							{
+								printf("Parameter \"");
+								tuliskata(input3);
+								printf("\" tidak ada.\n");
+							}
+							else
+							{
+								int parameter,temp2;
+								parameter=-1;
+								i=-1;
+								cek=true;
+								while ((i<=5)&&(cek))
+								{
+									++i;
+									if (!bandingkata(input2,list[i]))
+									{
+										cek=false;
+									}
+								}
+								if (!cek)
+								{
+									parameter=i;
+								}
+								if (parameter!=-1)
+								{
+									address P=First(L);
+									infotype data;
+									while (P!=Nil)
+									{
+										AddPQ2(&PQ,Info(P),0,parameter,perbandingan);
+										P=Next(P);
+									}
+									printf("ID\t\t\tName\t\tBirthday\tHometown\tUniversity\tHighschool\n");
+									while (!IsEmptyPQ(PQ))
+									{
+										DelPQ(&PQ,&data,&temp2);
+										
+										tuliskata(data.email);
+										if (panjangkata(data.email)<16)
+										{
+											printf("\t");
+										}														
+										printf("\t");
+										tuliskata(data.nama);
+										printf("\t");
+										printf("%d-%d-%d",data.tgllahir.hari,data.tgllahir.bulan,data.tgllahir.tahun);
+										printf("\t");
+										tuliskata(data.kotaasal);
+										if (panjangkata(data.kotaasal)<8)
+										{
+											printf("\t");
+										}
+										printf("\t");
+										tuliskata(data.universitas);
+										printf("\t\t");
+										tuliskata(data.smu);
+										printf("\n");
+										
+									}
+								}
+								else
+								{
+									printf("Parameter \"");
+									tuliskata(input2);
+									printf("\" yang mau diurutkan tidak ada.\n");
+								}
+							}
+						}
 					}
 					break;
 				}

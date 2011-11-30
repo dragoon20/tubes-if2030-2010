@@ -1,1 +1,19 @@
-testing lagi lewat pc#
+@user
+amin@gmail.com "Amin Badrun" 1-8-1990 "Bandung"  "ITB" "SMUN 3 Bandung"#
+cici@email.com "Cici Dadan" 12-7-1990 "Bandung"  "UNPAD" "SMUN 8 Jakarta"#
+dana@yahoo.com "Dana Windar" 12-12-1990 "Semarang"  "UNS" "SMUN 1 Semarang"#
+emi_fitria@gmx.de "Emi Fitria" 23-6-1990 "Surabaya"  "ITB" "SMUN 5 Surabaya"#
+hamdan@hotmail.com "Gilang Hamdan" 30-5-1990 "Jakarta" NIL "SMUN 8 Jakarta"#
+ja2ng@yahoo.com "Iwan Jajang" 4-11-1990 "Jakarta"  "UNIKOM" "SMUN 70 Jakarta"#
+@friend
+amin@gmail.com ->cici@email.com
+amin@gmail.com ->ja2ng@yahoo.com
+amin@gmail.com ->dana@yahoo.com
+cici@email.com ->amin@gmail.com
+cici@email.com ->emi_fitria@gmx.de
+cici@email.com ->dana@yahoo.com
+hamdan@hotmail.com ->ja2ng@yahoo.com
+hamdan@hotmail.com ->emi_fitria@gmx.de
+ja2ng@yahoo.com ->cici@email.com
+ja2ng@yahoo.com ->hamdan@hotmail.com
+@end

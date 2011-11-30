@@ -84,7 +84,7 @@ void DealokasiF (addressf *P, address *X)
 	free(*P);
 }
 
-void AddFriend (List *L, infotype X, infotype added)
+bool AddFriend (List *L, infotype X, infotype added)
 /*I.S. infotype X ada didalam list L
 F.S. Added ditambahakan sebagai teman X dalam list L*/
 {
@@ -108,7 +108,10 @@ F.S. Added ditambahakan sebagai teman X dalam list L*/
 	}
 	
 	AlokasiF(&R,Q); /*AlokasiF untuk mendapatkan address di list teman dari address user*/
-	
+	if (R==Nilf)
+	{
+		return false;
+	}
 	if (FList(P) == Nilf)
 	{
 		FList(P) = R;
@@ -127,8 +130,16 @@ F.S. Added ditambahakan sebagai teman X dalam list L*/
 		if (Next(S) == Nilf)
 		//urutan orang yang di add sudah di paling akhir
 		{
-			Next(S) = R;
-			Next(R) = Nilf;
+			if ((T!=Nilf)&&(bandingkata(Info(Q).nama,Info(Friend(S)).nama)!=1))
+			{
+				Next(R)=S;
+				Next(T)=R;
+			}
+			else
+			{
+				Next(S) = R;
+				Next(R) = Nilf;
+			}
 		}
 		else//urutan orang yang di add bukan di paling akhir
 		{
@@ -146,31 +157,25 @@ F.S. Added ditambahakan sebagai teman X dalam list L*/
 			}	
 		}
 	}
+	return true;
 }
 
-void DeleteFriend (List *L, infotype X, infotype deleted)
-/*I.S. Infotype X terdapat didalam List L
+bool DeleteFriend (List *L, address X, infotype deleted)
+/*I.S. address X terdapat didalam List L
 F.S. Deleted dihapuskan dari teman X dalam list L*/
 {
-	address P,Q;
+	address Q;
 	addressf R,S;
 	
-	P = First(*L);
-	
-	while((bandingkata(X.email,Info(P).email)))
-	//mencari addres user yang ingin men-delete
-	{
-		P = Next(P);
-	}
-	R = FList(P);
+	R = FList(X);
 	S = Nilf;
-	if (FList(P) == Nilf)//bila kosong prosedure tidak melakukan apapun
+	if (FList(X) == Nilf)//bila kosong prosedure tidak melakukan apapun
 	{
-		
+		return false;
 	}
 	else /*kalau list tidak kosong*/
 	{
-		while((bandingkata(deleted.email,Info(Friend(R)).email)))
+		while((R!=Nilf)&&(bandingkata(deleted.email,Info(Friend(R)).email)))
 		//mencari teman yang memiliki info yang ingin di delete
 		{
 			S = R;
@@ -183,14 +188,19 @@ F.S. Deleted dihapuskan dari teman X dalam list L*/
 			Next(R) = Nilf;
 			DealokasiF(&R,&Q);
 		}
+		else if (R==Nilf)
+		{
+			return false;
+		}
 		else
 		{
 		//jika teman yang ingin di delete ada di awal
-			FList(P) = Next(R);
+			FList(X) = Next(R);
 			Next(R) = Nilf;
 			DealokasiF(&R,&Q);
 		}
 	}
+	return true;
 }
 
 void AddUser (List *L, infotype X)
@@ -202,7 +212,8 @@ F.S X menjadi anggota List L*/
 
 	P = First(*L);
 	Alokasi(&Q,X); /*Alokasi untuk mendapatkan address di list user*/
-
+	FList(Q)=Nilf;
+	
 	if (P == Nil)
 	{
 		First(*L) = Q;
@@ -371,7 +382,7 @@ F.S. Data pada List L disimpan dalam namafile*/
 	address P;
 	P=First(L);
 	tuliskatafile (namafile,"@user\n");
-	while(Next(P)!=Nil)
+	while(P!=Nil)
 	{
 		tuliskatafile (namafile, Info(P).email);
 		tuliskatafile (namafile," ");
@@ -379,15 +390,38 @@ F.S. Data pada List L disimpan dalam namafile*/
 		tuliskatafile (namafile, Info(P).nama);
 		tuliskatafile(namafile,"\" ");
 		fprintf(namafile,"%d-%d-%d",Info(P).tgllahir.hari,Info(P).tgllahir.bulan,Info(P).tgllahir.tahun);
-		tuliskatafile(namafile," \"");
-		tuliskatafile (namafile, Info(P).kotaasal);
-		tuliskatafile(namafile,"\"");
-		tuliskatafile(namafile," \"");
-		tuliskatafile (namafile, Info(P).universitas);
-		tuliskatafile(namafile,"\" ");
-		tuliskatafile(namafile,"\"");
-		tuliskatafile (namafile, Info(P).smu);
-		tuliskatafile(namafile,"\"");
+		
+		if(bandingkata(Info(P).kotaasal,""))
+		{		
+			tuliskatafile(namafile," \"");
+			tuliskatafile (namafile, Info(P).kotaasal);
+			tuliskatafile(namafile,"\" ");
+		}
+		else
+		{
+			tuliskatafile(namafile,"NIL ");
+		}
+		
+		if(bandingkata(Info(P).universitas,""))
+		{
+			tuliskatafile(namafile," \"");
+			tuliskatafile (namafile, Info(P).universitas);
+			tuliskatafile(namafile,"\" ");
+		}
+		else
+		{
+			tuliskatafile(namafile,"NIL ");
+		}
+		if(bandingkata(Info(P).smu,""))
+		{
+			tuliskatafile(namafile,"\"");
+			tuliskatafile (namafile, Info(P).smu);
+			tuliskatafile(namafile,"\"");
+		}
+		else
+		{
+			tuliskatafile(namafile,"NIL");
+		}
 		tuliskatafile(namafile,"#\n");
 		P=Next(P);
 	}
@@ -395,12 +429,11 @@ F.S. Data pada List L disimpan dalam namafile*/
 	P=First(L);
 	addressf x;
 
-	tuliskatafile(namafile,"\n");
 	tuliskatafile (namafile,"@friend\n");
-	while(Next(P)!=Nil)
+	while(P!=Nil)
 	{
 		x=FList(P);
-		while(Next(x)!=Nilf)
+		while(x!=Nilf)
 		{
 			tuliskatafile(namafile,Info(P).email);
 			tuliskatafile(namafile," ->");
@@ -413,69 +446,177 @@ F.S. Data pada List L disimpan dalam namafile*/
 	tuliskatafile (namafile,"@end\n");
 }
 
-void Load (List *L, FILE* namafile)
+bool Load (List *L, FILE* namafile)
 /*I.S. List terdefinisi
 F.S. Data List pada namafile di baca sebagai input List L*/
 {	
 	char x[50];
+	char c;
 	infotype data;
-	bacakatafile(namafile,x,' ','\n');
-	int EOP=1;
-	while(EOP!=0)
+	bool EOP,temp;
+	int tempdat;
+	
+	temp=bacakatafile(namafile,x,'@','@');
+	if (!temp) {return temp;}
+	temp=bacakatafile(namafile,x,' ','\n');
+	if (!temp) {return temp;}
+	lowcase(x);
+	
+	bool cek=!bandingkata(x,"user");
+	bool cek2=!bandingkata(x,"friend");
+	bool cek3=!bandingkata(x,"end");
+	if (cek)
 	{
-		bacakatafile(namafile,x,' ','\n');
-		bacakatafile(namafile,x,' ','\n');
-		bacakatafile (namafile,data.email,'\"','\"');
+		temp=bacakatafile (namafile,data.email,' ','\n');
+		if (!temp) {return temp;}
 		trim (data.email, ' ');
 		trim (data.email, '\n');
-		bacakatafile (namafile,x,'\"','\"');
-		bacakatafile(namafile,data.nama,'\"','\"');
-		bacakatafile(namafile,x,' ','\n');
-		fscanf(namafile,"%d-%d-%d",&data.tgllahir.hari,&data.tgllahir.bulan,&data.tgllahir.tahun);
-		bacakatafile(namafile,x,' ','\n');
-		bacakatafile (namafile,x,'\"','\"');
-		bacakatafile (namafile, data.kotaasal,'\"','\"');
-
-		bacakatafile (namafile,x,'\"','\"'); 
-		bacakatafile (namafile, data.universitas,'\"','\"');
-		// bacakatafile(namafile,x," ","\n");
-		bacakatafile (namafile,x,'\"','\"');
-		bacakatafile (namafile, data.smu,'\"','\"');
-		bacakatafile(namafile,x,'\n','\n');
-		trim(x,' ');
-		AddUser(L,data);
-		EOP=bandingkata(x,"#");
-	}
-	bacakatafile(namafile,x,'\n','\n');
-	trim(x,' ');
-	int Friends;
-	int EO;
-	Friends=bandingkata(x,"@friend");
-	if (Friends==0)
-	{
-		EO=bandingkata(x,"@end");
-		if(EO!=0)
+	
+		EOP=(data.email[0]=='@');
+		while(!EOP)
 		{
-			infotype temp;
-			infotype users;
-			infotype teman;
-			bacakatafile (namafile,users.email,' ',' ');
-			trim (users.email, '\n');
-			bacakatafile (namafile,x,'>','>');
-			while(!EO)
-			{	
-				bacakatafile(namafile,teman.email,' ','\n');
-				trim (teman.email, ' ');
-				trim (teman.email, '\n');
-				AddFriend(L,users,teman);
-				bacakatafile(namafile,temp.email,'-','\n');//membaca baris berikutnya
-				trim (temp.email, ' ');
-				trim (temp.email, '\n');
-				EO=bandingkata(temp.email,"@end");
-				copykata(users.email,temp.email);
+			temp=fscanf(namafile,"%c",&c);
+			//printf("%c",c);
+			if ((temp==0)||(temp==EOF)) {return false;}
+			while ((c==' ')||(c=='\n'))
+			{
+				temp=fscanf(namafile,"%c",&c);
+				if ((temp==0)||(temp==EOF)) {return false;}
 			}
+			//printf("%c",c);
+			if (c=='\"')
+			{
+				temp=bacakatafile(namafile,data.nama,'\"','\"');
+				if (!temp) {return temp;}
+				temp=bacakatafile(namafile,x,' ','\n');
+				if (!temp) {return temp;}
+			}
+			else
+			{
+				copykata(data.nama,"");
+				temp=bacakatafile(namafile,x,' ','\n');
+				if (!temp) {return temp;}
+			}
+			//tuliskata(data.nama);
+			tempdat=fscanf(namafile,"%d-%d-%d",&data.tgllahir.hari,&data.tgllahir.bulan,&data.tgllahir.tahun);
+			if ((tempdat==0)||(tempdat==EOF))
+			{
+				return false;
+			}
+			
+			temp=fscanf(namafile,"%c",&c);
+			if ((temp==0)||(temp==EOF)) {return false;}
+			while ((c==' ')||(c=='\n'))
+			{
+				temp=fscanf(namafile,"%c",&c);
+				if ((temp==0)||(temp==EOF)) {return false;}
+			}
+			if (c=='\"')
+			{
+				temp=bacakatafile (namafile, data.kotaasal,'\"','\"');
+				if (!temp) {return temp;}
+			}
+			else
+			{
+				copykata(data.kotaasal,"");
+				temp=bacakatafile(namafile,x,' ','\n');
+				if (!temp) {return temp;}
+			}
+			
+			temp=fscanf(namafile,"%c",&c);
+			if ((temp==0)||(temp==EOF)) {return false;}
+			while ((c==' ')||(c=='\n'))
+			{
+				temp=fscanf(namafile,"%c",&c);
+				if ((temp==0)||(temp==EOF)) {return false;}
+			}
+			if (c=='\"')
+			{
+				temp=bacakatafile (namafile, data.universitas,'\"','\"');
+				if (!temp) {return temp;}
+			}
+			else
+			{
+				copykata(data.universitas,"");
+				temp=bacakatafile(namafile,x,' ','\n');
+				if (!temp) {return temp;}
+			}
+	
+			temp=fscanf(namafile,"%c",&c);
+			if ((temp==0)||(temp==EOF)) {return false;}
+			while ((c==' ')||(c=='\n'))
+			{
+				temp=fscanf(namafile,"%c",&c);
+				if ((temp==0)||(temp==EOF)) {return false;}
+			}
+			if (c=='\"')
+			{
+				temp=bacakatafile (namafile, data.smu,'\"','\"');
+				if (!temp) {return temp;}
+			}
+			else
+			{
+				copykata(data.smu,"");
+			}
+			
+			temp=bacakatafile(namafile,x,'#','#');
+			if (!temp) {return temp;}
+			
+			AddUser(L,data);
+			
+			temp=bacakatafile (namafile,data.email,'\n','\n');
+			if (!temp) {return temp;}
+			temp=bacakatafile (namafile,data.email,' ','\n');
+			if (!temp) {return temp;}
+			
+			trim (data.email, ' ');
+			trim (data.email, '\n');
+		
+			EOP=(data.email[0]=='@');
 		}
+		copykata(x,data.email);
+		trim(x,'@');
+		lowcase(x);
+		
+		cek2=!bandingkata(x,"friend");
+		cek3=!bandingkata(x,"end");
 	}
+	if (cek2)
+	{
+		infotype users;
+		infotype teman;
+		
+		temp=bacakatafile (namafile,users.email,'-','\n');
+		if (!temp) {return temp;}
+		trim(users.email,' ');
+		
+		EOP=(users.email[0]=='@');
+		while(!EOP)
+		{
+			temp=bacakatafile (namafile,x,'>','>');
+			if (!temp) {return temp;}
+
+			temp=bacakatafile(namafile,teman.email,' ','\n');
+			if (!temp) {return temp;}
+
+			AddFriend(L,users,teman);
+			
+			temp=bacakatafile (namafile,users.email,'-','\n');
+			if (!temp) {return temp;}
+			trim(users.email,' ');
+			EOP=(users.email[0]=='@');
+		}
+		copykata(x,users.email);
+		trim(x,'@');
+		lowcase(x);
+		
+		cek3=!bandingkata(x,"end");
+	}
+	if (!cek3)
+	{
+		return false;
+	}
+	return true;
 }
 
 int IsTeman (List L, infotype X, infotype temanX)
