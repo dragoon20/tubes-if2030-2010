@@ -45,14 +45,14 @@ void copykata (char *kata1, char *kata2)
 /*I.S. kata2 terdefinisi, kata1 sembarang
 F.S. Kata2 disalin ke kata1*/
 {
-	int panjang=panjangkata(kata2);
-	int i;
-	for (i=0;i<panjang;++i)
+	int i=0;
+	while (kata2[i]!='\0')
 	{
 		kata1[i]=kata2[i];
+		++i;
 	}
-	kata1[panjang]='\0';
-	kata1[panjang+1]=kata2[panjang+1];
+	kata1[i]='\0';
+	kata1[i+1]=kata2[i+1];
 }
 
 bool bacakata (char *kata, char hingga, char alternatif)
@@ -118,11 +118,11 @@ void tuliskata (char *kata)
 /*I.S. kata terdefinisi
 F.S. menulis kata tersebut*/
 {
-	int panjang=panjangkata(kata);
-	int i;
-	for (i=0;i<panjang;++i)
+	int i=0;
+	while (kata[i]!='\0')
 	{
 		printf("%c",kata[i]);
+		++i;
 	}
 }
 
@@ -130,11 +130,11 @@ void tuliskatafile (FILE *varfile, char*kata)
 /*I.S. kata terdefinisi, varfile terdefinisi
 F.S. menulis kata tersebut pada varfile*/
 {
-	int panjang=panjangkata(kata);
-	int i;
-	for (i=0;i<panjang;++i)
+	int i=0;
+	while (kata[i]!='\0')
 	{
 		fprintf(varfile,"%c",kata[i]);
+		++i;
 	}
 }
 
@@ -142,31 +142,77 @@ void trim (char *kata, char ditrim)
 /*Is: kata terdefinisi
 Fs:	kata ditrim sehingga karakter ditrim semua dihilangkan dari kata tersebut*/
 {
-	int panjang=panjangkata(kata);
-	int panjanghasil=0,i;
-	char hasil[panjang];
-	for (i=0;i<panjang;++i)
+	int panjanghasil=0,i=0;
+	char hasil[250];
+	while (kata[i]!='\0')
 	{
 		if (kata[i]!=ditrim)
 		{
 			hasil[panjanghasil]=kata[i];
 			++panjanghasil;
 		}
+		++i;
 	}
 	hasil[panjanghasil]='\0';
-	hasil[panjanghasil+1]=kata[panjang+1];
+	hasil[panjanghasil+1]=kata[i+1];
 	copykata(kata,hasil);
 }
 
 void lowcase (char *kata)
+/* Is: kata terdefinisi
+Fs: kata dibuat sehingga semuanya menjadi lower case */
 {
-	int panjang=panjangkata(kata);
-	int i;
-	for (i=0;i<panjang;++i)
+	int i=0;
+	while (kata[i]!='\0')
 	{
 		if ((kata[i]>=65)&&(kata[i]<=90))
 		{
 			kata[i]+=32;
 		}
+		++i;
+	}
+}
+
+int searchkata (char *kata, char dicari)
+// Mencari suatu karakter tertentu dalam kata dan mengembalikan posisinya
+{
+	int i=0;
+	while (kata[i]!='\0')
+	{
+		if (kata[i]==dicari)
+		{
+			return i;
+		}
+		++i;
+	}
+	return -1;
+}
+
+int katatoint (char *kata)
+// Mengembalikan hasil konversi dari kata menjadi int
+{
+	int i=0;
+	int hasil=0;
+	bool negatif=false;
+	if (kata[0]=='-')
+	{
+		++i;
+		negatif=true;
+	}
+	while (kata[i]!='\0')
+	{
+		if ((kata[i]>=48)&&(kata[i]<=57))
+		{
+			hasil*=10;
+			hasil+=kata[i]-48;
+		}
+		else
+		{
+			return -1000;
+		}
+	}
+	if (negatif)
+	{
+		hasil*=-1;
 	}
 }
