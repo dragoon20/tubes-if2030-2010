@@ -888,6 +888,7 @@ int main()
 					else
 					{
 						bacakata(input2,'#','#');
+						copykata(kata,input2);
 						trim(input2,' ');
 						trim(input2,'\n');
 						if (!bandingkata(input2,""))
@@ -905,7 +906,103 @@ int main()
 						}
 						else
 						{
-							// addusernya di sini
+								int i,j;
+								infotype m;
+								char hari[2];
+								char bulan[2];
+								char tahun[4];
+								
+										i=0;
+										j=0;
+										while (kata[i]!=' ') {
+										m.email[i]=kata[i];
+										i++;
+										}
+										m.email[i]='\0';
+										i=i+2;
+										j=0;
+										while (kata[i]!='"') {
+										m.nama[j]=kata[i];
+										i++;
+										j++;
+										}
+										m.nama[j]='\0';
+										i=i+2;
+										j=0;
+										while (kata[i]!='-') {
+										hari[j]=kata[i];
+										i++;
+										j++;
+										}
+										m.tgllahir.hari=katatoint(hari);
+										i=i+2;
+										j=0;
+										while (kata[i]!='-') {
+										bulan[j]=kata[i];
+										i++;
+										j++;
+										}
+										m.tgllahir.bulan=katatoint(bulan);
+										i=i+2;
+										j=0;
+										while (kata[i]!=' ') {
+										tahun[j]=kata[i];
+										i++;
+										j++;
+										}
+										m.tgllahir.tahun=katatoint(tahun);
+										i=i+2;
+										j=0;
+										while (kata[i]!='"') {
+										m.kotaasal[j]=kata[i];
+										i++;
+										j++;
+										}
+										m.kotaasal[j]='\0';
+										i=i+2;
+										if(kata[i]!='"')
+											{
+											m.universitas[0]='N';
+											m.universitas[1]='I';
+											m.universitas[2]='L';
+											m.universitas[3]='\0';
+											i=i+2;
+											}
+										else
+											{
+											i=i+1;	
+											j=0;
+											while (kata[i]!='"') {
+											m.universitas[j]=kata[i];
+											i++;
+											j++;
+											}
+										}
+										m.universitas[j]='\0';
+										i=i+2;
+										if(kata!='"')
+											{
+											m.smu[0]='N';
+											m.smu[1]='I';
+											m.smu[2]='L';
+											m.smu[3]='\0';
+											i=i+2;
+											}
+										else
+											{
+											i=i+1;	
+											j=0;
+											while (kata[i]!='"') {
+											m.smu[j]=kata[i];
+											i++;
+											j++;
+											}
+										}
+										m.smu[j]='\0';
+										Adduser(&L,m);
+										printf("Penambahan user dengan id ");
+										tuliskata(m.email);
+										printf(" sukses.");
 						}
 					}
 					break;
