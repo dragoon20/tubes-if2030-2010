@@ -23,7 +23,7 @@ bool bacakata (char *kata, char hingga, char alternatif);
 /*I.S. kata terdefinisi
 F.S. kata dibaca sampai bertemu hingga atau alternatif*/
 
-void bacakatafile (FILE *varfile, char *kata, char hingga, char alternatif);
+bool bacakatafile (FILE *varfile, char *kata, char hingga, char alternatif);
 /*I.S. varfile terdefinisi, kata terdefinisi
 F.S. kata dibaca sampai bertemu hingga atau alternatif*/
 

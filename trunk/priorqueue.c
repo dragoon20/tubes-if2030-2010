@@ -112,6 +112,157 @@ void AddPQ (PQueue *Q, infotype X, int Pr)
 	}
 }
 
+void AddPQ2 (PQueue *Q, infotype X, int Pr, int parameter, int gt)
+{
+	addressPQ P=Head(*Q),Qu=NilPQ;
+	addressPQ temp;
+	AlokasiPQ(&temp,X);
+	bool cek,cek2,cek3;
+	parameter++;
+	//printf("%d",parameter);
+	if (gt==0)
+	{
+		gt=-1;
+	}
+	gt*=-1;
+	
+	if (temp!=NULL)
+	{
+		Prio(temp)=Pr;
+		if (IsEmptyPQ(*Q))
+		{
+			Head(*Q)=temp;
+			Next(temp)=NilPQ;
+		}
+		else
+		{
+			cek=(bandingkata(Info(P).email,Info(temp).email));
+			if (cek)
+			{
+				if (Prio(P)<Pr)
+				{
+					Next(temp)=P;
+					Head(*Q)=temp;
+				}
+				else
+				{
+					switch (parameter)
+					{
+						case 1:
+							{
+								cek2=(bandingkata(Info(temp).email,Info(P).email)==gt);
+								cek3=(bandingkata(Info(temp).email,Info(P).email)==0);
+								break;
+							}
+						case 2:
+							{
+								cek2=(bandingkata(Info(temp).nama,Info(P).nama)==gt);
+								cek3=(bandingkata(Info(temp).nama,Info(P).nama)==0);
+								break;
+							}
+						case 3:
+							{
+								break;
+							}
+						case 4:
+							{
+								cek2=(bandingkata(Info(temp).kotaasal,Info(P).kotaasal)==gt);
+								cek3=(bandingkata(Info(temp).kotaasal,Info(P).kotaasal)==0);
+								break;
+							}
+						case 5:
+							{
+								cek2=(bandingkata(Info(temp).universitas,Info(P).universitas)==gt);
+								cek3=(bandingkata(Info(temp).universitas,Info(P).universitas)==0);
+								break;
+							}
+						case 6:
+							{
+								cek2=(bandingkata(Info(temp).smu,Info(P).smu)==gt);
+								cek3=(bandingkata(Info(temp).smu,Info(P).smu)==0);
+								break;
+							}
+						default:
+							{
+								break;
+							}
+					}
+					while (((cek2)||(cek3))&&((Next(P)!=NilPQ)&&(cek)))
+					{
+						Qu=P;
+						P=Next(P);
+						cek=(bandingkata(Info(P).email,Info(temp).email));
+						switch (parameter)
+						{
+							case 1:
+								{
+									cek2=(bandingkata(Info(temp).email,Info(P).email)==gt);
+									cek3=(bandingkata(Info(temp).email,Info(P).email)==0);
+									break;
+								}
+							case 2:
+								{
+									cek2=(bandingkata(Info(temp).nama,Info(P).nama)==gt);
+									cek3=(bandingkata(Info(temp).nama,Info(P).nama)==0);
+									break;
+								}
+							case 3:
+								{
+									break;
+								}
+							case 4:
+								{
+									cek2=(bandingkata(Info(temp).kotaasal,Info(P).kotaasal)==gt);
+									cek3=(bandingkata(Info(temp).kotaasal,Info(P).kotaasal)==0);
+									break;
+								}
+							case 5:
+								{
+									cek2=(bandingkata(Info(temp).universitas,Info(P).universitas)==gt);
+									cek3=(bandingkata(Info(temp).universitas,Info(P).universitas)==0);
+									break;
+								}
+							case 6:
+								{
+									cek2=(bandingkata(Info(temp).smu,Info(P).smu)==gt);
+									cek3=(bandingkata(Info(temp).smu,Info(P).smu)==0);
+									break;
+								}
+							default:
+								{
+									break;
+								}
+						}
+					}
+					// tuliskata(Info(P).email);
+					// printf(" %d %d\n",cek2,cek3);
+					// tuliskata(Info(temp).email);
+					// printf("\n");
+					if (cek)
+					{
+						if (((!cek2)&&(!cek3))&&(P==Head(*Q)))
+						{
+							Head(*Q)=temp;
+							Next(temp)=P;
+						}
+						else if ((!cek2)&&(!cek3))
+						{
+							Next(temp)=P;
+							Next(Qu)=temp;
+						}
+						else
+						{
+							//printf("%d",gt);
+							Next(temp)=Next(P);
+							Next(P)=temp;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 // procedure Del (input/output Q : PQueue, input X : infotype, input Pr : integer)
 /*  Proses : Menghapus X pada bagian HEAD dari Q dan mendealokasi elemen HEAD,
 X berisi elemen dengan prioritas tertinggi  */

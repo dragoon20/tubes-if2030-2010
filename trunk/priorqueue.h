@@ -82,6 +82,8 @@ berhasil dengan memperhatikan prioritas; jika alokasi gagal Q tetap  */
 Q tetap terurut mengecil sesuai prioritas  */
 void AddPQ (PQueue *Q, infotype X, int Pr);
 
+void AddPQ2 (PQueue *Q, infotype X, int Pr, int parameter, int gt);
+
 // procedure Del (input/output Q : PQueue, input X : infotype, input Pr : integer)
 /*  Proses : Menghapus X pada bagian HEAD dari Q dan mendealokasi elemen HEAD,
 X berisi elemen dengan prioritas tertinggi  */

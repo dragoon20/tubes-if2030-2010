@@ -32,11 +32,11 @@ void DealokasiF (addressf *P, address *X);
 /* I.S. P adalah hasil alokasi, P <> Nil */
 /* F.S. Alamat P didealokasi, dikembalikan ke sistem */
 
-void AddFriend (List *L, infotype X, infotype added);
+bool AddFriend (List *L, infotype X, infotype added);
 /*I.S. infotype X ada didalam list L
 F.S. Added ditambahakan sebagai teman X dalam list L*/
 
-void DeleteFriend (List *L, infotype X, infotype deleted);
+bool DeleteFriend (List *L, address X, infotype deleted);
 /*I.S. Infotype X terdapat didalam List L
 F.S. Deleted dihapuskan dari teman X dalam list L*/
 
@@ -55,7 +55,7 @@ void Save (List L, FILE* namafile);
 /*I.S List terdefinisi
 F.S. Data pada List L disimpan dalam namafile*/
 
-void Load (List *L, FILE* namafile);
+bool Load (List *L, FILE* namafile);
 /*I.S. List terdefinisi
 F.S. Data List pada namafile di baca sebagai input List L*/
 

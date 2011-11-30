@@ -90,18 +90,29 @@ Jika kata lebih panjang dari 250 maka kata tidak dibaca*/
 	}
 }
 
-void bacakatafile (FILE *varfile, char *kata, char hingga, char alternatif)
+bool bacakatafile (FILE *varfile, char *kata, char hingga, char alternatif)
 /*I.S. varfile terdefinisi, kata terdefinisi
 F.S. kata dibaca sampai bertemu hingga atau alternatif*/
 {
 	char c;
+	bool salah=false;
 	int i=0;
-	fscanf(varfile,"%c",&c);
+	int temp;
+	temp=fscanf(varfile,"%c",&c);
 	while ((c!=hingga)&&(c!=alternatif))
 	{
+		if ((temp==0)||(temp==EOF))
+		{
+			return false;
+		}
 		kata[i]=c;
 		++i;
-		fscanf(varfile,"%c",&c);
+		/*if (i==250)
+		{
+			i=0;
+			salah=true;
+		}*/
+		temp=fscanf(varfile,"%c",&c);
 	}
 	kata[i]='\0';
 	if (c==hingga)
@@ -112,6 +123,10 @@ F.S. kata dibaca sampai bertemu hingga atau alternatif*/
 	{
 		kata[i+1]=alternatif;
 	}
+	/*if (salah)
+	{
+		return false;
+	}*/
 }
 
 void tuliskata (char *kata)
