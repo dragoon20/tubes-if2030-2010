@@ -40,7 +40,13 @@ void trim (char *kata, char ditrim);
 Fs:	kata ditrim sehingga karakter ditrim semua dihilangkan dari kata tersebut*/
 
 void lowcase (char *kata);
-/*Is: kata terdefinisi
-Fs:	kata menjadi lower case*/
+/* Is: kata terdefinisi
+Fs: kata dibuat sehingga semuanya menjadi lower case */
+
+int searchkata (char *kata, char dicari);
+// Mencari suatu karakter tertentu dalam kata dan mengembalikan posisinya
+
+int katatoint (char *kata);
+// Mengembalikan hasil konversi dari kata menjadi int
 
 #endif
