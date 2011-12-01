@@ -59,7 +59,7 @@ bool Load (List *L, FILE* namafile);
 /*I.S. List terdefinisi
 F.S. Data List pada namafile di baca sebagai input List L*/
 
-int IsTeman (List L, infotype X, infotype temanX);
+int IsTeman (List L, address X, infotype temanX);
 /*Predikat untuk mengecek apakah temanX adalah teman dari X. Jika temanX adalah teman tingkat 1 maka menghasilkan 1, jika teman dari teman (teman tingkat 2) menghasilkan 2*/
 
 bool IsSame (infotype X, infotype temanX, int parameter);
