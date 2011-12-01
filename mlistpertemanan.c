@@ -907,7 +907,7 @@ int main()
 					}
 					else
 					{
-						bacakata(input2,'#','#');
+						bacakata(input2,' ','#');
 						copykata(kata,input2);
 						trim(input2,' ');
 						trim(input2,'\n');
@@ -926,103 +926,117 @@ int main()
 						}
 						else
 						{
-								int i,j;
-								infotype m;
-								char hari[2];
-								char bulan[2];
-								char tahun[4];
-								
-										i=0;
-										j=0;
-										while (kata[i]!=' ') {
-										m.email[i]=kata[i];
-										i++;
-										}
-										m.email[i]='\0';
-										i=i+2;
-										j=0;
-										while (kata[i]!='"') {
-										m.nama[j]=kata[i];
-										i++;
-										j++;
-										}
-										m.nama[j]='\0';
-										i=i+2;
-										j=0;
-										while (kata[i]!='-') {
-										hari[j]=kata[i];
-										i++;
-										j++;
-										}
-										m.tgllahir.hari=katatoint(hari);
-										i=i+2;
-										j=0;
-										while (kata[i]!='-') {
-										bulan[j]=kata[i];
-										i++;
-										j++;
-										}
-										m.tgllahir.bulan=katatoint(bulan);
-										i=i+2;
-										j=0;
-										while (kata[i]!=' ') {
-										tahun[j]=kata[i];
-										i++;
-										j++;
-										}
-										m.tgllahir.tahun=katatoint(tahun);
-										i=i+2;
-										j=0;
-										while (kata[i]!='"') {
-										m.kotaasal[j]=kata[i];
-										i++;
-										j++;
-										}
-										m.kotaasal[j]='\0';
-										i=i+2;
-										if(kata[i]!='"')
-											{
-											m.universitas[0]='N';
-											m.universitas[1]='I';
-											m.universitas[2]='L';
-											m.universitas[3]='\0';
-											i=i+2;
-											}
-										else
-											{
-											i=i+1;	
-											j=0;
-											while (kata[i]!='"') {
-											m.universitas[j]=kata[i];
-											i++;
-											j++;
-											}
-										}
-										m.universitas[j]='\0';
-										i=i+2;
-										if(kata!='"')
-											{
-											m.smu[0]='N';
-											m.smu[1]='I';
-											m.smu[2]='L';
-											m.smu[3]='\0';
-											i=i+2;
-											}
-										else
-											{
-											i=i+1;	
-											j=0;
-											while (kata[i]!='"') {
-											m.smu[j]=kata[i];
-											i++;
-											j++;
-											}
-										}
-										m.smu[j]='\0';
-										Adduser(&L,m);
-										printf("Penambahan user dengan id ");
-										tuliskata(m.email);
-										printf(" sukses.");
+							infotype data;
+							char c;
+							copykata(data.email,input2);
+							
+							scanf("%c",&c);
+							while ((c==' ')||(c=='\n'))
+							{
+								scanf("%c",&c);
+							}
+							if (c=='\"')
+							{
+								bacakata(data.nama,'\"','\"');
+							}
+							
+							int i,j;
+							infotype m;
+							char hari[2];
+							char bulan[2];
+							char tahun[4];
+							
+							i=0;
+							j=0;
+							while (kata[i]!=' ') {
+							m.email[i]=kata[i];
+							i++;
+							}
+							m.email[i]='\0';
+							i=i+2;
+							j=0;
+							while (kata[i]!='"') {
+							m.nama[j]=kata[i];
+							i++;
+							j++;
+							}
+							m.nama[j]='\0';
+							i=i+2;
+							j=0;
+							while (kata[i]!='-') {
+							hari[j]=kata[i];
+							i++;
+							j++;
+							}
+							m.tgllahir.hari=katatoint(hari);
+							i=i+2;
+							j=0;
+							while (kata[i]!='-') {
+							bulan[j]=kata[i];
+							i++;
+							j++;
+							}
+							m.tgllahir.bulan=katatoint(bulan);
+							i=i+2;
+							j=0;
+							while (kata[i]!=' ') {
+							tahun[j]=kata[i];
+							i++;
+							j++;
+							}
+							m.tgllahir.tahun=katatoint(tahun);
+							i=i+2;
+							j=0;
+							while (kata[i]!='"') {
+							m.kotaasal[j]=kata[i];
+							i++;
+							j++;
+							}
+							m.kotaasal[j]='\0';
+							i=i+2;
+							if(kata[i]!='"')
+								{
+								m.universitas[0]='N';
+								m.universitas[1]='I';
+								m.universitas[2]='L';
+								m.universitas[3]='\0';
+								i=i+2;
+								}
+							else
+								{
+								i=i+1;	
+								j=0;
+								while (kata[i]!='"') {
+								m.universitas[j]=kata[i];
+								i++;
+								j++;
+								}
+							}
+							m.universitas[j]='\0';
+							i=i+2;
+							if(kata!='"')
+								{
+								m.smu[0]='N';
+								m.smu[1]='I';
+								m.smu[2]='L';
+								m.smu[3]='\0';
+								i=i+2;
+								}
+							else
+								{
+								i=i+1;	
+								j=0;
+								while (kata[i]!='"') {
+								m.smu[j]=kata[i];
+								i++;
+								j++;
+								}
+							}
+							m.smu[j]='\0';
+							Adduser(&L,m);
+							printf("Penambahan user dengan id ");
+							tuliskata(m.email);
+							printf(" sukses.");
 						}
 					}
 					break;
@@ -1040,12 +1054,11 @@ int main()
 					else
 					{	
 						address p;
-						infotype a,b;
-						bacakata(a.email,'#','#');
-						trim(a.email,' ');
-						trim(a.email,'\n');
-						lowcase(a.email);
-						if (!bandingkata(a.email,""))
+						bacakata(input2,'#','#');
+						trim(input2,' ');
+						trim(input2,'\n');
+						lowcase(input2);
+						if (!bandingkata(input2,""))
 						{
 							// sudah sampai #
 							printf("Mengubah data user.\n\n");
@@ -1054,67 +1067,86 @@ int main()
 						}
 						else
 						{	
-							copykata(b.email,a.email);
 							p = First(L);
-							while (bandingkata(b.email,Info(p).email))
-								{
-										p = Next(p); //mencari address yang ingin dimodify
-								}
+							while (bandingkata(input2,Info(p).email))
+							{
+								p = Next(p); //mencari address yang ingin dimodify
+							}
 							if (p != Nil)
 							{
-									printf("Nama Lengkap (blank jika tetap) :");
-									bacakata(a.nama,'#','#');
-									if (bandingkata(a.nama,""))
+								infotype data;
+								printf("Nama Lengkap (blank jika tetap) : ");
+								bacakata(data.nama,'#','#');
+								trim(data.nama,' ');
+								trim(data.nama,'\n');
+								if (bandingkata(data.nama,""))
+								{
+									copykata(data.nama,Info(p).nama);
+								}
+								
+								bool tempbol;
+								do
+								{
+									printf("Tanggal Lahir (dd-mm-yyyy dan blank jika tetap) :");
+									scanf("%d-%d-%d",&data.tgllahir.hari,&data.tgllahir.bulan,&data.tgllahir.tahun);
+									bacakata(input3,'#','#');
+									trim(input3,' ');
+									trim(input3,'\n');
+									if (!bandingkata(input3,''))
 									{
-										copykata(b.nama,a.nama);
+										printf("Masukkan tanggal lahir formatnya salah.\n");
+										tempbol=true;
 									}
-									printf("\nTanggal Lahir (dd-mm-yyyy dan blank jika tetap) :");
-									printf("\nKota Asal (blank jika tetap) :");
-									bacakata(a.kotaasal,'#','#');
-									if (bandingkata(a.kotaasal,""))
+									else
 									{
-										copykata(b.kotaasal,a.kotaasal);
+										tempbol=false;
 									}
-									printf("\nUniversitas (blank jika tetap) :");
-									bacakata(a.universitas,'#','#');
-									if (bandingkata(a.universitas,""))
-									{
-										copykata(b.universitas,a.universitas);
-									}
-									printf("\nSMU (blank jika tetap) :");
-									bacakata(a.smu,'#','#');
-									if (bandingkata(a.smu,""))
-									{
-										copykata(b.smu,a.smu);
-									}
-									ModifyUser(&L,b);
-									p = First(L);
-									while (bandingkata(b.email,Info(p).email))
-										{
-												p = Next(p); //mencari address baru yang telah dimodify
-										}
-									printf("\nPerubahan data pribadi ");
-									tuliskata(Info(p).email);
-									printf(" sukses");
-									printf("Nama Lengkap (blank jika tetap) : ");
-									tuliskata(Info(p).nama);;
-									printf("\nTanggal Lahir (dd-mm-yyyy dan blank jika tetap) : ");
-									printf("\nKota Asal (blank jika tetap) : ");
-									tuliskata(Info(p).kotaasal);
-									printf("\nUniversitas (blank jika tetap) : ");
-									tuliskata(Info(p).universitas);
-									printf("\nSMU (blank jika tetap) : ");
-									tuliskata(Info(p).smu);
+								}
+								
+								printf("Kota Asal (blank jika tetap) :");
+								bacakata(data.kotaasal,'#','#');
+								if (bandingkata(a.kotaasal,""))
+								{
+									copykata(data.kotaasal,Info(p).kotaasal);
+								}
+								
+								printf("Universitas (blank jika tetap) :");
+								bacakata(data.universitas,'#','#');
+								if (bandingkata(a.universitas,""))
+								{
+									copykata(data.universitas,Info(p).universitas);
+								}
+								
+								printf("SMU (blank jika tetap) :");
+								bacakata(data.smu,'#','#');
+								if (bandingkata(data.smu,""))
+								{
+									copykata(data.smu,Info(p).smu);
+								}
+								
+								ModifyUser(&L,data);
+
+								printf("\nPerubahan data pribadi ");
+								tuliskata(data.email);
+								printf(" sukses");
+								printf("Nama Lengkap : ");
+								tuliskata(data.nama);;
+								printf("\nTanggal Lahir : ");
+								printf("\nKota Asal : ");
+								tuliskata(data.kotaasal);
+								printf("\nUniversitas : ");
+								tuliskata(data.universitas);
+								printf("\nSMU : ");
+								tuliskata(data.smu);
+								printf("\n");
 							}
 							else
 							{
 								printf("Tidak ada ID user dengan email ");
-								tuliskata(b.email);
-								printf(".");
+								tuliskata(input2);
+								printf(".\n");
 							}
-						}
-						
-					
+						}					
 					}
 					break;
 				}
@@ -1131,12 +1163,11 @@ int main()
 					else
 					{
 						address p;
-						infotype a,b;
-						bacakata(a.email,'#','#');
-						trim(a.email,' ');
-						trim(a.email,'\n');
-						lowcase(a.email);
-						if (!bandingkata(a.email,""))
+						bacakata(input2,'#','#');
+						trim(input2,' ');
+						trim(input2,'\n');
+						
+						if (!bandingkata(input2,""))
 						{
 							// sudah sampai #
 							printf("Menghapus user.\n\n");
@@ -1146,14 +1177,14 @@ int main()
 						else
 						{
 							p = First(L);
-							while (bandingkata(a.email,Info(p).email))
+							while (bandingkata(input2,Info(p).email))
 							{
 								p = Next(p); //mencari address yang ingin dimodify
 							}
 							if (p != Nil)
 							{
 								RemoveUser(&L,a);
-								printf("\nUser dengan alamat email ");
+								printf("\nPenghapusan user dengan ID ");
 								tuliskata(a.email);
 								printf(" telah berhasil dihapus.");
 							}
@@ -1163,7 +1194,6 @@ int main()
 								tuliskata(a.email);
 								printf(".");
 							}
-							
 						}
 					}
 					break;
