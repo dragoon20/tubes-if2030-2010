@@ -70,7 +70,7 @@ bool IsKabisat (int tahun)
 int selisihtanggal (tanggal t1, tanggal t2, int param)
 {
 	int bulan[12];
-	int i=0,temp,total=0;
+	int i=0,total=0;
 	
 	for (i=0;i<8;i+=2)
 	{

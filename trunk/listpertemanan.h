@@ -8,6 +8,12 @@
 
 /* ********* Prototype ********* */
 
+void CreateEmpty(List *L);
+
+void MakeEmpty(List *L);
+
+bool IsEmpty(List L);
+
 int NUser (List L);
 /*Mengirimkan jumlah user*/
 

@@ -70,7 +70,7 @@ const addressPQ NilPQ=NULL;
 
 int main()
 {
-	char perintahadmin[12][50];
+	char perintahadmin[13][50];
 	char perintahuser[9][50];
 	char list[6][50];
 	char input[250];
@@ -84,7 +84,7 @@ int main()
 	List L;
 	PQueue PQ;
 	
-	First(L)=Nil;
+	CreateEmpty(&L);
 	
 	copykata(perintahadmin[0],"load");
 	copykata(perintahadmin[1],"user");
@@ -98,6 +98,7 @@ int main()
 	copykata(perintahadmin[9],"help");
 	copykata(perintahadmin[10],"clear");
 	copykata(perintahadmin[11],"time");
+	copykata(perintahadmin[12],"system");
 	
 	copykata(perintahuser[0],"birthday");
 	copykata(perintahuser[1],"same");
@@ -146,7 +147,7 @@ int main()
 		//pengecekan input
 		i=-1;
 		cek=true;
-		while ((i<=11)&&(cek))
+		while ((i<=12)&&(cek))
 		{
 			++i;
 			if (!bandingkata(input,perintahadmin[i]))
@@ -192,15 +193,46 @@ int main()
 							x=fopen(kata,"r");
 							if (x!=NULL)
 							{
-								hasil=Load (&L, x);
-								fclose(x);
-								if (hasil)
+								if (IsEmpty(L))
 								{
-									printf("Loading file %s sukses.\n",kata);
+									hasil=Load (&L, x);
+									fclose(x);
+									if (hasil)
+									{
+										printf("Loading file %s sukses.\n",kata);
+									}
+									else
+									{
+										printf("Loading file %s tidak sukses.\n",kata);
+									}
 								}
 								else
 								{
-									printf("Loading file %s tidak sukses.\n",kata);
+									printf("Load akan menghapus semua data sekarang dan mengganti dengan data baru.\n");
+									printf("Apakah anda ingin melakukannya (Y/N) ? ");
+									scanf("%c",&temp);
+									while ((temp!='Y')&&(temp!='N'))
+									{
+										scanf("%c",&temp);
+									}
+									if (temp=='Y')
+									{
+										MakeEmpty(&L);
+										hasil=Load (&L, x);
+										fclose(x);
+										if (hasil)
+										{
+											printf("Loading file %s sukses.\n",kata);
+										}
+										else
+										{
+											printf("Loading file %s tidak sukses.\n",kata);
+										}
+									}
+									else
+									{
+										printf("Load dibatalkan.\n");
+									}
 								}
 							}
 						}
@@ -397,7 +429,6 @@ int main()
 															if ((hari>=-365)&&(hari<=365))
 															{
 																addressf P=FList(user);
-																int param;
 																if (hari<0)
 																{
 																	if (P==Nilf)
@@ -966,13 +997,29 @@ int main()
 													{
 														infotype n;
 														copykata (n.email, input3);
-														if (AddFriend (&L, Info(user), n))
+														printf("\nApakah anda yakin ingin menambahkan hubungan pertemanan dengan ");
+														tuliskata(n.email);
+														printf(" (Y/N)?");
+														scanf("%c",&temp);
+														while ((temp!='Y')&&(temp!='N'))
 														{
-															printf("Penambahan hubungan friend sukses.\n");
+															scanf("%c",&temp);
+														}
+														
+														if (temp=='Y')
+														{
+															if (AddFriend (&L, Info(user), n))
+															{
+																printf("Penambahan hubungan friend sukses.\n");
+															}
+															else
+															{
+																printf("Penambahan hubungan friend gagal.\n");
+															}
 														}
 														else
 														{
-															printf("Penambahan hubungan friend gagal.\n");
+															printf("Penambahan hubungan pertemanan dibatalkan.\n");
 														}
 													}
 												}
@@ -982,7 +1029,6 @@ int main()
 										case 4:
 											{
 												infotype n;
-												addressf b;
 												if (end)
 												{
 													// sudah sampai #
@@ -1005,18 +1051,34 @@ int main()
 													{
 														copykata (n.email, input3);
 														
-														if (DeleteFriend(&L, user, n))
+														printf("\nApakah anda yakin ingin menghapus hubungan pertemanan dengan ");
+														tuliskata(n.email);
+														printf(" (Y/N)?");
+														scanf("%c",&temp);
+														while ((temp!='Y')&&(temp!='N'))
 														{
-															printf("Penghapusan hubungan friend dengan ");
-															tuliskata(input3);
-															printf(" sukses.\n");
+															scanf("%c",&temp);
+														}
+														
+														if (temp=='Y')
+														{
+															if (DeleteFriend(&L, user, n))
+															{
+																printf("Penghapusan hubungan friend dengan ");
+																tuliskata(input3);
+																printf(" sukses.\n");
+															}
+															else
+															{
+																printf("User ");
+																tuliskata(input3);
+																printf(" bukan 1st friend anda.\n");
+															}	
 														}
 														else
 														{
-															printf("User ");
-															tuliskata(input3);
-															printf(" bukan 1st friend anda.\n");
-														}	
+															printf("Penghapusan hubungan pertemanan dibatalkan.\n");
+														}
 													}
 												}
 												break;
@@ -1029,6 +1091,108 @@ int main()
 												{
 													bacakata(input3,'#','#');
 													end=true;
+												}
+												
+												infotype data;
+												copykata(data.email,Info(user).email);
+												printf("Nama Lengkap (blank jika tetap) : ");
+												bacakata(data.nama,'#','#');
+												trim(data.nama,'\n');
+												if (!bandingkata(data.nama,""))
+												{
+													copykata(data.nama,Info(user).nama);
+												}
+												
+												data.tgllahir.hari=Info(user).tgllahir.hari;
+												data.tgllahir.bulan=Info(user).tgllahir.bulan;
+												data.tgllahir.tahun=Info(user).tgllahir.tahun;
+												bool tempbol;
+												do
+												{
+													//scanf("%c",&temp);
+													printf("Tanggal Lahir (dd-mm-yyyy dan blank jika tetap) :");
+													scanf("%d-%d-%d",&data.tgllahir.hari,&data.tgllahir.bulan,&data.tgllahir.tahun);
+													bacakata(input3,'#','#');
+													trim(input3,' ');
+													trim(input3,'\n');
+													if (bandingkata(input3,""))
+													{
+														printf("Masukkan tanggal lahir formatnya salah.\n");
+														tempbol=true;
+													}
+													else
+													{
+														tempbol=false;
+													}
+												}while(tempbol);
+												
+												printf("Kota Asal (blank jika tetap) :");
+												bacakata(data.kotaasal,'#','#');
+												trim(data.kotaasal,'\n');
+												if (!bandingkata(data.kotaasal,""))
+												{
+													copykata(data.kotaasal,Info(user).kotaasal);
+												}
+												
+												printf("Universitas (blank jika tetap) :");
+												bacakata(data.universitas,'#','#');
+												trim(data.universitas,'\n');
+												if (!bandingkata(data.universitas,""))
+												{
+													copykata(data.universitas,Info(user).universitas);
+												}
+												
+												printf("SMU (blank jika tetap) :");
+												bacakata(data.smu,'#','#');
+												trim(data.smu,'\n');
+												if (!bandingkata(data.smu,""))
+												{
+													copykata(data.smu,Info(user).smu);
+												}
+												
+												printf("\n\nEmail : ");
+												tuliskata(data.email);
+												printf("\nNama Lengkap : ");
+												tuliskata(data.nama);
+												printf("\nTanggal Lahir : ");
+												printf("%d-%d-%d",data.tgllahir.hari,data.tgllahir.bulan,data.tgllahir.tahun);
+												printf("\nKota Asal : ");
+												tuliskata(data.kotaasal);
+												printf("\nUniversitas : ");
+												tuliskata(data.universitas);
+												printf("\nSMU : ");
+												tuliskata(data.smu);
+												printf("\n");
+												
+												printf("\nApakah anda yakin dengan data masukan tersebut (Y/N)?");
+												scanf("%c",&temp);
+												while ((temp!='Y')&&(temp!='N'))
+												{
+													scanf("%c",&temp);
+												}
+												
+												if (temp=='Y')
+												{
+													ModifyUser(&L,data);
+
+													printf("\nPerubahan data pribadi ");
+													tuliskata(data.email);
+													printf(" sukses");
+													printf("\nNama Lengkap : ");
+													tuliskata(data.nama);
+													printf("\nTanggal Lahir : ");
+													printf("%d-%d-%d",data.tgllahir.hari,data.tgllahir.bulan,data.tgllahir.tahun);
+													printf("\nKota Asal : ");
+													tuliskata(data.kotaasal);
+													printf("\nUniversitas : ");
+													tuliskata(data.universitas);
+													printf("\nSMU : ");
+													tuliskata(data.smu);
+													printf("\n");
+												}
+												else
+												{
+													printf("Perubahan data diri dibatalkan.\n");
 												}
 												
 												break;
@@ -1146,6 +1310,8 @@ int main()
 						{
 							infotype data;
 							char c;
+							char x[50];
+							bool tes;
 							copykata(data.email,input2);
 							
 							scanf("%c",&c);
@@ -1155,106 +1321,106 @@ int main()
 							}
 							if (c=='\"')
 							{
-								bacakata(data.nama,'\"','\"');
+								tes=bacakata(data.nama,'\"','\"');
+								tes=bacakata(x,' ','\n');
+							}
+							else
+							{
+								copykata(data.nama,"");
+								tes=bacakata(x,' ','\n');
+							}
+							//tuliskata(data.nama);
+							tes=scanf("%d-%d-%d",&data.tgllahir.hari,&data.tgllahir.bulan,&data.tgllahir.tahun);
+							/*if ((tempdat==0)||(tempdat==EOF))
+							{
+								return false;
+							}*/
+							
+							tes=scanf("%c",&c);
+							//if ((temp==0)||(temp==EOF)) {return false;}
+							while ((c==' ')||(c=='\n'))
+							{
+								tes=scanf("%c",&c);
+								//if ((temp==0)||(temp==EOF)) {return false;}
+							}
+							if (c=='\"')
+							{
+								tes=bacakata (data.kotaasal,'\"','\"');
+							}
+							else
+							{
+								copykata(data.kotaasal,"");
+								tes=bacakata(x,' ','\n');
 							}
 							
-							int i,j;
-							infotype m;
-							char hari[2];
-							char bulan[2];
-							char tahun[4];
+							tes=scanf("%c",&c);
+							//if ((temp==0)||(temp==EOF)) {return false;}
+							while ((c==' ')||(c=='\n'))
+							{
+								tes=scanf("%c",&c);
+								//if ((temp==0)||(temp==EOF)) {return false;}
+							}
+							if (c=='\"')
+							{
+								tes=bacakata(data.universitas,'\"','\"');
+							}
+							else
+							{
+								copykata(data.universitas,"");
+								tes=bacakata(x,' ','\n');
+							}
+					
+							tes=scanf("%c",&c);
+							//if ((temp==0)||(temp==EOF)) {return false;}
+							while ((c==' ')||(c=='\n'))
+							{
+								tes=scanf("%c",&c);
+								//if ((temp==0)||(temp==EOF)) {return false;}
+							}
+							if (c=='\"')
+							{
+								tes=bacakata(data.smu,'\"','\"');
+								
+							}
+							else
+							{
+								copykata(data.smu,"");
+							}
 							
-							i=0;
-							j=0;
-							while (kata[i]!=' ') {
-							m.email[i]=kata[i];
-							i++; 
+							tes=bacakata(x,'#','#');
+							
+							printf("\n\nEmail : ");
+							tuliskata(data.email);
+							printf("\nNama Lengkap : ");
+							tuliskata(data.nama);
+							printf("\nTanggal Lahir : ");
+							printf("%d-%d-%d",data.tgllahir.hari,data.tgllahir.bulan,data.tgllahir.tahun);
+							printf("\nKota Asal : ");
+							tuliskata(data.kotaasal);
+							printf("\nUniversitas : ");
+							tuliskata(data.universitas);
+							printf("\nSMU : ");
+							tuliskata(data.smu);
+							printf("\n");
+							
+							printf("\nApakah anda yakin dengan data masukan tersebut (Y/N)?");
+							scanf("%c",&temp);
+							while ((temp!='Y')&&(temp!='N'))
+							{
+								scanf("%c",&temp);
 							}
-							m.email[i]='\0';
-							i=i+2;
-							j=0;
-							while (kata[i]!='"') {
-							m.nama[j]=kata[i];
-							i++;
-							j++;
+							
+							if (temp=='Y')
+							{
+								AddUser(&L,data);
+								printf("Penambahan user dengan id ");
+								tuliskata(data.email);
+								printf(" sukses.\n");
 							}
-							m.nama[j]='\0';
-							i=i+2;
-							j=0;
-							while (kata[i]!='-') {
-							hari[j]=kata[i];
-							i++;
-							j++;
-							}
-							m.tgllahir.hari=katatoint(hari);
-							i=i+2;
-							j=0;
-							while (kata[i]!='-') {
-							bulan[j]=kata[i];
-							i++;
-							j++;
-							}
-							m.tgllahir.bulan=katatoint(bulan);
-							i=i+2;
-							j=0;
-							while (kata[i]!=' ') {
-							tahun[j]=kata[i];
-							i++;
-							j++;
-							}
-							m.tgllahir.tahun=katatoint(tahun);
-							i=i+2;
-							j=0;
-							while (kata[i]!='"') {
-							m.kotaasal[j]=kata[i];
-							i++;
-							j++;
-							}
-							m.kotaasal[j]='\0';
-							i=i+2;
-							if(kata[i]!='"')
-								{
-								m.universitas[0]='N';
-								m.universitas[1]='I';
-								m.universitas[2]='L';
-								m.universitas[3]='\0';
-								i=i+2;
-								}
 							else
-								{
-								i=i+1;	
-								j=0;
-								while (kata[i]!='"') {
-								m.universitas[j]=kata[i];
-								i++;
-								j++;
-								}
+							{
+								printf("Penambahan user dibatalkan.\n");
 							}
-							m.universitas[j]='\0';
-							i=i+2;
-							if(kata!='"')
-								{
-								m.smu[0]='N';
-								m.smu[1]='I';
-								m.smu[2]='L';
-								m.smu[3]='\0';
-								i=i+2;
-								}
-							else
-								{
-								i=i+1;	
-								j=0;
-								while (kata[i]!='"') {
-								m.smu[j]=kata[i];
-								i++;
-								j++;
-								}
-							}
-							m.smu[j]='\0';
-							Adduser(&L,m);
-							printf("Penambahan user dengan id ");
-							tuliskata(m.email);
-							printf(" sukses.");
 						}
 					}
 					break;
@@ -1293,24 +1459,28 @@ int main()
 							if (p != Nil)
 							{
 								infotype data;
+								copykata(data.email,input2);
 								printf("Nama Lengkap (blank jika tetap) : ");
 								bacakata(data.nama,'#','#');
-								trim(data.nama,' ');
 								trim(data.nama,'\n');
-								if (bandingkata(data.nama,""))
+								if (!bandingkata(data.nama,""))
 								{
 									copykata(data.nama,Info(p).nama);
 								}
 								
+								data.tgllahir.hari=Info(p).tgllahir.hari;
+								data.tgllahir.bulan=Info(p).tgllahir.bulan;
+								data.tgllahir.tahun=Info(p).tgllahir.tahun;
 								bool tempbol;
 								do
 								{
+									//scanf("%c",&temp);
 									printf("Tanggal Lahir (dd-mm-yyyy dan blank jika tetap) :");
 									scanf("%d-%d-%d",&data.tgllahir.hari,&data.tgllahir.bulan,&data.tgllahir.tahun);
 									bacakata(input3,'#','#');
 									trim(input3,' ');
 									trim(input3,'\n');
-									if (!bandingkata(input3,''))
+									if (bandingkata(input3,""))
 									{
 										printf("Masukkan tanggal lahir formatnya salah.\n");
 										tempbol=true;
@@ -1319,37 +1489,38 @@ int main()
 									{
 										tempbol=false;
 									}
-								}
+								}while(tempbol);
 								
 								printf("Kota Asal (blank jika tetap) :");
 								bacakata(data.kotaasal,'#','#');
-								if (bandingkata(a.kotaasal,""))
+								trim(data.kotaasal,'\n');
+								if (!bandingkata(data.kotaasal,""))
 								{
 									copykata(data.kotaasal,Info(p).kotaasal);
 								}
 								
 								printf("Universitas (blank jika tetap) :");
 								bacakata(data.universitas,'#','#');
-								if (bandingkata(a.universitas,""))
+								trim(data.universitas,'\n');
+								if (!bandingkata(data.universitas,""))
 								{
 									copykata(data.universitas,Info(p).universitas);
 								}
 								
 								printf("SMU (blank jika tetap) :");
 								bacakata(data.smu,'#','#');
-								if (bandingkata(data.smu,""))
+								trim(data.smu,'\n');
+								if (!bandingkata(data.smu,""))
 								{
 									copykata(data.smu,Info(p).smu);
 								}
 								
 								ModifyUser(&L,data);
 
-								printf("\nPerubahan data pribadi ");
-								tuliskata(data.email);
-								printf(" sukses");
-								printf("Nama Lengkap : ");
-								tuliskata(data.nama);;
+								printf("\nNama Lengkap : ");
+								tuliskata(data.nama);
 								printf("\nTanggal Lahir : ");
+								printf("%d-%d-%d",data.tgllahir.hari,data.tgllahir.bulan,data.tgllahir.tahun);
 								printf("\nKota Asal : ");
 								tuliskata(data.kotaasal);
 								printf("\nUniversitas : ");
@@ -1357,6 +1528,35 @@ int main()
 								printf("\nSMU : ");
 								tuliskata(data.smu);
 								printf("\n");
+								
+								printf("\nApakah anda yakin dengan data masukan tersebut (Y/N)?");
+								scanf("%c",&temp);
+								while ((temp!='Y')&&(temp!='N'))
+								{
+									scanf("%c",&temp);
+								}
+								
+								if (temp=='Y')
+								{
+									printf("\nPerubahan data pribadi ");
+									tuliskata(data.email);
+									printf(" sukses");
+									printf("\nNama Lengkap : ");
+									tuliskata(data.nama);
+									printf("\nTanggal Lahir : ");
+									printf("%d-%d-%d",data.tgllahir.hari,data.tgllahir.bulan,data.tgllahir.tahun);
+									printf("\nKota Asal : ");
+									tuliskata(data.kotaasal);
+									printf("\nUniversitas : ");
+									tuliskata(data.universitas);
+									printf("\nSMU : ");
+									tuliskata(data.smu);
+									printf("\n");
+								}
+								else
+								{
+									printf("Perubahan data user dibatalkan.\n");
+								}
 							}
 							else
 							{
@@ -1381,6 +1581,7 @@ int main()
 					else
 					{
 						address p;
+						infotype data;
 						bacakata(input2,'#','#');
 						trim(input2,' ');
 						trim(input2,'\n');
@@ -1401,15 +1602,45 @@ int main()
 							}
 							if (p != Nil)
 							{
-								RemoveUser(&L,a);
-								printf("\nPenghapusan user dengan ID ");
-								tuliskata(a.email);
-								printf(" telah berhasil dihapus.");
+								data=Info(p);
+								
+								printf("\n\nEmail : ");
+								tuliskata(data.email);
+								printf("\nNama Lengkap : ");
+								tuliskata(data.nama);
+								printf("\nTanggal Lahir : ");
+								printf("%d-%d-%d",data.tgllahir.hari,data.tgllahir.bulan,data.tgllahir.tahun);
+								printf("\nKota Asal : ");
+								tuliskata(data.kotaasal);
+								printf("\nUniversitas : ");
+								tuliskata(data.universitas);
+								printf("\nSMU : ");
+								tuliskata(data.smu);
+								printf("\n");
+								
+								printf("\nApakah anda yakin ingin menghapus data tersebut (Y/N)?");
+								scanf("%c",&temp);
+								while ((temp!='Y')&&(temp!='N'))
+								{
+									scanf("%c",&temp);
+								}
+								
+								if (temp=='Y')
+								{
+									RemoveUser(&L,data);
+									printf("\nPenghapusan user dengan ID ");
+									tuliskata(input2);
+									printf(" telah berhasil dihapus.\n");
+								}
+								else
+								{
+									printf("Penghapusan user dibatalkan.\n");
+								}
 							}
 							else
 							{
 								printf("Tidak ada ID user dengan email ");
-								tuliskata(a.email);
+								tuliskata(input2);
 								printf(".");
 							}
 						}
@@ -1600,6 +1831,7 @@ int main()
 						// sudah sampai #
 						FILE *x;
 						x=fopen(kata,"r");
+						MakeEmpty(&L);
 						Load (&L, x);
 						fclose(x);
 						printf("Reload data sesuai %s sukses.\n",kata);
@@ -1613,6 +1845,7 @@ int main()
 						{
 							FILE *x;
 							x=fopen(kata,"r");
+							MakeEmpty(&L);
 							Load (&L, x);
 							fclose(x);
 							printf("Reload data sesuai %s sukses.\n",kata);
@@ -1747,6 +1980,33 @@ int main()
 						printf("Tanggal gagal ditampilkan.\n");
 					}
 
+					break;
+				}
+			case 12:
+				{
+					if (end)
+					{
+						printf("Memanggil fungsi atau prosedur dari sistem.\n\n");
+						printf("system {perintah}\n\n");
+						printf("- perintah\tSebuah perintah yang dapat dilakukan di sistem.\n");
+					}
+					else
+					{
+						bacakata(input2,'#','#');
+						trim(input2,' ');
+						trim(input2,'\n');
+						end=true;
+						if (!bandingkata(input2,""))
+						{
+							printf("Memanggil fungsi atau prosedur dari sistem.\n\n");
+							printf("system {perintah}\n\n");
+							printf("- perintah\tSebuah perintah yang dapat dilakukan di sistem.\n");
+						}
+						else
+						{
+							system(input2);
+						}
+					}
 					break;
 				}
 			//tidak termasuk dalam perintah
