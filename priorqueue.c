@@ -76,6 +76,8 @@ void AddPQ (PQueue *Q, infotype X, int Pr)
 	addressPQ temp;
 	AlokasiPQ(&temp,X);
 	bool cek;
+	//tuliskata(X.email);
+	//printf(" 0\n");
 	if (temp!=NULL)
 	{
 		Prio(temp)=Pr;
@@ -96,15 +98,22 @@ void AddPQ (PQueue *Q, infotype X, int Pr)
 				}
 				else
 				{
-					while (((bandingkata(Info(temp).nama,Info(P).nama)==1)||(bandingkata(Info(temp).nama,Info(P).nama)==0))&&((Next(P)!=NilPQ)&&(Prio(Next(P))>=Pr))&&(cek))
+					while (((Next(P)!=NilPQ)&&(Prio(Next(P))>=Pr))&&(cek))
 					{
 						P=Next(P);
-						cek=(!bandingkata(Info(P).email,Info(temp).email));
+						cek=(bandingkata(Info(P).email,Info(temp).email));
 					}
 					if (cek)
 					{
-						Next(temp)=Next(P);
-						Next(P)=temp;
+						if (Next(P)!=NilPQ)
+						{
+							Next(temp)=Next(P);
+							Next(P)=temp;
+						}
+						else
+						{
+							Next(P)=temp;
+						}
 					}
 				}
 			}
@@ -117,7 +126,7 @@ void AddPQ2 (PQueue *Q, infotype X, int Pr, int parameter, int gt)
 	addressPQ P=Head(*Q),Qu=NilPQ;
 	addressPQ temp;
 	AlokasiPQ(&temp,X);
-	bool cek,cek2,cek3;
+	bool cek,cek2,cek3,cek4;
 	parameter++;
 	//printf("%d",parameter);
 	if (gt==0)
@@ -146,6 +155,7 @@ void AddPQ2 (PQueue *Q, infotype X, int Pr, int parameter, int gt)
 				}
 				else
 				{
+					cek4=(bandingkata(Info(temp).email,Info(P).email)==gt);
 					switch (parameter)
 					{
 						case 1:
@@ -162,6 +172,8 @@ void AddPQ2 (PQueue *Q, infotype X, int Pr, int parameter, int gt)
 							}
 						case 3:
 							{
+								cek2=(bandingtanggal(Info(temp).tgllahir,Info(P).tgllahir)==gt);
+								cek3=(bandingtanggal(Info(temp).tgllahir,Info(P).tgllahir)==0);
 								break;
 							}
 						case 4:
@@ -187,11 +199,12 @@ void AddPQ2 (PQueue *Q, infotype X, int Pr, int parameter, int gt)
 								break;
 							}
 					}
-					while (((cek2)||(cek3))&&((Next(P)!=NilPQ)&&(cek)))
+					while ((((cek2)&&(cek4))||(cek3))&&((Next(P)!=NilPQ)&&(cek)))
 					{
 						Qu=P;
 						P=Next(P);
 						cek=(bandingkata(Info(P).email,Info(temp).email));
+						cek4=(bandingkata(Info(temp).email,Info(P).email)==gt);
 						switch (parameter)
 						{
 							case 1:
@@ -208,6 +221,8 @@ void AddPQ2 (PQueue *Q, infotype X, int Pr, int parameter, int gt)
 								}
 							case 3:
 								{
+									cek2=(bandingtanggal(Info(temp).tgllahir,Info(P).tgllahir)==gt);
+									cek3=(bandingtanggal(Info(temp).tgllahir,Info(P).tgllahir)==0);
 									break;
 								}
 							case 4:

@@ -225,9 +225,11 @@ int katatoint (char *kata)
 		{
 			return -1000;
 		}
+		++i;
 	}
 	if (negatif)
 	{
 		hasil*=-1;
 	}
+	return hasil;
 }

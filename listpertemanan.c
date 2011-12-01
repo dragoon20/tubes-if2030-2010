@@ -619,42 +619,53 @@ F.S. Data List pada namafile di baca sebagai input List L*/
 	return true;
 }
 
-int IsTeman (List L, infotype X, infotype temanX)
+int IsTeman (List L, address X, infotype temanX)
 {
 	/* Kamus Lokal */
 	address P,S;
 	addressf Q,R;
 	PQueue PQ;
-	bool Found;
+	bool Found=true;
 	infotype temp;
 	int x;
 	
+	CreateEmptyPQ(&PQ);
+	
 	/* Algoritma */
-	P = First(L);
-	while (bandingkata((Info(P).email),(X.email)) != 0) 
-	{
-		P = Next(P);
-	}
+	P = X;
 	
 	/* P adalah address user */
 	Q = FList(P);
 	while ((Q != Nilf)&&(Found))
 	{
 		Found=bandingkata((Info(Friend(Q)).email),(temanX.email));
+		//tuliskata(Info(Friend(Q)).email);
+		//printf("\n");
 		AddPQ(&PQ,Info(Friend(Q)),3);
-        Q = Next(Q);
+		if (Found)
+		{
+			Q = Next(Q);
+		}
 	}
 	/* Q = Nil (tidak ada di list teman level 1) atau ditemukan info teman yang dicari */
 	if (!Found) 
 	{
+		while (!IsEmptyPQ(PQ))
+		{
+			DelPQ(&PQ,&temp,&x);
+		}
 		return 1; /* address ditemukan, teman level 1 */
     }
 	else
 	{ /* Teman bukan level 1, dicari lagi di level selanjutnya */
         P = First(L);
-		while ((Prio(Head(PQ))==3)&&(Found))
+		while ((!IsEmptyPQ(PQ))&&(Prio(Head(PQ))==3)&&(Found))
 		{
 			DelPQ(&PQ,&temp,&x);
+			//tuliskata(temp.email);
+			//printf(" ");
+			//tuliskata(Info(Head(PQ)).email);
+			//printf(" ");
 			while (bandingkata(temp.nama,Info(P).nama)==1)
 			{
 				P=Next(P);
@@ -667,13 +678,27 @@ int IsTeman (List L, infotype X, infotype temanX)
 			Q=FList(S);
 			while ((Q != Nilf)&&(Found))
 			{
-				Found=bandingkata((Info(Friend(Q)).email),(temanX.email));
-				AddPQ(&PQ,Info(Friend(Q)),2);
-				Q = Next(Q);
+				//tuliskata(Info(S).email);
+				//printf(" ");
+				//tuliskata(Info(Friend(Q)).email);
+				//printf(" 2\n");
+				if (bandingkata(Info(X).email,Info(Friend(Q)).email))
+				{
+					Found=bandingkata((Info(Friend(Q)).email),(temanX.email));
+					AddPQ(&PQ,Info(Friend(Q)),2);
+				}
+				if (Found)
+				{
+					Q = Next(Q);
+				}
 			}
 		}
 		if (!Found)
 		{
+			while (!IsEmptyPQ(PQ))
+			{
+				DelPQ(&PQ,&temp,&x);
+			}
 			return 2; // ditemukan di level 2
 		}
 		else
@@ -694,16 +719,28 @@ int IsTeman (List L, infotype X, infotype temanX)
 				Q=FList(S);
 				while ((Q != Nilf)&&(Found))
 				{
+					//tuliskata(Info(S).email);
+					//printf(" ");
+					//tuliskata(Info(Friend(Q)).email);
+					//printf(" 3\n");
 					Found=bandingkata((Info(Friend(Q)).email),(temanX.email));
 					Q = Next(Q);
 				}
 			}
 			if (!Found)
 			{
+				while (!IsEmptyPQ(PQ))
+				{
+					DelPQ(&PQ,&temp,&x);
+				}
 				return 3; //ditemukan di level 3
 			}
 			else
 			{
+				while (!IsEmptyPQ(PQ))
+				{
+					DelPQ(&PQ,&temp,&x);
+				}
 				return 0; //tidak ditemukan
 			}
 		}

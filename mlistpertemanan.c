@@ -1,5 +1,6 @@
 #include "listpertemanan.h"
 #include "priorqueue.h"
+#include "queuelist.h"
 #include "kata.h"
 #include "boolean.h"
 #include <stdio.h>
@@ -64,6 +65,7 @@
 
 const address Nil=NULL;
 const addressf Nilf=NULL;
+const addressQ NilQ=NULL;
 const addressPQ NilPQ=NULL;
 
 int main()
@@ -298,6 +300,45 @@ int main()
 													if (end)
 													{
 														// tanpa input kedua (7 hari)
+														addressf P=FList(user);
+														if (P==Nilf)
+														{
+															printf("N/A\n");
+														}
+														printf("ID\t\t\tName\t\tBirthday\tHometown\tUniversity\tHighschool\n");
+														while (P!=Nilf)
+														{
+															if ((bandingkata(Info(user).email,Info(Friend(P)).email))&&(selisihtanggal(now,Info(Friend(P)).tgllahir,0)<=7))
+															{
+																tuliskata(Info(Friend(P)).email);
+																if (panjangkata(Info(Friend(P)).email)<16)
+																{
+																	printf("\t");
+																}														
+																printf("\t");
+																tuliskata(Info(Friend(P)).nama);
+																printf("\t");
+																if (IsTeman(L,Friend(P),Info(user))==1)
+																{
+																	printf("%d-%d-%d\t",Info(Friend(P)).tgllahir.hari,Info(Friend(P)).tgllahir.bulan,Info(Friend(P)).tgllahir.tahun);
+																}
+																else
+																{
+																	printf("XX-XX-XXXX\t");
+																}
+																tuliskata(Info(Friend(P)).kotaasal);
+																if (panjangkata(Info(Friend(P)).kotaasal)<8)
+																{
+																	printf("\t");
+																}
+																printf("\t");
+																tuliskata(Info(Friend(P)).universitas);
+																printf("\t\t");
+																tuliskata(Info(Friend(P)).smu);
+																printf("\n");
+															}
+															P=Next(P);
+														}
 													}
 													else
 													{
@@ -308,13 +349,137 @@ int main()
 														if (!bandingkata(input3,""))
 														{
 															// tanpa input kedua (7 hari)
+															addressf P=FList(user);
+															if (P==Nilf)
+															{
+																printf("N/A\n");
+															}
+															printf("ID\t\t\tName\t\tBirthday\tHometown\tUniversity\tHighschool\n");
+															while (P!=Nilf)
+															{
+																if ((bandingkata(Info(user).email,Info(Friend(P)).email))&&(selisihtanggal(now,Info(Friend(P)).tgllahir,0)<=7))
+																{
+																	tuliskata(Info(Friend(P)).email);
+																	if (panjangkata(Info(Friend(P)).email)<16)
+																	{
+																		printf("\t");
+																	}														
+																	printf("\t");
+																	tuliskata(Info(Friend(P)).nama);
+																	printf("\t");
+																	if (IsTeman(L,Friend(P),Info(user))==1)
+																	{
+																		printf("%d-%d-%d\t",Info(Friend(P)).tgllahir.hari,Info(Friend(P)).tgllahir.bulan,Info(Friend(P)).tgllahir.tahun);
+																	}
+																	else
+																	{
+																		printf("XX-XX-XXXX\t");
+																	}
+																	tuliskata(Info(Friend(P)).kotaasal);
+																	if (panjangkata(Info(Friend(P)).kotaasal)<8)
+																	{
+																		printf("\t");
+																	}
+																	printf("\t");
+																	tuliskata(Info(Friend(P)).universitas);
+																	printf("\t\t");
+																	tuliskata(Info(Friend(P)).smu);
+																	printf("\n");
+																}
+																P=Next(P);
+															}
 														}
 														else
 														{
 															// dengan input kedua
 															int hari=katatoint(input3);
+															//printf("%d",hari);
 															if ((hari>=-365)&&(hari<=365))
 															{
+																addressf P=FList(user);
+																int param;
+																if (hari<0)
+																{
+																	if (P==Nilf)
+																	{
+																		printf("N/A\n");
+																	}
+																	printf("ID\t\t\tName\t\tBirthday\tHometown\tUniversity\tHighschool\n");
+																	while (P!=Nilf)
+																	{
+																		if ((bandingkata(Info(user).email,Info(Friend(P)).email))&&(selisihtanggal(now,Info(Friend(P)).tgllahir,1)>=hari))
+																		{
+																			tuliskata(Info(Friend(P)).email);
+																			if (panjangkata(Info(Friend(P)).email)<16)
+																			{
+																				printf("\t");
+																			}														
+																			printf("\t");
+																			tuliskata(Info(Friend(P)).nama);
+																			printf("\t");
+																			if (IsTeman(L,Friend(P),Info(user))==1)
+																			{
+																				printf("%d-%d-%d\t",Info(Friend(P)).tgllahir.hari,Info(Friend(P)).tgllahir.bulan,Info(Friend(P)).tgllahir.tahun);
+																			}
+																			else
+																			{
+																				printf("XX-XX-XXXX\t");
+																			}
+																			tuliskata(Info(Friend(P)).kotaasal);
+																			if (panjangkata(Info(Friend(P)).kotaasal)<8)
+																			{
+																				printf("\t");
+																			}
+																			printf("\t");
+																			tuliskata(Info(Friend(P)).universitas);
+																			printf("\t\t");
+																			tuliskata(Info(Friend(P)).smu);
+																			printf("\n");
+																		}
+																		P=Next(P);
+																	}
+																}
+																else
+																{
+																	if (P==Nilf)
+																	{
+																		printf("N/A\n");
+																	}
+																	printf("ID\t\t\tName\t\tBirthday\tHometown\tUniversity\tHighschool\n");
+																	while (P!=Nilf)
+																	{
+																		if ((bandingkata(Info(user).email,Info(Friend(P)).email))&&(selisihtanggal(now,Info(Friend(P)).tgllahir,0)<=hari))
+																		{
+																			tuliskata(Info(Friend(P)).email);
+																			if (panjangkata(Info(Friend(P)).email)<16)
+																			{
+																				printf("\t");
+																			}														
+																			printf("\t");
+																			tuliskata(Info(Friend(P)).nama);
+																			printf("\t");
+																			if (IsTeman(L,Friend(P),Info(user))==1)
+																			{
+																				printf("%d-%d-%d\t",Info(Friend(P)).tgllahir.hari,Info(Friend(P)).tgllahir.bulan,Info(Friend(P)).tgllahir.tahun);
+																			}
+																			else
+																			{
+																				printf("XX-XX-XXXX\t");
+																			}
+																			tuliskata(Info(Friend(P)).kotaasal);
+																			if (panjangkata(Info(Friend(P)).kotaasal)<8)
+																			{
+																				printf("\t");
+																			}
+																			printf("\t");
+																			tuliskata(Info(Friend(P)).universitas);
+																			printf("\t\t");
+																			tuliskata(Info(Friend(P)).smu);
+																			printf("\n");
+																		}
+																		P=Next(P);
+																	}
+																}
 															}
 															else if (hari==-1000)
 															{
@@ -323,27 +488,35 @@ int main()
 															else
 															{
 																addressf P=FList(user);
-																printf("ID\t\t\tName\t\t\tBirthday\tHometown\tUniversity\tHighschool\n");
-																while (P!=Nilf)
+																if (P==Nilf)
 																{
-																	tuliskata(Info(Friend(P)).email);
-																	printf("\t");
-																	tuliskata(Info(Friend(P)).nama);
-																	printf("\t");
-																	if (IsTeman(L,Info(Friend(P)),Info(user))==1)
+																	printf("N/A\n");
+																}	
+																else
+																{
+																	printf("ID\t\t\tName\t\t\tBirthday\tHometown\tUniversity\tHighschool\n");
+																	while (P!=Nilf)
 																	{
-																		printf("%2d-%2d-%4d\t",Info(Friend(P)).tgllahir.hari,Info(Friend(P)).tgllahir.bulan,Info(Friend(P)).tgllahir.tahun);
+																		tuliskata(Info(Friend(P)).email);
+																		printf("\t");
+																		tuliskata(Info(Friend(P)).nama);
+																		printf("\t");
+																		if (IsTeman(L,Friend(P),Info(user))==1)
+																		{
+																			printf("%2d-%2d-%4d\t",Info(Friend(P)).tgllahir.hari,Info(Friend(P)).tgllahir.bulan,Info(Friend(P)).tgllahir.tahun);
+																		}
+																		else
+																		{
+																			printf("XX-XX-XXXX\t");
+																		}
+																		tuliskata(Info(Friend(P)).kotaasal);
+																		printf("\t");
+																		tuliskata(Info(Friend(P)).universitas);
+																		printf("\t\t");
+																		tuliskata(Info(Friend(P)).smu);
+																		printf("\n");
+																		P=Next(P);
 																	}
-																	else
-																	{
-																		printf("XX-XX-XXXX\t");
-																	}
-																	tuliskata(Info(Friend(P)).kotaasal);
-																	printf("\t");
-																	tuliskata(Info(Friend(P)).universitas);
-																	printf("\t\t");
-																	tuliskata(Info(Friend(P)).smu);
-																	printf("\n");
 																}
 															}
 														}
@@ -367,6 +540,7 @@ int main()
 												else
 												{
 													bacakata(input3,'#','#');
+													lowcase(input3);
 													trim(input3,' ');
 													trim(input3,'\n');
 													if (!bandingkata(input3,""))
@@ -377,214 +551,269 @@ int main()
 													}
 													else
 													{
+														Queue Q1,Q2,Q3;
+														CreateEmptyQ(&Q1);
+														CreateEmptyQ(&Q2);
+														CreateEmptyQ(&Q3);
+														
+														address b;
+														infotype data;
+														int teman;
+														
+														b = First(L);
 														//di sini bagian samenya
-														if (hometown) {
-																infotype m,n;
-																address p;
-																addressf b;
-																
-																p = First(L);
-																while (!bandingkata(input2,Info(p).email))
-																	  {p = Next(p);}
-																/* p = address user */
-																b = First(L);
-																printf("1st Friend\n");
-																printf("ID");
-																printf("                ");
-																printf("Name");
-																printf("                ");
-																printf("Birthday");
-																printf("                ");
-																printf("Hometown");
-																printf("                ");
-																printf("University");
-																printf("                ");
-																printf("Highschool");
-																printf("\n");
-																while (b != Nil)
-																{ if ((IsTeman(L,Info(p),Info(b)) == 1) && (IsSame(Info(p),Info(b),1))){
-																		tuliskata(Info(Friend(b)).email);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).nama);
-																		printf("                ");
-																		printf("%d-%d-%d",Info(Friend(b)).tgllahir.hari,Info(Friend(b)).tgllahir.bulan,Info(Friend(b)).tgllahir.tahun);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).kotaasal);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).universitas);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).smu);
-																		printf("\n");
-																		}
-																   b = Next(b);
-																		}
-																b = First(L);
-																printf("\n2nd Friend\n");
-																printf("ID");
-																printf("                ");
-																printf("Name");
-																printf("                ");
-																printf("Birthday");
-																printf("                ");
-																printf("Hometown");
-																printf("                ");
-																printf("University");
-																printf("                ");
-																printf("Highschool");
-																printf("\n");
-																while (b != Nil)
-																{ if ((IsTeman(L,Info(p),Info(b)) == 2) && (IsSame(Info(p),Info(b),1))){
-																		tuliskata(Info(Friend(b)).email);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).nama);
-																		printf("                ");
-																		printf("%d-%d-%d",Info(Friend(b)).tgllahir.hari,Info(Friend(b)).tgllahir.bulan,Info(Friend(b)).tgllahir.tahun);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).kotaasal);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).universitas);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).smu);
-																		printf("\n");
-																		}
-																   b = Next(b);
-																		}
-																b = First(L);
-																printf("\n3rd Friend\n");
-																printf("ID");
-																printf("                ");
-																printf("Name");
-																printf("                ");
-																printf("Birthday");
-																printf("                ");
-																printf("Hometown");
-																printf("                ");
-																printf("University");
-																printf("                ");
-																printf("Highschool");
-																printf("\n");
-																while (b != Nil)
-																{ if ((IsTeman(L,Info(p),Info(b)) == 3) && (IsSame(Info(p),Info(b),1))){
-																		tuliskata(Info(Friend(b)).email);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).nama);
-																		printf("                ");
-																		printf("%d-%d-%d",Info(Friend(b)).tgllahir.hari,Info(Friend(b)).tgllahir.bulan,Info(Friend(b)).tgllahir.tahun);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).kotaasal);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).universitas);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).smu);
-																		printf("\n");
-																		}
-																   b = Next(b);
-																		}
+														if (!bandingkata(input3,"hometown")) 
+														{
+															while (b != Nil)
+															{
+																if ((IsSame(Info(user),Info(b),1))&&(bandingkata(Info(user).email,Info(b).email)))
+																{
+																	teman=IsTeman(L,user,Info(b));
+																	if (teman==1)
+																	{
+																		AddQ(&Q1,Info(b));
+																	}
+																	else if (teman==2)
+																	{
+																		AddQ(&Q2,Info(b));
+																	}
+																	else if (teman==3)
+																	{
+																		AddQ(&Q3,Info(b));
+																	}
+																}
+															    b = Next(b);
 															}
-
-															else /* school */  {
-																infotype m,n;
-																address p;
-																addressf b;
-																
-																p = First(L);
-																while (!bandingkata(input2,Info(p).email))
-																	  {p = Next(p);}
-																/* p = address user */
-																b = First(L);
-																printf("1st Friend\n");
-																printf("ID");
-																printf("                ");
-																printf("Name");
-																printf("                ");
-																printf("Birthday");
-																printf("                ");
-																printf("Hometown");
-																printf("                ");
-																printf("University");
-																printf("                ");
-																printf("Highschool");
-																printf("\n");
-																while (b != Nil)
-																{ if ((IsTeman(L,Info(p),Info(b)) == 1) && ((IsSame(Info(p),Info(b),2)) || (IsSame(Info(p),Info(b),3))) ){
-																		tuliskata(Info(Friend(b)).email);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).nama);
-																		printf("                ");
-																		printf("%d-%d-%d",Info(Friend(b)).tgllahir.hari,Info(Friend(b)).tgllahir.bulan,Info(Friend(b)).tgllahir.tahun);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).kotaasal);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).universitas);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).smu);
-																		printf("\n");
-																		}
-																   b = Next(b);
-																		}
-																b = First(L);
-																printf("\n2nd Friend\n");
-																printf("ID");
-																printf("                ");
-																printf("Name");
-																printf("                ");
-																printf("Birthday");
-																printf("                ");
-																printf("Hometown");
-																printf("                ");
-																printf("University");
-																printf("                ");
-																printf("Highschool");
-																printf("\n");
-																while (b != Nil)
-																{ if ((IsTeman(L,Info(p),Info(b)) == 2) && ((IsSame(Info(p),Info(b),2)) || (IsSame(Info(p),Info(b),3)))){
-																		tuliskata(Info(Friend(b)).email);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).nama);
-																		printf("                ");
-																		printf("%d-%d-%d",Info(Friend(b)).tgllahir.hari,Info(Friend(b)).tgllahir.bulan,Info(Friend(b)).tgllahir.tahun);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).kotaasal);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).universitas);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).smu);
-																		printf("\n");
-																		}
-																   b = Next(b);
-																		}
-																b = First(L);
-																printf("\n3rd Friend\n");
-																printf("ID");
-																printf("                ");
-																printf("Name");
-																printf("                ");
-																printf("Birthday");
-																printf("                ");
-																printf("Hometown");
-																printf("                ");
-																printf("University");
-																printf("                ");
-																printf("Highschool");
-																printf("\n");
-																while (b != Nil)
-																{ if ((IsTeman(L,Info(p),Info(b)) == 3) && ((IsSame(Info(p),Info(b),2)) || (IsSame(Info(p),Info(b),3)))){
-																		tuliskata(Info(Friend(b)).email);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).nama);
-																		printf("                ");
-																		printf("%d-%d-%d",Info(Friend(b)).tgllahir.hari,Info(Friend(b)).tgllahir.bulan,Info(Friend(b)).tgllahir.tahun);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).kotaasal);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).universitas);
-																		printf("                ");
-																		tuliskata(Info(Friend(b)).smu);
-																		printf("\n");
-																		}
-																   b = Next(b);
-																		}
+															printf("\n1st Friend\n");
+															if (IsEmptyQ(Q1))
+															{
+																printf("N/A\n");
 															}
+															else
+															{
+																printf("ID\t\t\tName\t\tBirthday\tHometown\tUniversity\tHighschool\n");
+															
+																while (!IsEmptyQ (Q1))
+																{
+																	DelQ(&Q1,&data);
+																	tuliskata(data.email);
+																	if (panjangkata(data.email)<16)
+																	{
+																		printf("\t");
+																	}														
+																	printf("\t");
+																	tuliskata(data.nama);
+																	printf("\t");
+																	printf("%d-%d-%d",data.tgllahir.hari,data.tgllahir.bulan,data.tgllahir.tahun);
+																	printf("\t");
+																	tuliskata(data.kotaasal);
+																	if (panjangkata(data.kotaasal)<8)
+																	{
+																		printf("\t");
+																	}
+																	printf("\t");
+																	tuliskata(data.universitas);
+																	printf("\t\t");
+																	tuliskata(data.smu);
+																	printf("\n");
+																}
+															}
+															printf("\n2nd Friend\n");
+															if (IsEmptyQ(Q2))
+															{
+																printf("N/A\n");
+															}
+															else
+															{
+																printf("ID\t\t\tName\t\tBirthday\tHometown\tUniversity\tHighschool\n");
+															
+																while (!IsEmptyQ (Q2))
+																{
+																	DelQ(&Q2,&data);
+																	tuliskata(data.email);
+																	if (panjangkata(data.email)<16)
+																	{
+																		printf("\t");
+																	}														
+																	printf("\t");
+																	tuliskata(data.nama);
+																	printf("\t");
+																	printf("%d-%d-%d",data.tgllahir.hari,data.tgllahir.bulan,data.tgllahir.tahun);
+																	printf("\t");
+																	tuliskata(data.kotaasal);
+																	if (panjangkata(data.kotaasal)<8)
+																	{
+																		printf("\t");
+																	}
+																	printf("\t");
+																	tuliskata(data.universitas);
+																	printf("\t\t");
+																	tuliskata(data.smu);
+																	printf("\n");
+																}
+															}
+															printf("\n3rd Friend\n");
+															if (IsEmptyQ(Q3))
+															{
+																printf("N/A\n");
+															}
+															else
+															{
+																printf("ID\t\t\tName\t\tBirthday\tHometown\tUniversity\tHighschool\n");
+															
+																while (!IsEmptyQ (Q3))
+																{
+																	DelQ(&Q3,&data);
+																	tuliskata(data.email);
+																	if (panjangkata(data.email)<16)
+																	{
+																		printf("\t");
+																	}														
+																	printf("\t");
+																	tuliskata(data.nama);
+																	printf("\t");
+																	printf("%d-%d-%d",data.tgllahir.hari,data.tgllahir.bulan,data.tgllahir.tahun);
+																	printf("\t");
+																	tuliskata(data.kotaasal);
+																	if (panjangkata(data.kotaasal)<8)
+																	{
+																		printf("\t");
+																	}
+																	printf("\t");
+																	tuliskata(data.universitas);
+																	printf("\t\t");
+																	tuliskata(data.smu);
+																	printf("\n");
+																}
+															}
+														}
+														else if (!bandingkata(input3,"school"))/* school */  
+														{
+															while (b != Nil)
+															{ 
+																if ((IsSame(Info(user),Info(b),2))&&(bandingkata(Info(user).email,Info(b).email)))
+																{
+																	teman=IsTeman(L,user,Info(b));
+																	tuliskata(Info(b).email);
+																	printf(" %d\n",teman);
+																	if (teman==1)
+																	{
+																		AddQ(&Q1,Info(b));
+																	}
+																	else if (teman==2)
+																	{
+																		AddQ(&Q2,Info(b));
+																	}
+																	else if (teman==3)
+																	{
+																		AddQ(&Q3,Info(b));
+																	}
+																}
+															    b = Next(b);
+															}
+															printf("\n1st Friend\n");
+															if (IsEmptyQ(Q1))
+															{
+																printf("N/A\n");
+															}
+															else
+															{
+																printf("ID\t\t\tName\t\tBirthday\tHometown\tUniversity\tHighschool\n");
+															
+																while (!IsEmptyQ (Q1))
+																{
+																	DelQ(&Q1,&data);
+																	tuliskata(data.email);
+																	if (panjangkata(data.email)<16)
+																	{
+																		printf("\t");
+																	}														
+																	printf("\t");
+																	tuliskata(data.nama);
+																	printf("\t");
+																	printf("%d-%d-%d",data.tgllahir.hari,data.tgllahir.bulan,data.tgllahir.tahun);
+																	printf("\t");
+																	tuliskata(data.kotaasal);
+																	if (panjangkata(data.kotaasal)<8)
+																	{
+																		printf("\t");
+																	}
+																	printf("\t");
+																	tuliskata(data.universitas);
+																	printf("\t\t");
+																	tuliskata(data.smu);
+																	printf("\n");
+																}
+															}
+															printf("\n2nd Friend\n");
+															if (IsEmptyQ(Q2))
+															{
+																printf("N/A\n");
+															}
+															else
+															{
+																printf("ID\t\t\tName\t\tBirthday\tHometown\tUniversity\tHighschool\n");
+															
+																while (!IsEmptyQ (Q2))
+																{
+																	DelQ(&Q2,&data);
+																	tuliskata(data.email);
+																	if (panjangkata(data.email)<16)
+																	{
+																		printf("\t");
+																	}														
+																	printf("\t");
+																	tuliskata(data.nama);
+																	printf("\t");
+																	printf("%d-%d-%d",data.tgllahir.hari,data.tgllahir.bulan,data.tgllahir.tahun);
+																	printf("\t");
+																	tuliskata(data.kotaasal);
+																	if (panjangkata(data.kotaasal)<8)
+																	{
+																		printf("\t");
+																	}
+																	printf("\t");
+																	tuliskata(data.universitas);
+																	printf("\t\t");
+																	tuliskata(data.smu);
+																	printf("\n");
+																}
+															}
+															printf("\n3rd Friend\n");
+															if (IsEmptyQ(Q3))
+															{
+																printf("N/A\n");
+															}
+															else
+															{
+																printf("ID\t\t\tName\t\tBirthday\tHometown\tUniversity\tHighschool\n");
+															
+																while (!IsEmptyQ (Q3))
+																{
+																	DelQ(&Q3,&data);
+																	tuliskata(data.email);
+																	if (panjangkata(data.email)<16)
+																	{
+																		printf("\t");
+																	}														
+																	printf("\t");
+																	tuliskata(data.nama);
+																	printf("\t");
+																	printf("%d-%d-%d",data.tgllahir.hari,data.tgllahir.bulan,data.tgllahir.tahun);
+																	printf("\t");
+																	tuliskata(data.kotaasal);
+																	if (panjangkata(data.kotaasal)<8)
+																	{
+																		printf("\t");
+																	}
+																	printf("\t");
+																	tuliskata(data.universitas);
+																	printf("\t\t");
+																	tuliskata(data.smu);
+																	printf("\n");
+																}
+															}
+														}
 													}
 												}
 												break;
@@ -599,78 +828,67 @@ int main()
 													end=true;
 												}
 												
-												 {
-														infotype m,n;
-														address p;
-														addressf b;
-														
-														p = First(L);
-														while (!bandingkata(input2,Info(p).email))
-															  {p = Next(p);}
-														/* p = address user */
-														b = First(L);
-														printf("\n2nd Friend\n");
-														printf("ID");
-														printf("                ");
-														printf("Name");
-														printf("                ");
-														printf("Birthday");
-														printf("                ");
-														printf("Hometown");
-														printf("                ");
-														printf("University");
-														printf("                ");
-														printf("Highschool");
-														printf("\n");
-														while (b != Nil)
-														{ if (IsTeman(L,Info(p),Info(b)) == 2){
-																tuliskata(Info(Friend(b)).email);
-																printf("                ");
-																tuliskata(Info(Friend(b)).nama);
-																printf("                ");
-																printf("%d-%d-%d",Info(Friend(b)).tgllahir.hari,Info(Friend(b)).tgllahir.bulan,Info(Friend(b)).tgllahir.tahun);
-																printf("                ");
-																tuliskata(Info(Friend(b)).kotaasal);
-																printf("                ");
-																tuliskata(Info(Friend(b)).universitas);
-																printf("                ");
-																tuliskata(Info(Friend(b)).smu);
-																printf("\n");
-																}
-														   b = Next(b);
-																}
-														b = First(L);
-														printf("\n3rd Friend\n");
-														printf("ID");
-														printf("                ");
-														printf("Name");
-														printf("                ");
-														printf("Birthday");
-														printf("                ");
-														printf("Hometown");
-														printf("                ");
-														printf("University");
-														printf("                ");
-														printf("Highschool");
-														printf("\n");
-														while (b != Nil)
-														{ if (IsTeman(L,Info(p),Info(b)) == 3) {
-																tuliskata(Info(Friend(b)).email);
-																printf("                ");
-																tuliskata(Info(Friend(b)).nama);
-																printf("                ");
-																printf("%d-%d-%d",Info(Friend(b)).tgllahir.hari,Info(Friend(b)).tgllahir.bulan,Info(Friend(b)).tgllahir.tahun);
-																printf("                ");
-																tuliskata(Info(Friend(b)).kotaasal);
-																printf("                ");
-																tuliskata(Info(Friend(b)).universitas);
-																printf("                ");
-																tuliskata(Info(Friend(b)).smu);
-																printf("\n");
-																}
-														   b = Next(b);
-																}
+												address b;
+												Queue Q2,Q3;
+												CreateEmptyQ(&Q2);
+												CreateEmptyQ(&Q3);
+												int teman;
+												infotype data;
+										
+												b = First(L);			
+												while (b != Nil)
+												{ 
+													if (bandingkata(Info(user).email,Info(b).email))
+													{
+														teman=IsTeman(L,user,Info(b));
+														//tuliskata(Info(b).email);
+														//printf(" %d\n",teman);
+														if (teman== 2)
+														{
+															AddQ(&Q2,Info(b));
+														}
+														else if (teman==3)
+														{
+															AddQ(&Q3,Info(b));
+														}
 													}
+													b = Next(b);
+												}
+												
+												printf("\n2nd Friend\n");
+												if (IsEmptyQ(Q2))
+												{
+													printf("N/A\n");
+												}
+												while (!IsEmptyQ (Q2))
+												{
+													DelQ(&Q2,&data);
+													tuliskata(data.email);
+													if (panjangkata(data.email)<16)
+													{
+														printf("\t");
+													}														
+													printf("\t");
+													tuliskata(data.nama);
+													printf("\n");
+												}
+												printf("\n3rd Friend\n");
+												if (IsEmptyQ(Q3))
+												{
+													printf("N/A\n");
+												}
+												while (!IsEmptyQ (Q3))
+												{
+													DelQ(&Q3,&data);
+													tuliskata(data.email);
+													if (panjangkata(data.email)<16)
+													{
+														printf("\t");
+													}														
+													printf("\t");
+													tuliskata(data.nama);
+													printf("\n");
+												}
 												break;
 											}
 										//friend
@@ -950,7 +1168,7 @@ int main()
 							j=0;
 							while (kata[i]!=' ') {
 							m.email[i]=kata[i];
-							i++;
+							i++; 
 							}
 							m.email[i]='\0';
 							i=i+2;
@@ -1205,6 +1423,34 @@ int main()
 					if (end)
 					{
 						// sudah sampai #
+						printf("ID\t\t\tName\t\tBirthday\tHometown\tUniversity\tHighschool\n");
+						address P=First(L);
+						infotype data;
+						while (P!=Nil)
+						{
+							data=Info(P);
+							tuliskata(data.email);
+							if (panjangkata(data.email)<16)
+							{
+								printf("\t");
+							}														
+							printf("\t");
+							tuliskata(data.nama);
+							printf("\t");
+							printf("%d-%d-%d",data.tgllahir.hari,data.tgllahir.bulan,data.tgllahir.tahun);
+							printf("\t");
+							tuliskata(data.kotaasal);
+							if (panjangkata(data.kotaasal)<8)
+							{
+								printf("\t");
+							}
+							printf("\t");
+							tuliskata(data.universitas);
+							printf("\t\t");
+							tuliskata(data.smu);
+							printf("\n");
+							P=Next(P);
+						}
 					}
 					else
 					{
@@ -1213,11 +1459,40 @@ int main()
 						
 						if (!bandingkata(input2,""))
 						{
+							printf("ID\t\t\tName\t\tBirthday\tHometown\tUniversity\tHighschool\n");
+							address P=First(L);
+							infotype data;
+							while (P!=Nil)
+							{
+								data=Info(P);
+								tuliskata(data.email);
+								if (panjangkata(data.email)<16)
+								{
+									printf("\t");
+								}														
+								printf("\t");
+								tuliskata(data.nama);
+								printf("\t");
+								printf("%d-%d-%d",data.tgllahir.hari,data.tgllahir.bulan,data.tgllahir.tahun);
+								printf("\t");
+								tuliskata(data.kotaasal);
+								if (panjangkata(data.kotaasal)<8)
+								{
+									printf("\t");
+								}
+								printf("\t");
+								tuliskata(data.universitas);
+								printf("\t\t");
+								tuliskata(data.smu);
+								printf("\n");
+								P=Next(P);
+							}
 							if (input2[panjangkata(input2)+1]!='#')
 							{
 								bacakata(input2,'#','#');
 							}
 							end=true;
+							
 						}
 						else
 						{

@@ -2,13 +2,7 @@
 #ifndef __DEFINISI__
 #define __DEFINISI__
 
-/*Deklarasi tanggal*/
-typedef struct
-{
-	int hari;
-	int bulan;
-	int tahun;
-} tanggal;
+#include "tanggal.h"
 
 /* Deklarasi infotype */
 typedef struct
