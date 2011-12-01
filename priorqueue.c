@@ -199,7 +199,7 @@ void AddPQ2 (PQueue *Q, infotype X, int Pr, int parameter, int gt)
 								break;
 							}
 					}
-					while ((((cek2)&&(cek4))||(cek3))&&((Next(P)!=NilPQ)&&(cek)))
+					while ((((cek3)&&(cek4))||(cek2))&&((Next(P)!=NilPQ)&&(cek)))
 					{
 						Qu=P;
 						P=Next(P);

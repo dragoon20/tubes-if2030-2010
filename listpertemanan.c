@@ -5,6 +5,29 @@
 extern const address Nil;
 extern const addressf Nilf;
 
+void CreateEmpty(List *L)
+{
+	First(*L)=Nil;
+}
+
+void MakeEmpty(List *L)
+{
+	address P=First(*L);
+	address Q=Nil;
+	while (P!=Nil)
+	{
+		Q=P;
+		P=Next(P);
+		//tuliskata(Info(Q).email);
+		RemoveUser(L,Info(Q));
+	}
+}
+
+bool IsEmpty(List L)
+{
+	return (First(L)==Nil);
+}
+
 int NUser (List L)
 /*Mengirimkan jumlah user*/
 {
@@ -55,6 +78,7 @@ Next(P)=Nil */
 		Info(*P) = X;
 		Next(*P) = Nil;
 	}
+	FList(*P)=Nilf;
 }
 
 void AlokasiF (addressf *P, address X)
@@ -212,7 +236,6 @@ F.S X menjadi anggota List L*/
 
 	P = First(*L);
 	Alokasi(&Q,X); /*Alokasi untuk mendapatkan address di list user*/
-	FList(Q)=Nilf;
 	
 	if (P == Nil)
 	{
@@ -231,8 +254,16 @@ F.S X menjadi anggota List L*/
 		if (Next(P) == Nil)
 		//urutan list sudah di paling akhir
 		{
-			Next(P) = Q;
-			Next(Q) = Nil;
+			if (bandingkata(Info(Q).nama,Info(P).nama)==1)
+			{
+				Next(P) = Q;
+				Next(Q) = Nil;
+			}
+			else
+			{
+				Next(Q) = P;
+				Next(S) = Q;
+			}
 		}
 		else//urutan user yang bukan di paling akhir
 		{
@@ -296,20 +327,21 @@ F.S. X dihapus dari list*/
 		T= First(*L);
 		while (T != Nil)
 		{
+			//printf("a");
 			R=FList(T);
 			S=Nilf;
-			while (bandingkata(Info(Friend(R)).email,Info(P).email))
+			while ((R!=Nilf)&&(bandingkata(Info(Friend(R)).email,Info(P).email)))
 			{
 				S=R;
 				R=Next(R);
 			}
-			if (S==Nilf)
+			if ((S==Nilf)&&(R!=Nilf))
 			{
 				FList(T)=Next(R);
 				Next(R)=Nilf;
 				DealokasiF(&R,&Q);
 			}
-			else
+			else if (R!=Nilf)
 			{
 				Next(S) = Next(R);
 				Next(R) = Nilf;
@@ -334,21 +366,22 @@ void ModifyUser (List *L, infotype X)
 	while((bandingkata(X.email,Info(P).email)))
 	//mencari addres user untuk dilepaskan dari list untuk diubah infotypenya
 	{	
+		//tuliskata(Info(P).email);
 		Q = P;
 		P = Next(P);
 	}
 	Next(Q) = Next(P);
 	Next(P) = Nil;
 	//user dilepas sementara dari list
+	//tuliskata(X.nama);
 	AddUser(L,X);
 	R = First(*L);
-	
 	while((bandingkata(X.email,Info(R).email)))
 	//mencari address baru user yang telah diubah infotype nya
 	{	
+		//tuliskata(Info(R).email);
 		R = Next(R);
 	}
-	
 	FList(R)=FList(P);
 	FList(P)=Nilf;
 	
@@ -358,19 +391,20 @@ void ModifyUser (List *L, infotype X)
 	{
 		if (T!=R)
 		{
+			//tuliskata(Info(T).email);
 			U = FList(T);
 			V = Nilf;
-			while((bandingkata(Info(P).email,Info(Friend(U)).email)) && (Next(U) != Nilf))
+			while((U != Nilf)&&(bandingkata(Info(P).email,Info(Friend(U)).email)))
 			{
 				V = U;
 				U = Next(U);
 			}
-			if (Next(U) != Nilf)
+			if ((U!=Nilf)&&(bandingkata(Info(P).email,Info(Friend(U)).email)==0))
 			{
 				Friend(U) = R; // address friend telah diubah menjadi yang baru
 			}
-			T = Next(T);
 		}
+		T = Next(T);
 	}
 	Dealokasi(&P,&x);
 }
@@ -623,7 +657,7 @@ int IsTeman (List L, address X, infotype temanX)
 {
 	/* Kamus Lokal */
 	address P,S;
-	addressf Q,R;
+	addressf Q;
 	PQueue PQ;
 	bool Found=true;
 	infotype temp;

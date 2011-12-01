@@ -18,9 +18,8 @@ int bandingkata (char *kata1, char *kata2)
 	jika kata1<kata2 menghasilkan -1(b<a)
 	jika kedua kata sama menghasilkan 0*/
 {
-	bool cek=true;
 	int i=0;
-	while (cek)
+	while (kata1[i]!='\0')
 	{
 		if (kata1[i]!=kata2[i])
 		{
@@ -33,12 +32,13 @@ int bandingkata (char *kata1, char *kata2)
 				return -1;
 			}
 		}
-		if ((kata1[i]==kata2[i]) && (kata1[i]=='\0'))
-		{
-			return 0;
-		}
 		++i;
 	}
+	if ((kata1[i]==kata2[i]) && (kata1[i]=='\0'))
+	{
+		return 0;
+	}
+	return 0;
 }
 
 void copykata (char *kata1, char *kata2)
@@ -88,6 +88,7 @@ Jika kata lebih panjang dari 250 maka kata tidak dibaca*/
 	{
 		return false;
 	}
+	return true;
 }
 
 bool bacakatafile (FILE *varfile, char *kata, char hingga, char alternatif)
@@ -107,11 +108,11 @@ F.S. kata dibaca sampai bertemu hingga atau alternatif*/
 		}
 		kata[i]=c;
 		++i;
-		/*if (i==250)
+		if (i==250)
 		{
 			i=0;
 			salah=true;
-		}*/
+		}
 		temp=fscanf(varfile,"%c",&c);
 	}
 	kata[i]='\0';
@@ -123,10 +124,11 @@ F.S. kata dibaca sampai bertemu hingga atau alternatif*/
 	{
 		kata[i+1]=alternatif;
 	}
-	/*if (salah)
+	if (salah)
 	{
 		return false;
-	}*/
+	}
+	return true;
 }
 
 void tuliskata (char *kata)
