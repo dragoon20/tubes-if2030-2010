@@ -118,7 +118,7 @@ F.S. Added ditambahakan sebagai teman X dalam list L*/
 	P = First(*L);
 	Q = First(*L);
 	
-	while (((bandingkata(X.email,Info(P).email)))||(bandingkata(added.email,Info(Q).email)))
+	while ((P!=Nil)&&(Q!=Nil)&&(((bandingkata(X.email,Info(P).email)))||(bandingkata(added.email,Info(Q).email))))
 	//mencari user yang ingin meng-add dan mencari user dengan info yang ingin di add
 	{
 		if (bandingkata(X.email,Info(P).email))
@@ -131,6 +131,10 @@ F.S. Added ditambahakan sebagai teman X dalam list L*/
 		}
 	}
 	
+	if ((P==Nil)||(Q==Nil))
+	{
+		return false;
+	}
 	AlokasiF(&R,Q); /*AlokasiF untuk mendapatkan address di list teman dari address user*/
 	if (R==Nilf)
 	{
@@ -205,16 +209,16 @@ F.S. Deleted dihapuskan dari teman X dalam list L*/
 			S = R;
 			R = Next(R);
 		}
-		if (S != Nilf)
+		if (R==Nilf)
+		{
+			return false;
+		}
+		else if (S != Nilf)
 		//jika teman yang ingin di delete bukan berada di awal
 		{
 			Next(S) = Next(R);
 			Next(R) = Nilf;
 			DealokasiF(&R,&Q);
-		}
-		else if (R==Nilf)
-		{
-			return false;
 		}
 		else
 		{
@@ -633,7 +637,8 @@ F.S. Data List pada namafile di baca sebagai input List L*/
 			temp=bacakatafile(namafile,teman.email,' ','\n');
 			if (!temp) {return temp;}
 
-			AddFriend(L,users,teman);
+			temp=AddFriend(L,users,teman);
+			if (!temp) {return temp;}
 			
 			temp=bacakatafile (namafile,users.email,'-','\n');
 			if (!temp) {return temp;}

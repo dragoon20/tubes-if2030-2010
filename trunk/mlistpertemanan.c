@@ -73,6 +73,7 @@ int main()
 	char perintahadmin[13][50];
 	char perintahuser[9][50];
 	char list[6][50];
+	char bulan[12][50];
 	char input[250];
 	char input2[250];
 	char input3[250];
@@ -116,6 +117,19 @@ int main()
 	copykata(list[3],"hometown");
 	copykata(list[4],"university");
 	copykata(list[5],"highschool");
+	
+	copykata(bulan[0],"Jan");
+	copykata(bulan[1],"Feb");
+	copykata(bulan[2],"Mar");
+	copykata(bulan[3],"Apr");
+	copykata(bulan[4],"May");
+	copykata(bulan[5],"Jun");
+	copykata(bulan[6],"Jul");
+	copykata(bulan[7],"Aug");
+	copykata(bulan[8],"Sep");
+	copykata(bulan[9],"Oct");
+	copykata(bulan[10],"Nov");
+	copykata(bulan[11],"Dec");
 	
 	#ifdef _Windows
 		system("cls");
@@ -322,26 +336,48 @@ int main()
 										case 0:
 											{
 												system("date /t > date.txt");
+												printf("\n");
 												tanggal now;
+												cek=true;
+												int jam,menit,detik;
 												FILE *x;
 												x=fopen("date.txt","r");
 												if (x!=NULL)
 												{
-													bacakatafile(x,s,' ',' ');
-													fscanf(x,"%d/%d/%d",&now.bulan,&now.hari,&now.tahun);
+													#ifdef _Windows
+														bacakatafile(x,s,' ',' ');
+														fscanf(x,"%d/%d/%d",&now.bulan,&now.hari,&now.tahun);
+														fclose(x);
+													#endif
+													#ifdef _Unix
+														bacakatafile(x,s,' ',' ');
+														bacakatafile(x,kata,' ',' ');
+														i=0;
+														while((i<12)&&(bandingkata(kata,bulan[i])))
+														{
+															++i;
+														}
+														bulan=i+1;
+														fscanf(x,"%d",&now.hari);
+														fscanf(x," %d:%d:%d",&jam,&menit,&detik);
+														bacakatafile(x,kata,' ',' ');
+														bacakatafile(x,kata,' ',' ');
+														fscanf(x,"%d",&now.tahun);
+														fclose(x);
+													#endif
 													if (end)
 													{
 														// tanpa input kedua (7 hari)
 														addressf P=FList(user);
-														if (P==Nilf)
-														{
-															printf("N/A\n");
-														}
-														printf("ID\t\t\tName\t\tBirthday\tHometown\tUniversity\tHighschool\n");
 														while (P!=Nilf)
 														{
 															if ((bandingkata(Info(user).email,Info(Friend(P)).email))&&(selisihtanggal(now,Info(Friend(P)).tgllahir,0)<=7))
 															{
+																if (cek)
+																{
+																	printf("ID\t\t\tName\t\tBirthday\tHometown\tUniversity\tHighschool\n");
+																	cek=false;
+																}
 																tuliskata(Info(Friend(P)).email);
 																if (panjangkata(Info(Friend(P)).email)<16)
 																{
@@ -371,6 +407,10 @@ int main()
 															}
 															P=Next(P);
 														}
+														if (cek)
+														{
+															printf("N/A\n");
+														}
 													}
 													else
 													{
@@ -382,15 +422,15 @@ int main()
 														{
 															// tanpa input kedua (7 hari)
 															addressf P=FList(user);
-															if (P==Nilf)
-															{
-																printf("N/A\n");
-															}
-															printf("ID\t\t\tName\t\tBirthday\tHometown\tUniversity\tHighschool\n");
 															while (P!=Nilf)
 															{
 																if ((bandingkata(Info(user).email,Info(Friend(P)).email))&&(selisihtanggal(now,Info(Friend(P)).tgllahir,0)<=7))
 																{
+																	if (cek)
+																	{
+																		printf("ID\t\t\tName\t\tBirthday\tHometown\tUniversity\tHighschool\n");
+																		cek=false;
+																	}
 																	tuliskata(Info(Friend(P)).email);
 																	if (panjangkata(Info(Friend(P)).email)<16)
 																	{
@@ -420,6 +460,10 @@ int main()
 																}
 																P=Next(P);
 															}
+															if (cek)
+															{
+																printf("N/A\n");
+															}
 														}
 														else
 														{
@@ -431,15 +475,15 @@ int main()
 																addressf P=FList(user);
 																if (hari<0)
 																{
-																	if (P==Nilf)
-																	{
-																		printf("N/A\n");
-																	}
-																	printf("ID\t\t\tName\t\tBirthday\tHometown\tUniversity\tHighschool\n");
 																	while (P!=Nilf)
 																	{
 																		if ((bandingkata(Info(user).email,Info(Friend(P)).email))&&(selisihtanggal(now,Info(Friend(P)).tgllahir,1)>=hari))
 																		{
+																			if (cek)
+																			{
+																				printf("ID\t\t\tName\t\tBirthday\tHometown\tUniversity\tHighschool\n");
+																				cek=false;
+																			}
 																			tuliskata(Info(Friend(P)).email);
 																			if (panjangkata(Info(Friend(P)).email)<16)
 																			{
@@ -468,19 +512,23 @@ int main()
 																			printf("\n");
 																		}
 																		P=Next(P);
+																	}
+																	if (cek)
+																	{
+																		printf("N/A\n");
 																	}
 																}
 																else
 																{
-																	if (P==Nilf)
-																	{
-																		printf("N/A\n");
-																	}
-																	printf("ID\t\t\tName\t\tBirthday\tHometown\tUniversity\tHighschool\n");
 																	while (P!=Nilf)
 																	{
 																		if ((bandingkata(Info(user).email,Info(Friend(P)).email))&&(selisihtanggal(now,Info(Friend(P)).tgllahir,0)<=hari))
 																		{
+																			if (cek)
+																			{
+																				printf("ID\t\t\tName\t\tBirthday\tHometown\tUniversity\tHighschool\n");
+																				cek=false;
+																			}
 																			tuliskata(Info(Friend(P)).email);
 																			if (panjangkata(Info(Friend(P)).email)<16)
 																			{
@@ -509,6 +557,10 @@ int main()
 																			printf("\n");
 																		}
 																		P=Next(P);
+																	}
+																	if (cek)
+																	{
+																		printf("N/A\n");
 																	}
 																}
 															}
@@ -925,6 +977,7 @@ int main()
 										//friend
 										case 3:
 											{
+												printf("\n");
 												addressf b;
 												if (end)
 												{
@@ -1072,7 +1125,7 @@ int main()
 															{
 																printf("User ");
 																tuliskata(input3);
-																printf(" bukan 1st friend anda.\n");
+																printf(" tidak ada atau bukan 1st friend anda.\n");
 															}	
 														}
 														else
@@ -1650,6 +1703,7 @@ int main()
 			//list
 			case 5:
 				{
+					printf("\n");
 					CreateEmptyPQ(&PQ);
 					if (end)
 					{
@@ -1868,7 +1922,7 @@ int main()
 						x=fopen(kata,"w");
 						Save (L, x);
 						fclose(x);
-						printf("Save data sesuai %s sukses.",kata);
+						printf("Save data sesuai %s sukses.\n",kata);
 					}
 					else
 					{
@@ -1881,7 +1935,7 @@ int main()
 							x=fopen(kata,"w");
 							Save (L, x);
 							fclose(x);
-							printf("Save data sesuai %s sukses.",kata);
+							printf("Save data sesuai %s sukses.\n",kata);
 						}
 						else
 						{
@@ -1890,7 +1944,7 @@ int main()
 							x=fopen(kata,"w");
 							Save (L, x);
 							fclose(x);
-							printf("Save data sesuai %s sukses.",kata);
+							printf("Save data sesuai %s sukses.\n",kata);
 						}
 					}
 					break;
@@ -1949,36 +2003,66 @@ int main()
 					system("date /t > date.txt");
 					system("time /t > time.txt");
 					FILE *x;
-					int bulan=0, hari=0, tahun=0, jam, menit;
+					int bulan=0, hari=0, tahun=0, jam, menit, detik;
 					
-					x=fopen("time.txt","r");
-					if (x!=NULL)
-					{	
-						fscanf(x,"%d:%d",&jam,&menit);
-						bacakatafile(x,s,'\n','\n');
-						fclose(x);
-						printf("\n - %02d:%02d",jam,menit);
-						tuliskata(s);
-						printf("   ");
-					}
-					else
-					{
-						printf("Waktu gagal ditampilkan.\n");
-					}
+					#ifdef _Windows
+						x=fopen("time.txt","r");
+						if (x!=NULL)
+						{	
+							fscanf(x,"%d:%d",&jam,&menit);
+							bacakatafile(x,s,'\n','\n');
+							fclose(x);
+							printf("\n - %02d:%02d",jam,menit);
+							tuliskata(s);
+							printf("   ");
+						}
+						else
+						{
+							printf("Waktu gagal ditampilkan.\n");
+						}
+						
+						x=fopen("date.txt","r");
+						if (x!=NULL)
+						{	
+							bacakatafile(x,s,' ',' ');
+							fscanf(x,"%d/%d/%d",&bulan,&hari,&tahun);
+							fclose(x);
+							tuliskata(s);
+							printf(" %02d-%02d-%04d\n",hari,bulan,tahun);
+						}
+						else
+						{
+							printf("Tanggal gagal ditampilkan.\n");
+						}
+					#endif
 					
-					x=fopen("date.txt","r");
-					if (x!=NULL)
-					{	
-						bacakatafile(x,s,' ',' ');
-						fscanf(x,"%d/%d/%d",&bulan,&hari,&tahun);
-						fclose(x);
-						tuliskata(s);
-						printf(" %02d-%02d-%04d\n",hari,bulan,tahun);
-					}
-					else
-					{
-						printf("Tanggal gagal ditampilkan.\n");
-					}
+					#ifdef _Unix
+						x=fopen("date.txt","r");
+						if (x!=NULL)
+						{	
+							bacakatafile(x,s,' ',' ');
+							bacakatafile(x,kata,' ',' ');
+							i=0;
+							while((i<12)&&(bandingkata(kata,bulan[i])))
+							{
+								++i;
+							}
+							bulan=i+1;
+							fscanf(x,"%d",&hari);
+							fscanf(x," %d:%d:%d",&jam,&menit,&detik);
+							bacakatafile(x,kata,' ',' ');
+							bacakatafile(x,kata,' ',' ');
+							fscanf(x,"%d",&tahun);
+							fclose(x);
+							printf("\n - %02d:%02d:%02d",jam,menit,detik);
+							tuliskata(s);
+							printf(" %02d-%02d-%04d\n",hari,bulan,tahun);
+						}
+						else
+						{
+							printf("Waktu dan tanggal gagal ditampilkan.\n");
+						}
+					#endif
 
 					break;
 				}
@@ -1993,7 +2077,7 @@ int main()
 					else
 					{
 						bacakata(input2,'#','#');
-						trim(input2,' ');
+						//trim(input2,' ');
 						trim(input2,'\n');
 						end=true;
 						if (!bandingkata(input2,""))
