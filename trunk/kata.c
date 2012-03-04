@@ -38,7 +38,14 @@ int bandingkata (char *kata1, char *kata2)
 	{
 		return 0;
 	}
-	return 0;
+	else if (kata1[i]>kata2[i])
+	{
+		return 1;
+	}
+	else
+	{
+		return -1;
+	}
 }
 
 void copykata (char *kata1, char *kata2)

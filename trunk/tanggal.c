@@ -1,6 +1,6 @@
 #include "tanggal.h"
 
-tanggal BuatTanggal (int hari, int bulan, int tahun)
+tanggal buattanggal (int hari, int bulan, int tahun)
 {
 	tanggal t;
 	t.hari=hari;
