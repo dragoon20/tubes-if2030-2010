@@ -157,7 +157,6 @@ int main()
 		{
 			end=true;
 		}
-		
 		//pengecekan input
 		i=-1;
 		cek=true;
@@ -172,6 +171,8 @@ int main()
 		if (!cek)
 		{
 			perintah=i;
+			//printf("%d",perintah);
+			//tuliskata(input);
 		}
 		
 		switch (perintah)
@@ -1272,7 +1273,7 @@ int main()
 												printf("- birthday\tMengecek ulang tahun teman yang dekat dengan hari ini.\n");
 												printf("- same\t\tMenampilkan list teman-teman yang memiliki kesamaan asal sekolah atau universitas.\n");
 												printf("- notfriendyet\tMenampilkan list teman dari teman kita yang masih belum menjadi teman kita.\n");
-												printf("- friend\t\tMenampilkan list teman kita atau berteman dengan suatu user-id.\n");
+												printf("- friend\tMenampilkan list teman kita atau berteman dengan suatu user-id.\n");
 												printf("- unfriend\tMenghilangkan hubungan pertemanan dengan suatu user-id.\n");
 												printf("- updatedata\tMengubah data diri.\n");
 												printf("- close\t\tKeluar dari menu user.\n\n");
@@ -1284,7 +1285,7 @@ int main()
 											{
 												if (!end)
 												{
-													bacakata(input2,'#','#');
+													bacakata(input3,'#','#');
 													end=true;
 												}
 												#ifdef _Windows
@@ -1299,6 +1300,11 @@ int main()
 										//tidak termasuk dalam perintah
 										default:
 											{
+												if (!end)
+												{
+													bacakata(input3,'#','#');
+													end=true;
+												}
 												printf("Perintah \"");
 												tuliskata(input);
 												printf("\" tidak ada.\n\n");
@@ -1505,7 +1511,7 @@ int main()
 						else
 						{	
 							p = First(L);
-							while (bandingkata(input2,Info(p).email))
+							while ((p!=Nil)&&(bandingkata(input2,Info(p).email)))
 							{
 								p = Next(p); //mencari address yang ingin dimodify
 							}
@@ -1649,7 +1655,7 @@ int main()
 						else
 						{
 							p = First(L);
-							while (bandingkata(input2,Info(p).email))
+							while ((p!=Nil)&&(bandingkata(input2,Info(p).email)))
 							{
 								p = Next(p); //mencari address yang ingin dimodify
 							}

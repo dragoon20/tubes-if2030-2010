@@ -10,7 +10,7 @@ typedef struct
 	int tahun;
 } tanggal;
 
-tanggal BuatTanggal (int hari, int bulan, int tahun);
+tanggal buattanggal (int hari, int bulan, int tahun);
 
 int bandingtanggal (tanggal t1, tanggal t2);
 
